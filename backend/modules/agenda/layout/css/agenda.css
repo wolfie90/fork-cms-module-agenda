@@ -1,0 +1,9 @@
+#beginDateDate, #endDateDate{ width: 90px; }
+#beginDateTime, #endDateTime { width: 40px; }
+#recurrEndDateDate { width: 75px; }
+#frequency { width: 60px; margin-right: 5px; }
+#recurrEndDateTime { width: 35px; }
+.endDateDate { margin-bottom: 10px; }
+.recurringOptions { padding: 7px 5px 7px 5px;border-top: 1px solid #DDD; }
+.recurringOptions .inputList{ margin-top: 5px; }
+#sidebar { width: 225px; }
