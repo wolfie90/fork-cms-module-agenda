@@ -13,19 +13,21 @@ Download latest release from [the release page](https://github.com/timvanwolfswi
 
 Visit the [Fork CMS Documentation](http://www.fork-cms.com/community/documentation/detail/getting-started/adding-modules) to learn how to install a module.
 
-NOTE: The .zip file is too large to upload within the cms itself (because of example data). You can upload the folders in the /backend and /frontend of your website.
-
 ## Features
 
 * Manage events
 * Recurring events
 * Subscribe to events
 * Add images, files and videos to a event
+* Add location to a event
 
 ## Improvements
 
 * Need to add other [languages than Dutch and English] (http://www.fork-cms.com/community/documentation/detail/module-guide/translations-or-locale)
 * Add social media buttons
+* Expand subscribe functionality with availability (max. amount of visitors, multiple frontend subscriptions)
+* Download events (.ics) for importing in your personal agenda
+* Possibility to add calendar view (widget)
 
 ## Support
 
