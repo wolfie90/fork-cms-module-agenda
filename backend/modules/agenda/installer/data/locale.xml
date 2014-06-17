@@ -371,6 +371,18 @@
 				<translation language="nl"><![CDATA[Agenda]]></translation>
 				<translation language="en"><![CDATA[Agenda]]></translation>
 			</item>
+            <item type="label" name="UpcomingAgendaItemsFull">
+                <translation language="nl"><![CDATA[aankomende evenementen (volle lijst)]]></translation>
+                <translation language="en"><![CDATA[upcoming events (full list)]]></translation>
+            </item>
+            <item type="label" name="UpcomingAgendaItemsLimited">
+                <translation language="nl"><![CDATA[aankomende evenementen (gelimiteerd)]]></translation>
+                <translation language="en"><![CDATA[upcoming events (limited)]]></translation>
+            </item>
+            <item type="label" name="AllAgendaItems">
+                <translation language="nl"><![CDATA[alle evenementen]]></translation>
+                <translation language="en"><![CDATA[all events]]></translation>
+            </item>
 		</core>
 	</backend>
 	<frontend>
@@ -379,6 +391,14 @@
 				<translation language="nl"><![CDATA[agenda]]></translation>
 				<translation language="en"><![CDATA[agenda]]></translation>
 			</item>
+            <item type="label" name="ReadMore">
+                <translation language="nl"><![CDATA[lees meer]]></translation>
+                <translation language="en"><![CDATA[read more]]></translation>
+            </item>
+            <item type="label" name="AllAgendaItems">
+                <translation language="nl"><![CDATA[alle evenementen]]></translation>
+                <translation language="en"><![CDATA[all events]]></translation>
+            </item>
             <item type="label" name="Images">
                 <translation language="nl"><![CDATA[afbeeldingen]]></translation>
                 <translation language="en"><![CDATA[images]]></translation>
