@@ -186,18 +186,36 @@ class FrontendAgendaModel
 	* @param int[optional] $limit The number of items to get
 	* @return array
 	*/
-	/*WHERE i.begin_date > NOW() AND i.language = ?*/
 	public static function getAllUpcomingAgendaItems($limit = 3)
 	{
-		$items = (array) FrontendModel::getContainer()->get('database')->getRecords(
-		'SELECT i.*, UNIX_TIMESTAMP(i.begin_date) AS begin_date, UNIX_TIMESTAMP(end_date) AS end_date, m.url
-			FROM agenda AS i
-			INNER JOIN meta AS m ON i.meta_id = m.id
-			WHERE i.language = ?
-			AND i.begin_date > NOW()
-			ORDER BY i.begin_date DESC LIMIT ?',
-		    array(FRONTEND_LANGUAGE, (int) $limit)
-		);
+
+        // no limit number of items
+        if($limit == null)
+        {
+            $items = (array) FrontendModel::getContainer()->get('database')->getRecords(
+                'SELECT i.*, UNIX_TIMESTAMP(i.begin_date) AS begin_date, UNIX_TIMESTAMP(end_date) AS end_date, m.url
+                    FROM agenda AS i
+                    INNER JOIN meta AS m ON i.meta_id = m.id
+                    WHERE i.language = ?
+                    AND i.begin_date > NOW()
+                    ORDER BY i.begin_date',
+                array(FRONTEND_LANGUAGE)
+            );
+        }
+
+        // limit number of items
+        else
+        {
+            $items = (array) FrontendModel::getContainer()->get('database')->getRecords(
+                'SELECT i.*, UNIX_TIMESTAMP(i.begin_date) AS begin_date, UNIX_TIMESTAMP(end_date) AS end_date, m.url
+                    FROM agenda AS i
+                    INNER JOIN meta AS m ON i.meta_id = m.id
+                    WHERE i.language = ?
+                    AND i.begin_date > NOW()
+                    ORDER BY i.begin_date DESC LIMIT ?',
+                array(FRONTEND_LANGUAGE, (int) $limit)
+            );
+        }
 
 		// no results?
 		if(empty($items)) return array();
@@ -208,7 +226,7 @@ class FrontendAgendaModel
 		// add url to items
 		foreach($items as &$item) {
 			$item['full_url'] = $detailUrl . '/' . $item['url'];
-						// get image
+
 			// get image
 			$img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
 			if($img) $item['image'] = FRONTEND_FILES_URL . '/agenda/' . $item['id'] . '/400x300/' . $img['filename'];

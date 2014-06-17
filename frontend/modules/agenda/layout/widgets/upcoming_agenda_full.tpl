@@ -11,12 +11,13 @@
 		<ul>
 			{iteration:widgetUpcomingAgendaFull}
 				<li>
-					<div class="date">
-						<time itemprop="datePublished" datetime="{$widgetUpcomingAgendaFull.begin_date|date:'d-M'}"><span>{$widgetUpcomingAgendaFull.begin_date|date:'d':{$LANGUAGE}}</span>{$widgetUpcomingAgendaFull.begin_date|date:'M':{$LANGUAGE}}</time>
-					</div>
 					<h4><a href="{$widgetUpcomingAgendaFull.full_url}" title="{$widgetUpcomingAgendaFull.title}">{$widgetUpcomingAgendaFull.title}</a></h4>
-					{$widgetUpcomingAgendaFull.introduction}
-					<p class="more">
+                    <div class="date">
+                        <time itemprop="date" datetime="{$widgetUpcomingAgendaFull.begin_date|date:'Y-m-d\TH:i:s'}">{$widgetUpcomingAgendaFull.begin_date|date:{$dateFormatLong}:{$LANGUAGE}}</time>
+                        <time itemprop="time" datetime="{$widgetUpcomingAgendaFull.begin_date|date:'Y-m-d\TH:i:s'}">{$widgetUpcomingAgendaFull.begin_date|date:{$timeFormat}:{$LANGUAGE}}</time>
+                    </div>
+                    <p>{$widgetUpcomingAgendaFull.introduction}</p>
+					<p>
 						<a href="{$widgetUpcomingAgendaFull.full_url}" title="{$widgetUpcomingAgendaFull.title}">{$lblReadMore|ucfirst}</a>
 					</p>
 				</li>
@@ -24,7 +25,7 @@
 		</ul>
 		<footer>
 			<p>
-				<a href="{$var|geturlforblock:'agenda'}" class="buttongrey">{$lblAllAgendaItems|ucfirst}</a>
+				<a href="{$var|geturlforblock:'agenda'}">{$lblAllAgendaItems|ucfirst}</a>
 			</p>
 		</footer>
 	</section>

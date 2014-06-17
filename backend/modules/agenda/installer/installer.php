@@ -144,11 +144,12 @@ class AgendaInstaller extends ModuleInstaller
 				
 		// add extra's
 		$agendaId = $this->insertExtra('agenda', 'block', 'Agenda', null, null, 'N', 1000);
-		$this->insertExtra('agenda', 'widget', 'UpcomingAgendaItemsFull', 'upcoming_agenda_full');
-		$this->insertExtra('agenda', 'block', 'AgendaCategory', 'category', null, 'N', 1002);
-		$this->insertExtra('agenda', 'widget', 'Categories', 'categories', null, 'N', 1003);
-		$this->insertExtra('agenda', 'widget', 'UpcomingAgendaItems', 'upcoming_agenda', null, 'N', 1004);
-		
+        $this->insertExtra('agenda', 'block', 'AgendaCategory', 'category', null, 'N', 1001);
+        $this->insertExtra('agenda', 'widget', 'Categories', 'categories', null, 'N', 1002);
+        $this->insertExtra('agenda', 'widget', 'UpcomingAgendaItemsFull', 'upcoming_agenda_full', null, 'N', 1003);
+        $this->insertExtra('agenda', 'widget', 'UpcomingAgendaItemsLimited', 'upcoming_agenda_limited', null, 'N', 1004);
+        $this->insertExtra('agenda', 'widget', 'AllAgendaItems', 'agenda_all', null, 'N', 1005);
+
 		// insert default category for every language
 		foreach($this->getLanguages() as $language)
 		{

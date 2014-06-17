@@ -8,11 +8,11 @@
  */
 
 /**
- * This is a widget with the upcoming agenda
+ * This is a widget with the upcoming agenda (full)
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaWidgetUpcomingAgendaItemsFull extends FrontendBaseWidget
+class FrontendAgendaWidgetUpcomingAgendaFull extends FrontendBaseWidget
 {
 	/**
 	 * Execute the extra
@@ -30,8 +30,8 @@ class FrontendAgendaWidgetUpcomingAgendaItemsFull extends FrontendBaseWidget
 	private function parse()
 	{
 		
-		// get agenda
-		$agenda = FrontendAgendaModel::getAllUpcomingAgendaItems(3);
+		// get agenda (null means unlimited items)
+		$agenda = FrontendAgendaModel::getAllUpcomingAgendaItems(null);
 			
 		// assign agenda
 		$this->tpl->assign('widgetUpcomingAgendaFull', $agenda);
