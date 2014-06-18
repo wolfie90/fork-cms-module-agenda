@@ -31,7 +31,7 @@ class BackendAgendaMassAction extends BackendBaseAction
 		{
 			// redefine id's
 			$aIds = (array) $_GET['id'];
-			$slideshowID = (int) $_GET['agenda_id'];
+			$agendaID = (int) $_GET['agenda_id'];
 
 			// delete media
 			if($action == 'deleteImages'){
@@ -43,6 +43,6 @@ class BackendAgendaMassAction extends BackendBaseAction
 			}
 		}
 
-		$this->redirect(BackendModel::createURLForAction('media') . '&agenda_id=' . $slideshowID . '&report=deleted');
+		$this->redirect(BackendModel::createURLForAction('media') . '&agenda_id=' . $agendaID . '&report=deleted');
 	}
 }

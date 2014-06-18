@@ -255,34 +255,6 @@ class AgendaInstaller extends ModuleInstaller
 									'google_maps' => 'Y',
 									'sequence' => 1
 			));
-						
-			// insert sample image 1
-			/*$db->insert('agenda_images', array(
-						'agenda_id' => $agendaId,
-						'title' => 'Beyonce 1',
-						'filename' => '1.png',
-						'sequence' => 1				
-			));
-				
-			// insert sample image 2
-			$db->insert('agenda_images', array(
-						'agenda_id' => $agendaId,
-						'title' => 'Beyonce 2',
-						'filename' => '2.png',
-						'sequence' => 2
-			));
-			
-			// insert sample image 3
-			$db->insert('agenda_images', array(
-						'agenda_id' => $agendaId,
-						'title' => 'Beyonce 3',
-						'filename' => '3.png',
-						'sequence' => 3
-			));
-					
-			// copy images into files path
-			SpoonDirectory::create(PATH_WWW . '/frontend/files/agenda/');
-			SpoonDirectory::copy(PATH_WWW . '/backend/modules/agenda/installer/data/images', PATH_WWW . '/frontend/files/agenda/' . $agendaId);*/
 		}
 	}
 }

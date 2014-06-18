@@ -54,7 +54,7 @@ class BackendAgendaIndex extends BackendBaseActionIndex
 	/**
 	 * Sets a link to the media overview
 	 *
-	 * @param int $projectId The specific id of the project
+	 * @param int $itemId The specific id of the project
 	 * @return string
 	 */
 	public static function setMediaLink($itemId)
