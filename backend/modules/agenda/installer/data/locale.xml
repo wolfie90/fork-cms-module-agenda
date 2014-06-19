@@ -2,10 +2,32 @@
 <locale>
 	<backend>
 		<agenda>
-			<item type="label" name="AllowEnlargment">
-			  <translation language="en"><![CDATA[allow enlargment]]></translation>
-			  <translation language="nl"><![CDATA[vergroting toestaan]]></translation>
-			</item>
+            <item type="label" name="AddAgenda">
+                <translation language="nl"><![CDATA[evenement toevoegen]]></translation>
+                <translation language="en"><![CDATA[add event]]></translation>
+            </item>
+            <item type="label" name="AddFile">
+                <translation language="nl"><![CDATA[bestand toevoegen]]></translation>
+                <translation language="en"><![CDATA[add file]]></translation>
+            </item>
+            <item type="label" name="AddImage">
+                <translation language="nl"><![CDATA[afbeelding toevoegen]]></translation>
+                <translation language="en"><![CDATA[add image]]></translation>
+            </item>
+            <item type="label" name="AddVideo">
+                <translation language="nl"><![CDATA[video toevoegen]]></translation>
+                <translation language="en"><![CDATA[add video]]></translation>
+            </item>
+            <item type="label" name="AllowEnlargment">
+                <translation language="en"><![CDATA[allow enlargment]]></translation>
+                <translation language="nl"><![CDATA[vergroting toestaan]]></translation>
+            </item>
+
+
+
+
+
+
 			<item type="label" name="CacheTimeout">
 			  <translation language="en"><![CDATA[cache timeout]]></translation>
 			  <translation language="nl"><![CDATA[cache timeout]]></translation>
@@ -21,10 +43,6 @@
 			<item type="label" name="Dimension">
 			  <translation language="en"><![CDATA[dimension]]></translation>
 			  <translation language="nl"><![CDATA[afmeting]]></translation>
-			</item>
-			<item type="label" name="AddAgenda">
-				<translation language="nl"><![CDATA[evenement toevoegen]]></translation>
-				<translation language="en"><![CDATA[add event]]></translation>
 			</item>
 			<item type="label" name="RepeatAgenda">
 				<translation language="nl"><![CDATA[herhaal evenement]]></translation>
@@ -148,18 +166,6 @@
                 <translation language="nl"><![CDATA[link]]></translation>
                 <translation language="en"><![CDATA[url]]></translation>
             </item>
-			<item type="label" name="AddImage">
-				<translation language="nl"><![CDATA[afbeelding toevoegen]]></translation>
-				<translation language="en"><![CDATA[add image]]></translation>
-			</item>
-			<item type="label" name="AddFile">
-				<translation language="nl"><![CDATA[bestand toevoegen]]></translation>
-				<translation language="en"><![CDATA[add file]]></translation>
-			</item>
-			<item type="label" name="AddVideo">
-				<translation language="nl"><![CDATA[video toevoegen]]></translation>
-				<translation language="en"><![CDATA[add video]]></translation>
-			</item>
 			<item type="label" name="EditImage">
 				<translation language="nl"><![CDATA[afbeelding bewerken]]></translation>
 				<translation language="en"><![CDATA[edit image]]></translation>
@@ -371,6 +377,10 @@
 				<translation language="nl"><![CDATA[Agenda]]></translation>
 				<translation language="en"><![CDATA[Agenda]]></translation>
 			</item>
+            <item type="label" name="AllAgendaItems">
+                <translation language="nl"><![CDATA[alle evenementen]]></translation>
+                <translation language="en"><![CDATA[all events]]></translation>
+            </item>
             <item type="label" name="UpcomingAgendaItemsFull">
                 <translation language="nl"><![CDATA[aankomende evenementen (volle lijst)]]></translation>
                 <translation language="en"><![CDATA[upcoming events (full list)]]></translation>
@@ -378,10 +388,6 @@
             <item type="label" name="UpcomingAgendaItemsLimited">
                 <translation language="nl"><![CDATA[aankomende evenementen (gelimiteerd)]]></translation>
                 <translation language="en"><![CDATA[upcoming events (limited)]]></translation>
-            </item>
-            <item type="label" name="AllAgendaItems">
-                <translation language="nl"><![CDATA[alle evenementen]]></translation>
-                <translation language="en"><![CDATA[all events]]></translation>
             </item>
 		</core>
 	</backend>
