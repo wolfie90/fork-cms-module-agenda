@@ -19,22 +19,22 @@ class BackendAgendaEditVideo extends BackendBaseActionEdit
 	 *
 	 * @var	array
 	 */
-	protected $id;  
-    
+	protected $id;
+
     /**
 	 * The id of the item
 	 *
 	 * @var	array
 	 */
 	private $itemId;
-    
+
     /**
 	 * The file record
 	 *
 	 * @var	array
 	 */
 	private $video;
-  
+
 	/**
 	 * Execute the action
 	 */
@@ -42,7 +42,7 @@ class BackendAgendaEditVideo extends BackendBaseActionEdit
 	{
 		$this->id = $this->getParameter('id', 'int');
 		$this->itemId = $this->getParameter('agenda_id', 'int');
-        
+
 		if($this->id !== null && BackendAgendaModel::existsVideo($this->id))
 		{
 			parent::execute();
@@ -74,7 +74,7 @@ class BackendAgendaEditVideo extends BackendBaseActionEdit
 	{
 		$this->frm = new BackendForm('editVideo');
 		$this->frm->addText('title', $this->video['title']);
-		$this->frm->addTextArea('video', $this->video['embedded_url']);
+		$this->frm->addTextArea('video', $this->video['filename']);
 	}
 
 	/**
@@ -109,8 +109,8 @@ class BackendAgendaEditVideo extends BackendBaseActionEdit
 				// build image record to insert
 				$item['id'] = $this->id;
 				$item['title'] = $this->frm->getField('title')->getValue();
-				$item['embedded_url'] = $this->frm->getField('video')->getValue();
-				
+				$item['filename'] = $this->frm->getField('video')->getValue();
+
 				// save the item
 				$id = BackendAgendaModel::saveVideo($item);
 
