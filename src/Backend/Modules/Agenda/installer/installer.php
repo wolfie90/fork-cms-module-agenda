@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Modules\Agenda\Installer;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
+use Backend\Core\Installer\ModuleInstaller;
+ 
 /**
- * Installer for the agenda module
+ * Installer for the Agenda module
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class AgendaInstaller extends ModuleInstaller
+class Installer extends ModuleInstaller
 {
 	/**
 	 * @var	int
@@ -57,107 +61,105 @@ class AgendaInstaller extends ModuleInstaller
 	public function install()
 	{
 		// import the sql
-		$this->importSQL(dirname(__FILE__) . '/data/install.sql');
+		$this->importSQL(dirname(__FILE__) . '/Data/install.sql');
 
 		// install the module in the database
-		$this->addModule('agenda');
+		$this->addModule('Agenda');
 
 		// install the locale, this is set here beceause we need the module for this
-		$this->importLocale(dirname(__FILE__) . '/data/locale.xml');
+		$this->importLocale(dirname(__FILE__) . '/Data/locale.xml');
 
 		// general settings
-		$this->setSetting('agenda', 'width1', (int)400);
-		$this->setSetting('agenda', 'height1', (int)300);
-		$this->setSetting('agenda', 'allow_enlargment1', true);
-		$this->setSetting('agenda', 'force_aspect_ratio1', true);
+		$this->setSetting('Agenda', 'width1', (int)400);
+		$this->setSetting('Agenda', 'height1', (int)300);
+		$this->setSetting('Agenda', 'allow_enlargment1', true);
+		$this->setSetting('Agenda', 'force_aspect_ratio1', true);
 		
-		$this->setSetting('agenda', 'width2', (int)800);
-		$this->setSetting('agenda', 'height2', (int)600);
-		$this->setSetting('agenda', 'allow_enlargment2', true);
-		$this->setSetting('agenda', 'force_aspect_ratio2', true);
+		$this->setSetting('Agenda', 'width2', (int)800);
+		$this->setSetting('Agenda', 'height2', (int)600);
+		$this->setSetting('Agenda', 'allow_enlargment2', true);
+		$this->setSetting('Agenda', 'force_aspect_ratio2', true);
 		
-		$this->setSetting('agenda', 'width3', (int)1600);
-		$this->setSetting('agenda', 'height3', (int)1200);
-		$this->setSetting('agenda', 'allow_enlargment3', true);
-		$this->setSetting('agenda', 'force_aspect_ratio3', true);
+		$this->setSetting('Agenda', 'width3', (int)1600);
+		$this->setSetting('Agenda', 'height3', (int)1200);
+		$this->setSetting('Agenda', 'allow_enlargment3', true);
+		$this->setSetting('Agenda', 'force_aspect_ratio3', true);
 		
-		$this->setSetting('agenda', 'cache_timeout', (int)900);
+		$this->setSetting('Agenda', 'cache_timeout', (int)900);
 
-        $this->setSetting('agenda', 'width', (int)400);
-        $this->setSetting('agenda', 'height', (int)400);
-        $this->setSetting('agenda', 'zoom_level', 13);
-        $this->setSetting('agenda', 'map_type', 'ROADMAP');
-
-        $this->setSetting('agenda', 'allow_subscriptions', 'Y');
-        $this->setSetting('agenda', 'moderation', 'Y');
-        $this->setSetting('agenda', 'notify_by_email_on_new_subscription_to_moderate', 'N');
-        $this->setSetting('agenda', 'notify_by_email_on_new_subscription', 'N');
-
-        // module rights
-		$this->setModuleRights(1, 'agenda');
+		$this->setSetting('Agenda', 'width', (int)400);
+		$this->setSetting('Agenda', 'height', (int)400);
+		$this->setSetting('Agenda', 'zoom_level', 13);
+		$this->setSetting('Agenda', 'map_type', 'ROADMAP');
+	
+		$this->setSetting('Agenda', 'allow_subscriptions', 'Y');
+		$this->setSetting('Agenda', 'moderation', 'Y');
+		$this->setSetting('Agenda', 'notify_by_email_on_new_subscription_to_moderate', 'N');
+		$this->setSetting('Agenda', 'notify_by_email_on_new_subscription', 'N');
+	
+		// module rights
+		$this->setModuleRights(1, 'Agenda');
 
 		// agenda
-		$this->setActionRights(1, 'agenda', 'index');
-		$this->setActionRights(1, 'agenda', 'add');
-		$this->setActionRights(1, 'agenda', 'edit');
-		$this->setActionRights(1, 'agenda', 'delete');
+		$this->setActionRights(1, 'Agenda', 'Index');
+		$this->setActionRights(1, 'Agenda', 'Add');
+		$this->setActionRights(1, 'Agenda', 'Edit');
+		$this->setActionRights(1, 'Agenda', 'Delete');
 		
 		// categories
-		$this->setActionRights(1, 'agenda', 'categories');
-		$this->setActionRights(1, 'agenda', 'add_category');
-		$this->setActionRights(1, 'agenda', 'edit_category');
-		$this->setActionRights(1, 'agenda', 'delete_category');
-		$this->setActionRights(1, 'agenda', 'sequence_categories');
+		$this->setActionRights(1, 'Agenda', 'Categories');
+		$this->setActionRights(1, 'Agenda', 'AddCategory');
+		$this->setActionRights(1, 'Agenda', 'EditCategory');
+		$this->setActionRights(1, 'Agenda', 'DeleteCategory');
+		$this->setActionRights(1, 'Agenda', 'SequenceCategories');
 
 		// media
-		$this->setActionRights(1, 'agenda', 'mass_media_action');
-		$this->setActionRights(1, 'agenda', 'media');
+		$this->setActionRights(1, 'Agenda', 'MassMediaAction');
+		$this->setActionRights(1, 'Agenda', 'Media');
 		
 		// images
-		$this->setActionRights(1, 'agenda', 'add_image');
-		$this->setActionRights(1, 'agenda', 'edit_image');
-		$this->setActionRights(1, 'agenda', 'delete_image');
-		//$this->setActionRights(1, 'agenda', 'sequence_images');
+		$this->setActionRights(1, 'Agenda', 'AddImage');
+		$this->setActionRights(1, 'Agenda', 'EditImage');
+		$this->setActionRights(1, 'Agenda', 'DeleteImage');
+		//$this->setActionRights(1, 'Agenda', 'SequenceImages');
 		
 		// files
-		$this->setActionRights(1, 'agenda', 'add_file');
-		$this->setActionRights(1, 'agenda', 'edit_file');
-		$this->setActionRights(1, 'agenda', 'delete_file');
-		//$this->setActionRights(1, 'agenda', 'sequence_files');
+		$this->setActionRights(1, 'Agenda', 'AddFile');
+		$this->setActionRights(1, 'Agenda', 'EditFile');
+		$this->setActionRights(1, 'Agenda', 'DeleteFile');
+		//$this->setActionRights(1, 'Agenda', 'SequenceFiles');
 		
 		// videos
-		$this->setActionRights(1, 'agenda', 'add_video');
-		$this->setActionRights(1, 'agenda', 'edit_video');
-		$this->setActionRights(1, 'agenda', 'delete_video');
-		//$this->setActionRights(1, 'agenda', 'sequence_videos');
+		$this->setActionRights(1, 'Agenda', 'AddVideo');
+		$this->setActionRights(1, 'Agenda', 'EditVideo');
+		$this->setActionRights(1, 'Agenda', 'DeleteVideo');
+		//$this->setActionRights(1, 'Agenda', 'SequenceVideos');
 
 		// subscriptions
-		$this->setActionRights(1, 'agenda', 'subscriptions');
-		$this->setActionRights(1, 'agenda', 'edit_subscription');
-		$this->setActionRights(1, 'agenda', 'delete_completed');
-		$this->setActionRights(1, 'agenda', 'mass_subscription_action');
+		$this->setActionRights(1, 'Agenda', 'Subscriptions');
+		$this->setActionRights(1, 'Agenda', 'EditSubscription');
+		$this->setActionRights(1, 'Agenda', 'DeleteCompleted');
+		$this->setActionRights(1, 'Agenda', 'MassSubscriptionAction');
 		
 		// settings
-		$this->setActionRights(1, 'agenda', 'settings');
+		$this->setActionRights(1, 'Agenda', 'Settings');
 		
-		$this->makeSearchable('agenda');
-				
+		$this->makeSearchable('Agenda');
+		
 		// add extra's
-		$agendaId = $this->insertExtra('agenda', 'block', 'Agenda', null, null, 'N', 1000);
-        $this->insertExtra('agenda', 'block', 'AgendaCategory', 'category', null, 'N', 1001);
-        $this->insertExtra('agenda', 'widget', 'Categories', 'categories', null, 'N', 1002);
-        $this->insertExtra('agenda', 'widget', 'UpcomingAgendaItemsFull', 'upcoming_agenda_full', null, 'N', 1003);
-        $this->insertExtra('agenda', 'widget', 'UpcomingAgendaItemsLimited', 'upcoming_agenda_limited', null, 'N', 1004);
-        $this->insertExtra('agenda', 'widget', 'AllAgendaItems', 'agenda_all', null, 'N', 1005);
+		$agendaId = $this->insertExtra('Agenda', 'block', 'Agenda', null, null, 'N', 1000);
+		$this->insertExtra('Agenda', 'block', 'AgendaCategory', 'Category', null, 'N', 1001);
+		$this->insertExtra('Agenda', 'widget', 'Categories', 'Categories', null, 'N', 1002);
+		$this->insertExtra('Agenda', 'widget', 'UpcomingAgendaItemsFull', 'UpcomingAgendaFull', null, 'N', 1003);
+		$this->insertExtra('Agenda', 'widget', 'UpcomingAgendaItemsLimited', 'UpcomingAgendaLimited', null, 'N', 1004);
+		$this->insertExtra('Agenda', 'widget', 'AllAgendaItems', 'AgendaAll', null, 'N', 1005);
 
 		// insert default category for every language
-		foreach($this->getLanguages() as $language)
-		{
+		foreach($this->getLanguages() as $language) {
 			$this->defaultCategoryId = $this->getCategory($language);
 
 			// no category exists
-			if($this->defaultCategoryId == 0)
-			{
+			if($this->defaultCategoryId == 0) {
 				$this->defaultCategoryId = $this->addCategory($language, 'Default', 'default', 0);
 			}
 			
@@ -181,22 +183,9 @@ class AgendaInstaller extends ModuleInstaller
 		$navigationModulesId = $this->setNavigation(null, 'Modules');
 		$navigationAgendaId = $this->setNavigation($navigationModulesId, 'Agenda');
 		
-		$this->setNavigation(
-            $navigationAgendaId, 'Agenda', 'agenda/index',
-			array('agenda/add', 'agenda/edit', 'agenda/media',
-				  'agenda/add_image', 'agenda/edit_image',
-				  'agenda/add_file', 'agenda/edit_file',
-				  'agenda/add_video', 'agenda/edit_video')
-		);
-		$this->setNavigation(
-            $navigationAgendaId, 'Categories', 'agenda/categories',
-			array('agenda/add_category', 'agenda/edit_category')
-		);
-		
-		$this->setNavigation(
-            $navigationAgendaId, 'Subscriptions', 'agenda/subscriptions',
-			array('agenda/edit_subscription')
-		);
+		$this->setNavigation($navigationAgendaId, 'Agenda', 'agenda/index', array('agenda/add', 'agenda/edit', 'agenda/media','agenda/add_image', 'agenda/edit_image','agenda/add_file', 'agenda/edit_file','agenda/add_video', 'agenda/edit_video'));
+		$this->setNavigation($navigationAgendaId, 'Categories', 'agenda/categories',array('agenda/add_category', 'agenda/edit_category'));
+		$this->setNavigation( $navigationAgendaId, 'Subscriptions', 'agenda/subscriptions',array('agenda/edit_subscription'));
 		
 		// settings navigation
 		$navigationSettingsId = $this->setNavigation(null, 'Settings');
@@ -222,38 +211,37 @@ class AgendaInstaller extends ModuleInstaller
 			 LIMIT 1',
 			array($language)))
 		{	
-			
 			// insert sample product
 			$agendaId = $db->insert( 'agenda', array(
-									'category_id' => $this->defaultCategoryId,
-									'meta_id' => $this->insertMeta('The Mrs. Carter Show World Tour',
-												       'The Mrs. Carter Show World Tour',
-												       'The Mrs. Carter Show World Tour',
-												       'the-mrs-carter-show-world-tour'),
-									'language' => $language,
-									'title' => 'The Mrs. Carter Show World Tour',
-									'introduction' => 'The World Tour of Beyoncé.',
-									'text' => '	The Mrs. Carter Show World Tour was the fifth concert tour by American recording artist Beyoncé. 
-													It was announced in February 2013 following Beyonces performance at the Super Bowl XLVII 
-													halftime show and entitled in reference to her marriage with Shawn "Jay-Z" Carter. An advertisement 
-													to promote the tour was revealed the same month featuring Beyoncé dressed in royal regalia and subsequently 
-													several posters and photos were released on Beyonces official website to promote the tour.',
-									'whole_day' => 'N',
-									'recurring' => 'N',
-									'created_on' => gmdate('Y-m-d H:i:00'),
-									'begin_date' => gmdate('Y-m-d H:i:00'),
-									'end_date' => gmdate('Y-m-d H:i:00'),
-									'edited_on' => gmdate('Y-m-d H:i:00'),
-									'allow_subscriptions' => 'Y',
-									'location_name' => 'Ziggo Dome',
-									'street' => 'De Passage',
-									'number' => '100',
-									'zip' => '1101 AZ',
-									'city' => 'Amsterdam',
-									'lat' => 52.313375,
-									'lng' => 4.936660,
-									'google_maps' => 'Y',
-									'sequence' => 1
+				'category_id' => $this->defaultCategoryId,
+				'meta_id' => $this->insertMeta('The Mrs. Carter Show World Tour',
+							       'The Mrs. Carter Show World Tour',
+							       'The Mrs. Carter Show World Tour',
+							       'the-mrs-carter-show-world-tour'),
+				'language' => $language,
+				'title' => 'The Mrs. Carter Show World Tour',
+				'introduction' => 'The World Tour of Beyoncé.',
+				'text' => '	The Mrs. Carter Show World Tour was the fifth concert tour by American recording artist Beyoncé. 
+						It was announced in February 2013 following Beyonces performance at the Super Bowl XLVII 
+						halftime show and entitled in reference to her marriage with Shawn "Jay-Z" Carter. An advertisement 
+						to promote the tour was revealed the same month featuring Beyoncé dressed in royal regalia and subsequently 
+						several posters and photos were released on Beyonces official website to promote the tour.',
+				'whole_day' => 'N',
+				'recurring' => 'N',
+				'created_on' => gmdate('Y-m-d H:i:00'),
+				'begin_date' => gmdate('Y-m-d H:i:00'),
+				'end_date' => gmdate('Y-m-d H:i:00'),
+				'edited_on' => gmdate('Y-m-d H:i:00'),
+				'allow_subscriptions' => 'Y',
+				'location_name' => 'Ziggo Dome',
+				'street' => 'De Passage',
+				'number' => '100',
+				'zip' => '1101 AZ',
+				'city' => 'Amsterdam',
+				'lat' => 52.313375,
+				'lng' => 4.936660,
+				'google_maps' => 'Y',
+				'sequence' => 1
 			));
 		}
 	}
