@@ -1,31 +1,13 @@
 <?php
-
-namespace Backend\Modules\Catalog\Actions;
-
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
-use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Language as BL;
-use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Engine\Meta as BackendMeta;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
-use Backend\Modules\Search\Engine\Model as BackendSearchModel;
-use Backend\Modules\Tags\Engine\Model as BackendTagsModel;
 
 /**
  * This is the add-action, it will display a form to create a new item
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class Add extends BackendBaseActionAdd
+class BackendAgendaAdd extends BackendBaseActionAdd
 {
     /**
 	 * The max interval of recurring item

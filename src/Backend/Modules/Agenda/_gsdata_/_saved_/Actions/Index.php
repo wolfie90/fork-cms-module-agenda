@@ -1,29 +1,10 @@
 <?php
-
-namespace Backend\Modules\Agenda\Actions;
-
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
-use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
-use Backend\Core\Engine\Language as BL;
-use Backend\Core\Engine\Authentication as BackendAuthentication;
-use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Engine\DataGridDB as BackendDataGridDB;
-use Backend\Core\Engine\DataGridFunctions as BackendDataGridFunctions;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
- 
 /**
  * This is the index-action (default), it will display the overview of items
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class Index extends BackendBaseActionIndex
+class BackendAgendaIndex extends BackendBaseActionIndex
 {
 	/**
 	 * Execute the action
@@ -49,13 +30,13 @@ class Index extends BackendBaseActionIndex
 
 		// reform date
 		$this->dataGrid->setColumnFunction(
-			array(new BackendDataGridFunctions(), 'getLongDate'),
+			array('BackendDataGridFunctions', 'getLongDate'),
 			array('[begin_date]'), 'begin_date', true
 		);
 
         // reform date
         $this->dataGrid->setColumnFunction(
-            array(new BackendDataGridFunctions(), 'getLongDate'),
+            array('BackendDataGridFunctions', 'getLongDate'),
             array('[end_date]'), 'end_date', true
         );
 

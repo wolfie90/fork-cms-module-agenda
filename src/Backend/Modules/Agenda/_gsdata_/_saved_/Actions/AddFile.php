@@ -1,7 +1,5 @@
 <?php
 
-namespace Backend\Modules\Catalog\Actions;
-
 /*
  * This file is part of Fork CMS.
  *
@@ -9,23 +7,12 @@ namespace Backend\Modules\Catalog\Actions;
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\HttpFoundation\File\File;
- 
-use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
-use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Meta as BackendMeta;
-use Backend\Core\Engine\Language as BL;
-use Backend\Modules\Catalog\Engine\Model as BackendCatalogModel;
- 
 /**
  * This is the add action, it will display a form to add an file to a item.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class AddFile extends BackendBaseActionAdd
+class BackendAgendaAddFile extends BackendBaseActionAdd
 {
     /**
      * The allowed file extensions

@@ -1,27 +1,10 @@
 <?php
-
-namespace Backend\Modules\Catalog\Actions;
-
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
-use Backend\Core\Engine\Base\ActionAdd as BackendBaseActionAdd;
-use Backend\Core\Engine\Model as BackendModel;
-use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Meta as BackendMeta;
-use Backend\Core\Engine\Language as BL;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
-
 /**
  * This is the add category-action, it will display a form to create a new category
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class AddCategory extends BackendBaseActionAdd
+class BackendAgendaAddCategory extends BackendBaseActionAdd
 {
 	/**
 	 * Execute the action
