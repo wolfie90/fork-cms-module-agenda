@@ -1,3 +1,7 @@
+# ATTENTION
+
+The module is being upgraded to Fork CMS 3.7. Check the v1.0.1 branch for a compatible 3.6 version.
+
 # Module: Agenda
 
 Agenda is a module for [Fork CMS](http://www.fork-cms.com).
