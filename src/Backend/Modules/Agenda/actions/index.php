@@ -16,7 +16,7 @@ use Backend\Core\Engine\Form as BackendForm;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\DataGridDB as BackendDataGridDB;
 use Backend\Core\Engine\DataGridFunctions as BackendDataGridFunctions;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  
 /**
  * This is the index-action (default), it will display the overview of items

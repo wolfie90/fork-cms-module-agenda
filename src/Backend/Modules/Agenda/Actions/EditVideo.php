@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Modules\Agenda\Actions;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,18 @@
  * file that was distributed with this source code.
  */
 
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\Form as BackendForm;
+use Backend\Core\Engine\Language as BL;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+
 /**
  * This is the edit video action, it will display a form to edit an existing item video.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaEditVideo extends BackendBaseActionEdit
+class EditVideo extends BackendBaseActionEdit
 {
     /**
 	 * The id of the file

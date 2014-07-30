@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Modules\Agenda\Actions;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,17 @@
  * file that was distributed with this source code.
  */
 
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\Form as BackendForm;
+
 /**
  * This is the settings action, it will display a form to set general item settings.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaSettings extends BackendBaseActionEdit
+class Settings extends BackendBaseActionEdit
 {
 	/**
 	 * Execute the action

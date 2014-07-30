@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Catalog\Actions;
+namespace Backend\Modules\Agenda\Actions;
 
 /*
  * This file is part of Fork CMS.
@@ -15,7 +15,7 @@ use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\DataGridDB as BackendDataGridDB;
 use Backend\Core\Engine\DataGridFunctions as BackendDataGridFunctions;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
 
 /**
  * This is the categories-action, it will display the overview of categories

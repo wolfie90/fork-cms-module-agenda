@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Modules\Agenda\Actions;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,20 @@
  * file that was distributed with this source code.
  */
 
+use Backend\Core\Engine\Base\ActionIndex as BackendBaseActionIndex;
+use Backend\Core\Engine\Language as BL;
+use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\DataGridDB as BackendDataGridDB;
+use Backend\Core\Engine\DataGridFunctions as BackendDataGridFunctions;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+ 
 /**
  * This is the subscriptions-action , it will display the overview of item subscriptions
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaSubscriptions extends BackendBaseActionIndex
+class Subscriptions extends BackendBaseActionIndex
 {
 	/**
 	 * DataGrids

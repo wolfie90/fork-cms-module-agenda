@@ -1,13 +1,35 @@
 <?php
+
+namespace Backend\Modules\Agenda\Actions;
+
+/*
+ * This file is part of Fork CMS.
+ *
+ * For the full copyright and license information, please view the license
+ * file that was distributed with this source code.
+ */
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\HttpFoundation\File\File;
+
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Authentication as BackendAuthentication;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\Form as BackendForm;
+use Backend\Core\Engine\Meta as BackendMeta;
+use Backend\Core\Engine\Language as BL;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+use Backend\Modules\Search\Engine\Model as BackendSearchModel;
+use Backend\Modules\Tags\Engine\Model as BackendTagsModel;
+use Backend\Modules\Users\Engine\Model as BackendUsersModel;
 
 /**
  * This is the edit-action, it will display a form with the item data to edit
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaEdit extends BackendBaseActionEdit
+class Edit extends BackendBaseActionEdit
 {
     /**
 	 * The recurring options for a item

@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Catalog\Actions;
+namespace Backend\Modules\Agenda\Actions;
 
 /*
  * This file is part of Fork CMS.
@@ -14,8 +14,8 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Form as BackendForm;
 use Backend\Core\Engine\Meta as BackendMeta;
 use Backend\Core\Engine\Language as BL;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
-use Backend\Modules\Catalog\Engine\Helper as BackendAgendaHelper;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+use Backend\Modules\Agenda\Engine\Helper as BackendAgendaHelper;
 
 /**
  * This is the add action, it will display a form to add an image to a item.

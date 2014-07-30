@@ -1,5 +1,21 @@
 <?php
 
+namespace Backend\Modules\Agenda\Actions;
+
+/*
+ * This file is part of Fork CMS.
+ *
+ * For the full copyright and license information, please view the license
+ * file that was distributed with this source code.
+ */
+
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\Form as BackendForm;
+use Backend\Core\Engine\Language as BL;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+use Backend\Modules\Agenda\Engine\Helper as BackendAgendaHelper;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -12,7 +28,7 @@
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaEditImage extends BackendBaseActionEdit
+class EditImage extends BackendBaseActionEdit
 {
     /**
 	 * The id of the file

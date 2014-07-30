@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Modules\Agenda\Actions;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,16 @@
  * file that was distributed with this source code.
  */
 
+use Backend\Core\Engine\Base\Action as BackendBaseAction;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+
 /**
  * This action is used to perform mass actions on item media (delete, ...)
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaMassAction extends BackendBaseAction
+class MassAction extends BackendBaseAction
 {
 	/**
 	 * Execute the action

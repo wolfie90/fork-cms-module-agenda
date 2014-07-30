@@ -1,10 +1,31 @@
 <?php
+
+namespace Backend\Modules\Agenda\Actions;
+
+/*
+ * This file is part of Fork CMS.
+ *
+ * For the full copyright and license information, please view the license
+ * file that was distributed with this source code.
+ */
+
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\HttpFoundation\File\File;
+ 
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\Form as BackendForm;
+use Backend\Core\Engine\Meta as BackendMeta;
+use Backend\Core\Engine\Language as BL;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+
 /**
  * This is the edit category action, it will display a form to edit an existing category.
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaEditCategory extends BackendBaseActionEdit
+class EditCategory extends BackendBaseActionEdit
 {
 	/**
 	 * Execute the action

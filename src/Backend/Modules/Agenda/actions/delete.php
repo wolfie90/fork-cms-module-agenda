@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Catalog\Actions;
+namespace Backend\Modules\Agenda\Actions;
 
 /*
  * This file is part of Fork CMS.
@@ -12,7 +12,7 @@ namespace Backend\Modules\Catalog\Actions;
 use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Language as BL;
-use Backend\Modules\Catalog\Engine\Model as BackendAgendaModel;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
 use Backend\Modules\Search\Engine\Model as BackendSearchModel;
 
 /**
@@ -20,7 +20,7 @@ use Backend\Modules\Search\Engine\Model as BackendSearchModel;
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaDelete extends BackendBaseActionDelete
+class Delete extends BackendBaseActionDelete
 {
 	/**
 	 * Execute the action

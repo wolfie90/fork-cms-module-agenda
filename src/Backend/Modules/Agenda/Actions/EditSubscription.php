@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Modules\Agenda\Actions;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,19 @@
  * file that was distributed with this source code.
  */
 
+use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
+use Backend\Core\Engine\Model as BackendModel;
+use Backend\Core\Engine\Form as BackendForm;
+use Backend\Core\Engine\Meta as BackendMeta;
+use Backend\Core\Engine\Language as BL;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
+
 /**
  * This is the edit-action, it will display a form to edit an existing item
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaEditSubscription extends BackendBaseActionEdit
+class EditSubscription extends BackendBaseActionEdit
 {
     /**
      * Execute the action
