@@ -27,7 +27,7 @@ use Backend\Modules\Tags\Engine\Model as BackendTagsModel;
  */
 class Add extends BackendBaseActionAdd
 {
-    /**
+	/**
 	 * The max interval of recurring item
 	 *
 	 * @var	int
