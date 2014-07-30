@@ -1,0 +1,19 @@
+body{
+  line-height: normal;
+}
+
+.image {
+  margin-bottom: 12px;
+}
+
+.location {
+    margin-top: 10px;
+}
+
+.images, .files, .videos {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+}
