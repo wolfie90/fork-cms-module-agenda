@@ -1,13 +1,14 @@
-# ATTENTION
-
-The module is in maintenance for upgrading to Fork CMS 3.7. Check the v1.0.1 branch for a compatible 3.6 version.
-
 # Module: Agenda
 
 Agenda is a module for [Fork CMS](http://www.fork-cms.com).
 It let´s you manage events on your website.
 Your visitors can view and subscribe to events.
 The module is based on the original events module of [Wouter Verstuyf](https://github.com/wouterverstuyf/forkcms-events-module).
+
+## Versions
+
+* Version 1.x.x works on ForkCMS 3.6.x
+* Version 2.x.x works on ForkCMS 3.7.x 
 
 ## Download
 
