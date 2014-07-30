@@ -43,7 +43,7 @@ class Add extends BackendBaseActionAdd
 		
 		$this->loadForm();
 		$this->validateForm();
-
+		
 		$this->parse();
 		$this->display();
 	}
@@ -56,18 +56,18 @@ class Add extends BackendBaseActionAdd
 		$this->frm = new BackendForm('add');
 
 		// set array of recurring types
-		$selectTypes = array('0' => ucfirst(BL::lbl('Daily')),
-							 '1' => ucfirst(BL::lbl('Weekly')),
-							 '2' => ucfirst(BL::lbl('Monthly')),
-							 '3' => ucfirst(BL::lbl('Yearly'))
-						);
+		$selectTypes = array(
+			'0' => ucfirst(BL::lbl('Daily')),
+			'1' => ucfirst(BL::lbl('Weekly')),
+			'2' => ucfirst(BL::lbl('Monthly')),
+			'3' => ucfirst(BL::lbl('Yearly'))
+	        );
 
 		// set array of recurring interval
 		$selectInterval = array();
 		$i = 1;
 		
-		while($i < $this->maxInterval)
-		{
+		while($i < $this->maxInterval) {
 			$selectInterval[$i] = $i;
 			$i++;
 		}
@@ -154,8 +154,7 @@ class Add extends BackendBaseActionAdd
 	 */
 	protected function validateForm()
 	{
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			$this->frm->cleanupFields();
 
 			// validation
@@ -167,8 +166,7 @@ class Add extends BackendBaseActionAdd
 			$fields['begin_date_date']->isValid(BL::err('DateIsInvalid'));
 			$fields['begin_date_time']->isValid(BL::err('TimeIsInvalid'));
 
-			if($fields['end_date_date']->isFilled() || $fields['end_date_time']->isFilled())
-			{
+			if($fields['end_date_date']->isFilled() || $fields['end_date_time']->isFilled()) {
 				$fields['end_date_date']->isFilled(BL::err('FieldIsRequired'));
 				$fields['end_date_time']->isFilled(BL::err('FieldIsRequired'));
 				$fields['end_date_date']->isValid(BL::err('DateIsInvalid'));
@@ -178,8 +176,7 @@ class Add extends BackendBaseActionAdd
 			$fields['category_id']->isFilled(BL::err('FieldIsRequired'));
 
 			// validate the image
-			if($this->frm->getField('image')->isFilled())
-			{
+			if($this->frm->getField('image')->isFilled()) {
 				// image extension and mime type
 				$this->frm->getField('image')->isAllowedExtension(array('jpg', 'png', 'gif', 'jpeg'), BL::err('JPGGIFAndPNGOnly'));
 				$this->frm->getField('image')->isAllowedMimeType(array('image/jpg', 'image/png', 'image/gif', 'image/jpeg'), BL::err('JPGGIFAndPNGOnly'));
@@ -188,8 +185,7 @@ class Add extends BackendBaseActionAdd
 			// validate meta
 			$this->meta->validate();
 
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build the item
 				$item['language'] = BL::getWorkingLanguage();
 				$item['title'] = $fields['title']->getValue();
@@ -203,8 +199,7 @@ class Add extends BackendBaseActionAdd
 					)
 				);
 				
-				if($fields['end_date_date']->isFilled() || $fields['end_date_time']->isFilled())
-				{
+				if($fields['end_date_date']->isFilled() || $fields['end_date_time']->isFilled()) {
 					$item['end_date'] = BackendModel::getUTCDate(
 						null,
 						BackendModel::getUTCTimestamp(
@@ -237,16 +232,14 @@ class Add extends BackendBaseActionAdd
 				$item['id'] = BackendAgendaModel::insert($item);
 				
 				// recurring item
-				if($item['recurring'] == 'Y')
-				{
+				if($item['recurring'] == 'Y') {
 					$recurringItem['agenda_id'] = $item['id'];
 					$recurringItem['type'] = $fields['type']->getValue();
 					$recurringItem['interval'] = $fields['interval']->getValue();
 					$recurringItem['ends_on'] = $fields['ends_on']->getValue();
 
 					// if recurring type is weekly, get days checked
-					if($recurringItem['type'] == 1)
-					{
+					if($recurringItem['type'] == 1) {
 						if($fields['days']->getChecked() != null)
 						{
 							$days = $fields['days']->getChecked();
@@ -255,18 +248,12 @@ class Add extends BackendBaseActionAdd
 					}
 					
 					// if item ends on x amount of times
-					if($recurringItem['ends_on'] == 1)
-					{
+					if($recurringItem['ends_on'] == 1) {
 						$recurringItem['frequency'] = $fields['frequency']->getValue();
-					}
-					
-					// else if item ends on specific date
-					else if($recurringItem['ends_on'] == 2)
-					{
-						
+					} else if($recurringItem['ends_on'] == 2) {
+						// item ends on specific date
 						// check date/time fields
-						if($fields['recurr_end_date_date']->isFilled() || $fields['recurr_end_date_time']->isFilled())
-						{
+						if($fields['recurr_end_date_date']->isFilled() || $fields['recurr_end_date_time']->isFilled()) {
 							$recurringItem['end_date'] = BackendModel::getUTCDate(
 								null,
 								BackendModel::getUTCTimestamp(
@@ -276,7 +263,6 @@ class Add extends BackendBaseActionAdd
 							);
 						}
 					}
-					
 					// insert recurring options
 					BackendAgendaModel::insertRecurringOptions($recurringItem);
 				}

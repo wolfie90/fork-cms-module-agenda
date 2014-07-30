@@ -30,28 +30,28 @@ use Backend\Modules\Agenda\Engine\Helper as BackendAgendaHelper;
  */
 class EditImage extends BackendBaseActionEdit
 {
-    /**
+	/**
 	 * The id of the file
 	 *
 	 * @var	array
 	 */
 	protected $id;  
     
-    /**
+	/**
 	 * The id of the item
 	 *
 	 * @var	array
 	 */
 	private $itemId;
     
-    /**
+	/**
 	 * The file record
 	 *
 	 * @var	array
 	 */
 	private $image;
     
-    /**
+	/**
 	 * The item record
 	 *
 	 * @var	array
@@ -64,10 +64,9 @@ class EditImage extends BackendBaseActionEdit
 	public function execute()
 	{
 		$this->id = $this->getParameter('id', 'int');
-        $this->itemId = $this->getParameter('agenda_id', 'int');
+		$this->itemId = $this->getParameter('agenda_id', 'int');
         
-		if($this->id !== null && BackendAgendaModel::existsImage($this->id))
-		{
+		if($this->id !== null && BackendAgendaModel::existsImage($this->id)) {
 			parent::execute();
 
 			$this->getData();
@@ -119,8 +118,7 @@ class EditImage extends BackendBaseActionEdit
 	protected function validateForm()
 	{
 		// is the form submitted?
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			// cleanup the submitted fields, ignore fields that were added by hackers
 			$this->frm->cleanupFields();
 
@@ -131,8 +129,7 @@ class EditImage extends BackendBaseActionEdit
 			if($this->image['filename'] === null) $image->isFilled(BL::err('FieldIsRequired'));
 
 			// no errors?
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build image record to insert
 				$item['id'] = $this->id;
 				$item['title'] = $this->frm->getField('title')->getValue();
@@ -144,11 +141,9 @@ class EditImage extends BackendBaseActionEdit
 				$formats[] = array('size' => '64x64', 'force_aspect_ratio' => false);
 				$formats[] = array('size' => '128x128', 'force_aspect_ratio' => false);
 
-				if($image->isFilled())
-				{
+				if($image->isFilled()) {
 					// overwrite the filename
-					if($item['filename'] === null)
-					{
+					if($item['filename'] === null) {
 						$item['filename'] = time() . '.' . $image->getExtension();
 					}
 

@@ -27,26 +27,26 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  */
 class AddFile extends BackendBaseActionAdd
 {
-    /**
-     * The allowed file extensions
-     *
-     * @var	array
-     */
-    private $allowedExtensions = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pps', 'ppsx', 'zip');
+	/**
+	 * The allowed file extensions
+	 *
+	 * @var	array
+	 */
+	private $allowedExtensions = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pps', 'ppsx', 'zip');
 
-    /**
+	/**
 	 * The item record
 	 *
 	 * @var	array
 	 */
 	private $item;
 
-    /**
-     * Id of the item
-     *
-     * @var	array
-     */
-    private $id;
+	/**
+	 * Id of the item
+	 *
+	 * @var	array
+	 */
+	private $id;
 
 	/**
 	 * Execute the action
@@ -55,8 +55,7 @@ class AddFile extends BackendBaseActionAdd
 	{
 		$this->id = $this->getParameter('agenda_id', 'int');
 		
-        if($this->id !== null && BackendAgendaModel::exists($this->id))
-		{
+		if($this->id !== null && BackendAgendaModel::exists($this->id)) {
 			parent::execute();
 
 			$this->getData();
@@ -95,7 +94,6 @@ class AddFile extends BackendBaseActionAdd
 	protected function parse()
 	{
 		parent::parse();
-
 		$this->tpl->assign('item', $this->item);
 	}
 
@@ -104,8 +102,7 @@ class AddFile extends BackendBaseActionAdd
 	 */
 	private function validateForm()
 	{
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			// cleanup the submitted fields, ignore fields that were added by hackers
 			$this->frm->cleanupFields();
 
@@ -116,15 +113,13 @@ class AddFile extends BackendBaseActionAdd
 			$file->isFilled(BL::err('FieldIsRequired'));
 
 			// validate the file
-			if($this->frm->getField('file')->isFilled())
-			{
+			if($this->frm->getField('file')->isFilled()) {
 			    // file extension
 			    $this->frm->getField('file')->isAllowedExtension($this->allowedExtensions, BL::err('FileExtensionNotAllowed'));
 			}
 
 			// no errors?
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build file record to insert
 				$item['agenda_id'] = $this->item['id'];
 				$item['title'] = $this->frm->getField('title')->getValue();
@@ -136,8 +131,7 @@ class AddFile extends BackendBaseActionAdd
 				if(!\SpoonDirectory::exists($filePath)) \SpoonDirectory::create($filePath);
 
 				// file provided?
-				if($file->isFilled())
-				{
+				if($file->isFilled()) {
 					// build the file name
 					$item['filename'] = time() . '.' . $file->getExtension();
 

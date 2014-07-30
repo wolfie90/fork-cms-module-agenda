@@ -66,8 +66,7 @@ class EditFile extends BackendBaseActionEdit
 		$this->id = $this->getParameter('id', 'int');
 		$this->itemId = $this->getParameter('agenda_id', 'int');
 		
-		if($this->id !== null && BackendAgendaModel::existsFile($this->id))
-		{
+		if($this->id !== null && BackendAgendaModel::existsFile($this->id)) {
 			parent::execute();
 
 			$this->getData();
@@ -118,8 +117,7 @@ class EditFile extends BackendBaseActionEdit
 	protected function validateForm()
 	{
 		// is the form submitted?
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			// cleanup the submitted fields, ignore fields that were added by hackers
 			$this->frm->cleanupFields();
 
@@ -130,15 +128,13 @@ class EditFile extends BackendBaseActionEdit
 			if($this->file['filename'] === null) $file->isFilled(BL::err('FieldIsRequired'));
                         
 			// validate the file
-			if($this->frm->getField('file')->isFilled())
-			{
+			if($this->frm->getField('file')->isFilled()) {
 			    // file extension
 			    $this->frm->getField('file')->isAllowedExtension($this->allowedExtensions, BL::err('FileExtensionNotAllowed'));
 			}
 			
 			// no errors?
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build image record to insert
 				$item['id'] = $this->id;
 				$item['title'] = $this->frm->getField('title')->getValue();
@@ -147,8 +143,7 @@ class EditFile extends BackendBaseActionEdit
 				// the file path
 				$filePath = FRONTEND_FILES_PATH . '/' . $this->getModule() . '/' . $this->itemId . '/source';
 				
-				if($file->isFilled())
-				{
+				if($file->isFilled()) {
 					$item['filename'] = time() . '.' . $file->getExtension();
 					$file->moveFile($filePath . '/' . $item['filename']);
 				}

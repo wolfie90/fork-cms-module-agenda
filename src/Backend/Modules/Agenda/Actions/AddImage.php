@@ -31,12 +31,12 @@ class AddImage extends BackendBaseActionAdd
 	 */
 	private $item;
 
-    /**
-     * The id of the item
-     *
-     * @var	int
-     */
-    private $id;
+	/**
+	 * The id of the item
+	 *
+	 * @var	int
+	 */
+	private $id;
 
 	/**
 	 * Execute the action
@@ -45,8 +45,7 @@ class AddImage extends BackendBaseActionAdd
 	{
 		$this->id = $this->getParameter('agenda_id', 'int');
 		
-		if($this->id !== null && BackendAgendaModel::exists($this->id))
-		{
+		if($this->id !== null && BackendAgendaModel::exists($this->id)) {
 			parent::execute();
 
 			$this->getData();
@@ -84,7 +83,6 @@ class AddImage extends BackendBaseActionAdd
 	protected function parse()
 	{
 		parent::parse();
-
 		$this->tpl->assign('item', $this->item);
 	}
 
@@ -93,8 +91,7 @@ class AddImage extends BackendBaseActionAdd
 	 */
 	private function validateForm()
 	{
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			// cleanup the submitted fields, ignore fields that were added by hackers
 			$this->frm->cleanupFields();
 
@@ -105,8 +102,7 @@ class AddImage extends BackendBaseActionAdd
 			$image->isFilled(BL::err('FieldIsRequired'));
 
 			// no errors?
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build image record to insert
 				$item['agenda_id'] = $this->item['id'];
 				$item['title'] = $this->frm->getField('title')->getValue();

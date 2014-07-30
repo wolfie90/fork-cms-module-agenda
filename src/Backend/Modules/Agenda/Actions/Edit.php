@@ -31,21 +31,21 @@ use Backend\Modules\Users\Engine\Model as BackendUsersModel;
  */
 class Edit extends BackendBaseActionEdit
 {
-    /**
+	/**
 	 * The recurring options for a item
 	 *
 	 * @var	array
 	 */
 	private $recurringOptions;
 	
-    /**
+	/**
 	 * Array of days within the recurring options
 	 *
 	 * @var	array
 	 */
 	private $recurringOptionsDays;
 	
-    /**
+	/**
 	 * The max interval of recurring item
 	 *
 	 * @var	int
@@ -73,8 +73,7 @@ class Edit extends BackendBaseActionEdit
 	protected function loadData()
 	{
 		$this->id = $this->getParameter('id', 'int', null);
-		if($this->id == null || !BackendAgendaModel::exists($this->id))
-		{
+		if($this->id == null || !BackendAgendaModel::exists($this->id)) {
 			$this->redirect(
 				BackendModel::createURLForAction('index') . '&error=non-existing'
 			);
@@ -83,8 +82,7 @@ class Edit extends BackendBaseActionEdit
 		$this->record = BackendAgendaModel::get($this->id);
 		
 		// get recurring options
-		if($this->record['recurring'] == 'Y')
-		{
+		if($this->record['recurring'] == 'Y') {
 			$this->recurringOptions = BackendAgendaModel::getRecurringOptions($this->record['id']);
 			$this->recurringOptionsDays = explode(",", $this->recurringOptions['days']);
 		}
@@ -99,18 +97,18 @@ class Edit extends BackendBaseActionEdit
 		$this->frm = new BackendForm('edit');
 
 		// set array of recurring types
-		$selectTypes = array('0' => ucfirst(BL::lbl('Daily')),
-							 '1' => ucfirst(BL::lbl('Weekly')),
-							 '2' => ucfirst(BL::lbl('Monthly')),
-							 '3' => ucfirst(BL::lbl('Yearly'))
-						);
+		$selectTypes = array(
+			'0' => ucfirst(BL::lbl('Daily')),
+			'1' => ucfirst(BL::lbl('Weekly')),
+			'2' => ucfirst(BL::lbl('Monthly')),
+			'3' => ucfirst(BL::lbl('Yearly'))
+		);
 
 		// set array of recurring interval
 		$selectInterval = array();
 		$i = 1;
 		
-		while($i < $this->maxInterval)
-		{
+		while($i < $this->maxInterval) {
 			$selectInterval[$i] = $i;
 			$i++;
 		}
@@ -193,7 +191,6 @@ class Edit extends BackendBaseActionEdit
 		if($url404 != $url) $this->tpl->assign('detailURL', SITE_URL . $url);
 		$this->record['url'] = $this->meta->getURL();
 
-
 		$this->tpl->assign('item', $this->record);
 	}
 
@@ -202,8 +199,7 @@ class Edit extends BackendBaseActionEdit
 	 */
 	protected function validateForm()
 	{
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			$this->frm->cleanupFields();
 
 			// validation
@@ -223,8 +219,7 @@ class Edit extends BackendBaseActionEdit
 			// validate meta
 			$this->meta->validate();
 
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				$item['id'] = $this->id;
 				$item['language'] = BL::getWorkingLanguage();
 
@@ -269,8 +264,7 @@ class Edit extends BackendBaseActionEdit
 				$item['id'] = $this->id;
 
 				// recurring item
-				if($item['recurring'] == 'Y')
-				{
+				if($item['recurring'] == 'Y') {
 					$recurringItem['id'] = $this->recurringOptions['id'];
 					$recurringItem['agenda_id'] = $item['id'];
 					$recurringItem['type'] = $fields['type']->getValue();
@@ -278,25 +272,18 @@ class Edit extends BackendBaseActionEdit
 					$recurringItem['ends_on'] = $fields['ends_on']->getValue();
 
 					// if recurring type is weekly, get days checked
-					if($recurringItem['type'] == 1)
-					{
+					if($recurringItem['type'] == 1) {
 						$days = $fields['days']->getChecked();
 						$recurringItem['days'] = implode(",", $days);
 					}
 					
 					// if item ends on x amount of times
-					if($recurringItem['ends_on'] == 1)
-					{
+					if($recurringItem['ends_on'] == 1) {
 						$recurringItem['frequency'] = $fields['frequency']->getValue();
-					}
-					
-					// else if item ends on specific date
-					else if($recurringItem['ends_on'] == 2)
-					{
-						
+					} else if($recurringItem['ends_on'] == 2) {
+						// item ends on specific date
 						// check date/time fields
-						if($fields['recurr_end_date_date']->isFilled() || $fields['recurr_end_date_time']->isFilled())
-						{
+						if($fields['recurr_end_date_date']->isFilled() || $fields['recurr_end_date_time']->isFilled()) {
 							$recurringItem['end_date'] = BackendModel::getUTCDate(
 								null,
 								BackendModel::getUTCTimestamp(
@@ -308,14 +295,10 @@ class Edit extends BackendBaseActionEdit
 					}
 					
 					// update if options exist
-					if(BackendAgendaModel::existsRecurringOptions($recurringItem['id'], $recurringItem['agenda_id']))
-					{
+					if(BackendAgendaModel::existsRecurringOptions($recurringItem['id'], $recurringItem['agenda_id'])) {
 						BackendAgendaModel::updateRecurringOptions($recurringItem);
-					}
-					
-					// else insert new options
-					else
-					{
+					} else {
+						// insert new options
 						BackendAgendaModel::insertRecurringOptions($recurringItem);
 					}
 				}

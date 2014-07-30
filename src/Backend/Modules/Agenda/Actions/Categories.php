@@ -47,8 +47,7 @@ class Categories extends BackendBaseActionIndex
 		);
 
 		// check if this action is allowed
-		if(BackendAuthentication::isAllowedAction('edit_category'))
-		{
+		if(BackendAuthentication::isAllowedAction('edit_category')) {
 			$this->dataGrid->addColumn(
 				'edit', null, BL::lbl('Edit'),
 				BackendModel::createURLForAction('edit_category') . '&amp;id=[id]',

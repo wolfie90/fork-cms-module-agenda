@@ -30,12 +30,12 @@ class AddVideo extends BackendBaseActionAdd
 	 */
 	private $item;
 
-    /**
-     * The item id
-     *
-     * @var	array
-     */
-    private $id;
+	/**
+	 * The item id
+	 *
+	 * @var	array
+	 */
+	private $id;
 
 	/**
 	 * Execute the action
@@ -44,8 +44,7 @@ class AddVideo extends BackendBaseActionAdd
 	{
 		$this->id = $this->getParameter('agenda_id', 'int');
         
-		if($this->id !== null && BackendAgendaModel::exists($this->id))
-		{
+		if($this->id !== null && BackendAgendaModel::exists($this->id)) {
 			parent::execute();
 
 			$this->getData();
@@ -83,7 +82,6 @@ class AddVideo extends BackendBaseActionAdd
 	protected function parse()
 	{
 		parent::parse();
-
 		$this->tpl->assign('item', $this->item);
 	}
 
@@ -92,18 +90,16 @@ class AddVideo extends BackendBaseActionAdd
 	 */
 	private function validateForm()
 	{
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			// cleanup the submitted fields, ignore fields that were added by hackers
 			$this->frm->cleanupFields();
 
 			// validate fields
-            $this->frm->getField('title')->isFilled(BL::err('NameIsRequired'));
+			$this->frm->getField('title')->isFilled(BL::err('NameIsRequired'));
 			$this->frm->getField('video')->isFilled(BL::err('FieldIsRequired'));
 			        
 			// no errors?
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build video record to insert
 				$item['agenda_id'] = $this->item['id'];
 				$item['title'] = $this->frm->getField('title')->getValue();

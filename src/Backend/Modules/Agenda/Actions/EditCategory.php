@@ -48,8 +48,7 @@ class EditCategory extends BackendBaseActionEdit
 	private function getData()
 	{
 		$this->id = $this->getParameter('id', 'int');
-		if($this->id == null || !BackendAgendaModel::existsCategory($this->id))
-		{
+		if($this->id == null || !BackendAgendaModel::existsCategory($this->id)) {
 			$this->redirect(
 				BackendModel::createURLForAction('categories') . '&error=non-existing'
 			);
@@ -91,16 +90,14 @@ class EditCategory extends BackendBaseActionEdit
 	 */
 	private function validateForm()
 	{
-		if($this->frm->isSubmitted())
-		{
+		if($this->frm->isSubmitted()) {
 			$this->frm->cleanupFields();
 
 			// validate fields
 			$this->frm->getField('title')->isFilled(BL::err('TitleIsRequired'));
 			$this->meta->validate();
 
-			if($this->frm->isCorrect())
-			{
+			if($this->frm->isCorrect()) {
 				// build item
 				$item['id'] = $this->id;
 				$item['language'] = $this->record['language'];

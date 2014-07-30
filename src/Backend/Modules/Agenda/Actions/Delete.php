@@ -30,8 +30,7 @@ class Delete extends BackendBaseActionDelete
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if($this->id !== null && BackendAgendaModel::exists($this->id))
-		{
+		if($this->id !== null && BackendAgendaModel::exists($this->id)) {
 			parent::execute();
 			$this->record = (array) BackendAgendaModel::get($this->id);
 
