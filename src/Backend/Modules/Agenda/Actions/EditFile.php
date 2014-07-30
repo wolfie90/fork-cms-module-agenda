@@ -27,28 +27,36 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaEditFile extends BackendBaseActionEdit
+class EditFile extends BackendBaseActionEdit
 {    
-    /**
+	/**
 	 * The id of the file
 	 *
 	 * @var	array
 	 */
 	protected $id;  
     
-    /**
+	/**
 	 * The id of the item
 	 *
 	 * @var	array
 	 */
 	private $itemId;
     
-    /**
+	/**
 	 * The file record
 	 *
 	 * @var	array
 	 */
 	private $file;
+    
+        /**
+	* The allowed file extensions
+	*
+	* @var	array
+	*/
+       private $allowedExtensions = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pps', 'ppsx', 'zip');
+
     
 	/**
 	 * Execute the action
@@ -116,11 +124,18 @@ class BackendAgendaEditFile extends BackendBaseActionEdit
 			$this->frm->cleanupFields();
 
 			// validate fields
-            $file = $this->frm->getField('file');
+			$file = $this->frm->getField('file');
 
 			$this->frm->getField('title')->isFilled(BL::err('NameIsRequired'));
 			if($this->file['filename'] === null) $file->isFilled(BL::err('FieldIsRequired'));
                         
+			// validate the file
+			if($this->frm->getField('file')->isFilled())
+			{
+			    // file extension
+			    $this->frm->getField('file')->isAllowedExtension($this->allowedExtensions, BL::err('FileExtensionNotAllowed'));
+			}
+			
 			// no errors?
 			if($this->frm->isCorrect())
 			{
@@ -134,12 +149,7 @@ class BackendAgendaEditFile extends BackendBaseActionEdit
 				
 				if($file->isFilled())
 				{
-					// overwrite the filename
-					if($item['filename'] === null)
-					{
-						$item['filename'] = time() . '.' . $file->getExtension();
-					}
-
+					$item['filename'] = time() . '.' . $file->getExtension();
 					$file->moveFile($filePath . '/' . $item['filename']);
 				}
 				

@@ -86,7 +86,7 @@ class AddFile extends BackendBaseActionAdd
 		$this->frm = new BackendForm('addFile');
 		$this->frm->addText('title');
 		$this->frm->addFile('file');
-        $this->frm->getField('file')->setAttribute('extension', implode(', ', $this->allowedExtensions));
+		$this->frm->getField('file')->setAttribute('extension', implode(', ', $this->allowedExtensions));
 	}
 
 	/**
@@ -115,12 +115,12 @@ class AddFile extends BackendBaseActionAdd
 			$this->frm->getField('title')->isFilled(BL::err('NameIsRequired'));
 			$file->isFilled(BL::err('FieldIsRequired'));
 
-            // validate the file
-            if($this->frm->getField('file')->isFilled())
-            {
-                // file extension
-                $this->frm->getField('file')->isAllowedExtension($this->allowedExtensions, BL::err('FileExtensionNotAllowed'));
-            }
+			// validate the file
+			if($this->frm->getField('file')->isFilled())
+			{
+			    // file extension
+			    $this->frm->getField('file')->isAllowedExtension($this->allowedExtensions, BL::err('FileExtensionNotAllowed'));
+			}
 
 			// no errors?
 			if($this->frm->isCorrect())
@@ -133,7 +133,7 @@ class AddFile extends BackendBaseActionAdd
 				$filePath = FRONTEND_FILES_PATH . '/' . $this->getModule() . '/' . $item['agenda_id'] . '/source';
                 
 				// create folders if needed
-				if(!SpoonDirectory::exists($filePath)) SpoonDirectory::create($filePath);
+				if(!\SpoonDirectory::exists($filePath)) \SpoonDirectory::create($filePath);
 
 				// file provided?
 				if($file->isFilled())

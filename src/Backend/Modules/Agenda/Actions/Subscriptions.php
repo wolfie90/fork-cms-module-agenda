@@ -60,20 +60,20 @@ class Subscriptions extends BackendBaseActionIndex
 		$this->dgModeration->setPagingLimit(30);
 
 		// header labels
-		$this->dgModeration->setHeaderLabels(array('created_on' => SpoonFilter::ucfirst(BL::lbl('Date'))));
+		$this->dgModeration->setHeaderLabels(array('created_on' => \SpoonFilter::ucfirst(BL::lbl('Date'))));
 
 		// add the multi-checkbox column
 		$this->dgModeration->setMassActionCheckboxes('checkbox', '[id]');
 
 		// assign column functions
-		$this->dgModeration->setColumnFunction(array('BackendDataGridFunctions', 'getTimeAgo'), '[created_on]', 'created_on', true);
+		$this->dgModeration->setColumnFunction(array(new BackendDataGridFunctions(), 'getTimeAgo'), '[created_on]', 'created_on', true);
 
 		// sorting
 		$this->dgModeration->setSortingColumns(array('created_on', 'name'), 'created_on');
 		$this->dgModeration->setSortParameter('desc');
 
 		// add mass action drop-down
-		$ddmMassAction = new SpoonFormDropdown('action', array('subscribed' => BL::lbl('MoveToSubscribed'), 'delete' => BL::lbl('Delete')), 'subscribed');
+		$ddmMassAction = new \SpoonFormDropdown('action', array('subscribed' => BL::lbl('MoveToSubscribed'), 'delete' => BL::lbl('Delete')), 'subscribed');
 		$ddmMassAction->setAttribute('id', 'actionModeration');
 		$ddmMassAction->setOptionAttributes('delete', array('data-message-id' => 'confirmDeleteModeration'));
 		$ddmMassAction->setOptionAttributes('subscribe', array('data-message-id' => 'confirmSubscribedModeration'));
@@ -103,20 +103,20 @@ class Subscriptions extends BackendBaseActionIndex
 		$this->dgSubscribed->setPagingLimit(30);
 
 		// header labels
-		$this->dgSubscribed->setHeaderLabels(array('created_on' => SpoonFilter::ucfirst(BL::lbl('Date'))));
+		$this->dgSubscribed->setHeaderLabels(array('created_on' => \SpoonFilter::ucfirst(BL::lbl('Date'))));
 
 		// add the multi-checkbox column
 		$this->dgSubscribed->setMassActionCheckboxes('checkbox', '[id]');
 
 		// assign column functions
-		$this->dgSubscribed->setColumnFunction(array('BackendDataGridFunctions', 'getTimeAgo'), '[created_on]', 'created_on', true);
+		$this->dgSubscribed->setColumnFunction(array(new BackendDataGridFunctions(), 'getTimeAgo'), '[created_on]', 'created_on', true);
 
 		// sorting
 		$this->dgSubscribed->setSortingColumns(array('created_on', 'name'), 'created_on');
 		$this->dgSubscribed->setSortParameter('desc');
 
 		// add mass action drop-down
-		$ddmMassAction = new SpoonFormDropdown('action', array('moderation' => BL::lbl('MoveToModeration'), 'delete' => BL::lbl('Delete')), 'published');
+		$ddmMassAction = new \SpoonFormDropdown('action', array('moderation' => BL::lbl('MoveToModeration'), 'delete' => BL::lbl('Delete')), 'published');
 		$ddmMassAction->setAttribute('id', 'actionSubscriptions');
 		$ddmMassAction->setOptionAttributes('delete', array('data-message-id' => 'confirmDeleteSubscribed'));
 		$this->dgSubscribed->setMassAction($ddmMassAction);

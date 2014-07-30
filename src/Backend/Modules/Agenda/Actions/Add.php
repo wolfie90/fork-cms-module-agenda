@@ -108,7 +108,7 @@ class Add extends BackendBaseActionAdd
 		$this->frm->addText('number');
 		$this->frm->addText('zip');
 		$this->frm->addText('city');
-		$this->frm->addDropdown('country', SpoonLocale::getCountries(BL::getInterfaceLanguage()), 'BE');
+		$this->frm->addDropdown('country', \SpoonLocale::getCountries(BL::getInterfaceLanguage()), 'BE');
 		$this->frm->addCheckbox('google_maps');
 		
 		// standard options		
@@ -219,17 +219,17 @@ class Add extends BackendBaseActionAdd
 				$item['recurring'] = $fields['recurring']->getChecked() ? 'Y' : 'N';
 				$item['allow_subscriptions'] = $fields['subscriptions']->getValue();
 				$item['location_name'] = $fields['name']->getValue();
-                $item['street'] = $fields['street']->getValue();
-                $item['number'] = $fields['number']->getValue();
-                $item['zip'] = $fields['zip']->getValue();
-                $item['city'] = $fields['city']->getValue();
-                $item['country'] = $fields['country']->getValue();
-                $item['google_maps'] = $fields['google_maps']->getChecked() ? 'Y' : 'N';
-                $item['meta_id'] = $this->meta->save();
+				$item['street'] = $fields['street']->getValue();
+				$item['number'] = $fields['number']->getValue();
+				$item['zip'] = $fields['zip']->getValue();
+				$item['city'] = $fields['city']->getValue();
+				$item['country'] = $fields['country']->getValue();
+				$item['google_maps'] = $fields['google_maps']->getChecked() ? 'Y' : 'N';
+				$item['meta_id'] = $this->meta->save();
 				
 				// geocode address
-				$url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($item['street'] . ' ' . $item['number'] . ', ' . $item['zip'] . ' ' . $item['city'] . ', ' . SpoonLocale::getCountry($item['country'], BL::getWorkingLanguage())) . '&sensor=false';
-				$geocode = json_decode(SpoonHTTP::getContent($url));
+				$url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($item['street'] . ' ' . $item['number'] . ', ' . $item['zip'] . ' ' . $item['city'] . ', ' . \SpoonLocale::getCountry($item['country'], BL::getWorkingLanguage())) . '&sensor=false';
+				$geocode = json_decode(\SpoonHTTP::getContent($url));
 				$item['lat'] = isset($geocode->results[0]->geometry->location->lat) ? $geocode->results[0]->geometry->location->lat : null;
 				$item['lng'] = isset($geocode->results[0]->geometry->location->lng) ? $geocode->results[0]->geometry->location->lng : null;				
 				

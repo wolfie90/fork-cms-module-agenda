@@ -15,9 +15,8 @@ namespace Backend\Modules\Agenda\Engine;
  * @author Bart De Clercq <info@lexxweb.be>
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaHelper
+class Helper
 {
-	
 	/**
 	 * Adds a source image and additional images according to the provided formats.
 	 * Files should not be uploaded yet
@@ -34,7 +33,7 @@ class BackendAgendaHelper
 		if(empty($filefield) || empty($filename)) return false;
 
 		// create the path up to the source dir
-		if(!SpoonDirectory::exists($path . '/source')) SpoonDirectory::create($path . '/source');
+		if(!\SpoonDirectory::exists($path . '/source')) \SpoonDirectory::create($path . '/source');
 
 		// source path
 		$pathSource = $path . '/source';
@@ -49,7 +48,7 @@ class BackendAgendaHelper
 		}
 		catch(Exception $e)
 		{
-			throw new SpoonException($e->getMessage());
+			throw new \SpoonException($e->getMessage());
 		}
 
 		// returns true if everything succeeded
@@ -70,7 +69,7 @@ class BackendAgendaHelper
 		if(empty($filename)) return false;
 
 		// create the path up to the source dir
-		if(!SpoonDirectory::exists($path . '/source')) SpoonDirectory::create($path . '/source');
+		if(!\SpoonDirectory::exists($path . '/source')) \SpoonDirectory::create($path . '/source');
 
 		// source path
 		$pathSource = $path . '/source';
@@ -82,7 +81,7 @@ class BackendAgendaHelper
 			foreach($formats as $format)
 			{
 				// create the path for this project
-				if(!SpoonDirectory::exists($path . '/' . $format['size'])) SpoonDirectory::create($path . '/' . $format['size']);
+				if(!\SpoonDirectory::exists($path . '/' . $format['size'])) \SpoonDirectory::create($path . '/' . $format['size']);
 
 				// exploded format
 				$explodedFormat = explode('x', $format['size']);
@@ -102,7 +101,7 @@ class BackendAgendaHelper
 				if(empty($height)) $height = null;
 
 				// make a thumbnail for the provided format
-				$thumbnail = new SpoonThumbnail($pathSource . '/' . $filename, $width, ($forceAspectRatio ? null : $height));
+				$thumbnail = new \SpoonThumbnail($pathSource . '/' . $filename, $width, ($forceAspectRatio ? null : $height));
 				$thumbnail->setAllowEnlargement($allowEnlargement);
 				$thumbnail->setForceOriginalAspectRatio($forceAspectRatio);
 				$success[] = $thumbnail->parseToFile($path . '/' . $format['size'] . '/' . $filename);
@@ -130,7 +129,7 @@ class BackendAgendaHelper
 	public static function getSupportedMethodsByModule($module)
 	{
 		$helperFile = FRONTEND_MODULES_PATH . '/' . $module . '/engine/slideshows.php';
-		$helperFileContents = SpoonFile::getContent($helperFile);
+		$helperFileContents = \SpoonFile::getContent($helperFile);
 		$results = array();
 
 		preg_match_all('/public static function (.*)\((.*)\)/', $helperFileContents, $matches);
@@ -139,7 +138,7 @@ class BackendAgendaHelper
 		{
 			foreach($matches[1] as $key => $method)
 			{
-				$results[$key]['class'] = 'Frontend' . SpoonFilter::toCamelCase($module) . 'SlideshowsModel';
+				$results[$key]['class'] = 'Frontend' . \SpoonFilter::toCamelCase($module) . 'SlideshowsModel';
 				$results[$key]['methods'][] = $method;
 			}
 		}
@@ -237,10 +236,10 @@ class BackendAgendaHelper
 	 */
 	public static function writeHelperFile($module)
 	{
-		$camelcasedModule = SpoonFilter::toCamelCase($module);
+		$camelcasedModule = \SpoonFilter::toCamelCase($module);
 		$helperFile = FRONTEND_MODULES_PATH . '/' . $module . '/engine/slideshows.php';
 
-		if(!SpoonFile::exists($helperFile))
+		if(!\SpoonFile::exists($helperFile))
 		{
 			$content = '<?php
 						class Frontend' . $camelcasedModule . 'SlideshowsModel
@@ -258,7 +257,7 @@ class BackendAgendaHelper
 						}
 						';
 
-			SpoonFile::setContent($helperFile, $content);
+			\SpoonFile::setContent($helperFile, $content);
 		}
 	}
 }

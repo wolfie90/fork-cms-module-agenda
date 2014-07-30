@@ -20,7 +20,7 @@ use Backend\Modules\Tags\Engine\Model as BackendTagsModel;
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class BackendAgendaModel
+class Model
 {
 	const QRY_DATAGRID_BROWSE =
 		'SELECT i.id, i.title, UNIX_TIMESTAMP(i.begin_date) AS begin_date,
@@ -59,7 +59,7 @@ class BackendAgendaModel
 		 FROM agenda_videos AS i
 		 WHERE i.agenda_id = ?
 		 GROUP BY i.id';
-		 
+
 	/**
 	 * Delete a certain item
 	 *
@@ -88,67 +88,67 @@ class BackendAgendaModel
 		}
 	}
 
-    /**
-     * Deletes one or more subscriptions
-     *
-     * @param array $ids The id(s) of the items(s) to delete.
-     */
-    public static function deleteSubscriptions($ids)
-    {
-        // make sure $ids is an array
-        $ids = (array) $ids;
+	/**
+	 * Deletes one or more subscriptions
+	 *
+	 * @param array $ids The id(s) of the items(s) to delete.
+	 */
+	public static function deleteSubscriptions($ids)
+	{
+	    // make sure $ids is an array
+	    $ids = (array) $ids;
+    
+	    // loop and cast to integers
+	    foreach($ids as &$id) $id = (int) $id;
+    
+	    // create an array with an equal amount of questionmarks as ids provided
+	    $idPlaceHolders = array_fill(0, count($ids), '?');
+    
+	    // get db
+	    $db = BackendModel::getContainer()->get('database');
+    
+	    // get ids
+	    $itemIds = (array) $db->getColumn(
+		'SELECT i.agenda_id
+		 FROM agenda_subscriptions AS i
+		 WHERE i.id IN (' . implode(', ', $idPlaceHolders) . ')',
+		$ids
+	    );
+    
+	    // update record
+	    $db->delete('agenda_subscriptions', 'id IN (' . implode(', ', $idPlaceHolders) . ')', $ids);
+    
+	    // recalculate the comment count
+	    if(!empty($itemIds)) self::reCalculateSubscriptionCount($itemIds);
+    
+	    // invalidate the cache for blog
+	    BackendModel::invalidateFrontendCache('agenda', BL::getWorkingLanguage());
+	}
 
-        // loop and cast to integers
-        foreach($ids as &$id) $id = (int) $id;
-
-        // create an array with an equal amount of questionmarks as ids provided
-        $idPlaceHolders = array_fill(0, count($ids), '?');
-
-        // get db
-        $db = BackendModel::getContainer()->get('database');
-
-        // get ids
-        $itemIds = (array) $db->getColumn(
-            'SELECT i.agenda_id
-             FROM agenda_subscriptions AS i
-             WHERE i.id IN (' . implode(', ', $idPlaceHolders) . ')',
-            $ids
-        );
-
-        // update record
-        $db->delete('agenda_subscriptions', 'id IN (' . implode(', ', $idPlaceHolders) . ')', $ids);
-
-        // recalculate the comment count
-        if(!empty($itemIds)) self::reCalculateSubscriptionCount($itemIds);
-
-        // invalidate the cache for blog
-        BackendModel::invalidateFrontendCache('agenda', BL::getWorkingLanguage());
-    }
-
-    /**
-     * Delete all subscribed
-     */
-    public static function deleteSubscribedSubscriptions()
-    {
-        $db = BackendModel::getContainer()->get('database');
-
-        // get ids
-        $itemIds = (array) $db->getColumn(
-            'SELECT i.agenda_id
-             FROM agenda_subscriptions AS i
-             WHERE status = ? AND i.language = ?',
-            array('subscribed', BL::getWorkingLanguage())
-        );
-
-        // update record
-        $db->delete('agenda_subscriptions', 'status = ? AND language = ?', array('subscribed', BL::getWorkingLanguage()));
-
-        // recalculate the subscription count
-        if(!empty($itemIds)) self::reCalculateSubscriptionCount($itemIds);
-
-        // invalidate the cache for blog
-        BackendModel::invalidateFrontendCache('agenda', BL::getWorkingLanguage());
-    }
+	/**
+	 * Delete all subscribed
+	 */
+	public static function deleteSubscribedSubscriptions()
+	{
+	    $db = BackendModel::getContainer()->get('database');
+    
+	    // get ids
+	    $itemIds = (array) $db->getColumn(
+		'SELECT i.agenda_id
+		 FROM agenda_subscriptions AS i
+		 WHERE status = ? AND i.language = ?',
+		array('subscribed', BL::getWorkingLanguage())
+	    );
+    
+	    // update record
+	    $db->delete('agenda_subscriptions', 'status = ? AND language = ?', array('subscribed', BL::getWorkingLanguage()));
+    
+	    // recalculate the subscription count
+	    if(!empty($itemIds)) self::reCalculateSubscriptionCount($itemIds);
+    
+	    // invalidate the cache for blog
+	    BackendModel::invalidateFrontendCache('agenda', BL::getWorkingLanguage());
+	}
 
 	/**
 	 * @param array $ids
@@ -242,22 +242,22 @@ class BackendAgendaModel
 			array((int) $id, BL::getWorkingLanguage()));
 	}
 
-    /**
-     * Checks if a subscription exists
-     *
-     * @param int $id The id of the item to check for existence.
-     * @return int
-     */
-    public static function existsSubscription($id)
-    {
-        return (bool) BackendModel::getContainer()->get('database')->getVar(
-            'SELECT 1
-             FROM agenda_subscriptions AS i
-             WHERE i.id = ? AND i.language = ?
-             LIMIT 1',
-            array((int) $id, BL::getWorkingLanguage())
-        );
-    }
+	/**
+	 * Checks if a subscription exists
+	 *
+	 * @param int $id The id of the item to check for existence.
+	 * @return int
+	 */
+	public static function existsSubscription($id)
+	{
+	    return (bool) BackendModel::getContainer()->get('database')->getVar(
+		'SELECT 1
+		 FROM agenda_subscriptions AS i
+		 WHERE i.id = ? AND i.language = ?
+		 LIMIT 1',
+		array((int) $id, BL::getWorkingLanguage())
+	    );
+	}
 
 	/**
 	 * Do the recurring options exist?
@@ -362,57 +362,57 @@ class BackendAgendaModel
 			 array(BL::getWorkingLanguage()));
 	}
 
-    /**
-     * Get all data for a given id
-     *
-     * @param int $id The Id of the subscription to fetch?
-     * @return array
-     */
-    public static function getSubscription($id)
-    {
-        return (array) BackendModel::getContainer()->get('database')->getRecord(
-            'SELECT i.*, UNIX_TIMESTAMP(i.created_on) AS created_on,
-             p.id AS agenda_id, p.title AS agenda_title, m.url AS agenda_url
-             FROM agenda_subscriptions AS i
-             INNER JOIN agenda AS p ON i.agenda_id = p.id AND i.language = p.language
-             INNER JOIN meta AS m ON p.meta_id = m.id
-             WHERE i.id = ?
-             LIMIT 1',
-            array((int) $id)
-        );
-    }
+	/**
+	 * Get all data for a given id
+	 *
+	 * @param int $id The Id of the subscription to fetch?
+	 * @return array
+	 */
+	public static function getSubscription($id)
+	{
+	    return (array) BackendModel::getContainer()->get('database')->getRecord(
+		'SELECT i.*, UNIX_TIMESTAMP(i.created_on) AS created_on,
+		 p.id AS agenda_id, p.title AS agenda_title, m.url AS agenda_url
+		 FROM agenda_subscriptions AS i
+		 INNER JOIN agenda AS p ON i.agenda_id = p.id AND i.language = p.language
+		 INNER JOIN meta AS m ON p.meta_id = m.id
+		 WHERE i.id = ?
+		 LIMIT 1',
+		array((int) $id)
+	    );
+	}
 
-    /**
-     * Get multiple subscriptions at once
-     *
-     * @param array $ids The id(s) of the subscription(s).
-     * @return array
-     */
-    public static function getSubscriptions(array $ids)
-    {
-        return (array) BackendModel::getContainer()->get('database')->getRecords(
-            'SELECT *
-             FROM agenda_subscriptions AS i
-             WHERE i.id IN (' . implode(', ', array_fill(0, count($ids), '?')) . ')',
-            $ids
-        );
-    }
+	/**
+	 * Get multiple subscriptions at once
+	 *
+	 * @param array $ids The id(s) of the subscription(s).
+	 * @return array
+	 */
+	public static function getSubscriptions(array $ids)
+	{
+	    return (array) BackendModel::getContainer()->get('database')->getRecords(
+		'SELECT *
+		 FROM agenda_subscriptions AS i
+		 WHERE i.id IN (' . implode(', ', array_fill(0, count($ids), '?')) . ')',
+		$ids
+	    );
+	}
 
-    /**
-     * Get a count per comment
-     *
-     * @return array
-     */
-    public static function getSubscriptionStatusCount()
-    {
-        return (array) BackendModel::getContainer()->get('database')->getPairs(
-            'SELECT i.status, COUNT(i.id)
-             FROM agenda_subscriptions AS i
-             WHERE i.language = ?
-             GROUP BY i.status',
-            array(BL::getWorkingLanguage())
-        );
-    }
+	/**
+	 * Get a count per comment
+	 *
+	 * @return array
+	 */
+	public static function getSubscriptionStatusCount()
+	{
+	    return (array) BackendModel::getContainer()->get('database')->getPairs(
+		'SELECT i.status, COUNT(i.id)
+		 FROM agenda_subscriptions AS i
+		 WHERE i.language = ?
+		 GROUP BY i.status',
+		array(BL::getWorkingLanguage())
+	    );
+	}
 
 	/**
 	 * Is this category allowed to be deleted?
@@ -572,7 +572,7 @@ class BackendAgendaModel
 	 */
 	public static function getURL($url, $id = null)
 	{
-		$url = SpoonFilter::urlise((string) $url);
+		$url = \SpoonFilter::urlise((string) $url);
 		$db = BackendModel::getContainer()->get('database');
 
 		// new item
@@ -620,7 +620,7 @@ class BackendAgendaModel
 	 */
 	public static function getURLForCategory($url, $id = null)
 	{
-		$url = SpoonFilter::urlise((string) $url);
+		$url = \SpoonFilter::urlise((string) $url);
 		$db = BackendModel::getContainer()->get('database');
 
 		// new category
@@ -811,107 +811,107 @@ class BackendAgendaModel
 		);
 	}
 
-    /**
-     * Update an existing subscription
-     *
-     * @param array $item The new data.
-     * @return int
-     */
-    public static function updateSubscription(array $item)
-    {
-        // update category
-        return BackendModel::getContainer()->get('database')->update('agenda_subscriptions', $item, 'id = ?', array((int) $item['id']));
-    }
+	/**
+	 * Update an existing subscription
+	 *
+	 * @param array $item The new data.
+	 * @return int
+	 */
+	public static function updateSubscription(array $item)
+	{
+	    // update category
+	    return BackendModel::getContainer()->get('database')->update('agenda_subscriptions', $item, 'id = ?', array((int) $item['id']));
+	}
 
-    /**
-     * Updates one or more subscriptions' status
-     *
-     * @param array $ids The id(s) of the comment(s) to change the status for.
-     * @param string $status The new status.
-     */
-    public static function updateSubscriptionStatuses($ids, $status)
-    {
-        // make sure $ids is an array
-        $ids = (array) $ids;
+	/**
+	 * Updates one or more subscriptions' status
+	 *
+	 * @param array $ids The id(s) of the comment(s) to change the status for.
+	 * @param string $status The new status.
+	 */
+	public static function updateSubscriptionStatuses($ids, $status)
+	{
+	    // make sure $ids is an array
+	    $ids = (array) $ids;
+    
+	    // loop and cast to integers
+	    foreach($ids as &$id) $id = (int) $id;
+    
+	    // create an array with an equal amount of questionmarks as ids provided
+	    $idPlaceHolders = array_fill(0, count($ids), '?');
+    
+	    // get the items and their languages
+	    $items = (array) BackendModel::getContainer()->get('database')->getPairs(
+		'SELECT i.agenda_id, i.language
+		 FROM agenda_subscriptions AS i
+		 WHERE i.id IN (' . implode(', ', $idPlaceHolders) . ')',
+		$ids, 'agenda_id'
+	    );
+    
+	    // only proceed if there are items
+	    if(!empty($items))
+	    {
+		// get the ids
+		$itemIds = array_keys($items);
+    
+		// get the unique languages
+		$languages = array_unique(array_values($items));
+    
+		// update records
+		BackendModel::getContainer()->get('database')->execute(
+		    'UPDATE agenda_subscriptions
+		     SET status = ?
+		     WHERE id IN (' . implode(', ', $idPlaceHolders) . ')',
+		    array_merge(array((string) $status), $ids)
+		);
+    
+		// recalculate the comment count
+		self::reCalculateSubscriptionCount($itemIds);
+    
+		// invalidate the cache for blog
+		foreach($languages as $language) BackendModel::invalidateFrontendCache('agenda', $language);
+	    }
+	}
 
-        // loop and cast to integers
-        foreach($ids as &$id) $id = (int) $id;
-
-        // create an array with an equal amount of questionmarks as ids provided
-        $idPlaceHolders = array_fill(0, count($ids), '?');
-
-        // get the items and their languages
-        $items = (array) BackendModel::getContainer()->get('database')->getPairs(
-            'SELECT i.agenda_id, i.language
-             FROM agenda_subscriptions AS i
-             WHERE i.id IN (' . implode(', ', $idPlaceHolders) . ')',
-            $ids, 'agenda_id'
-        );
-
-        // only proceed if there are items
-        if(!empty($items))
-        {
-            // get the ids
-            $itemIds = array_keys($items);
-
-            // get the unique languages
-            $languages = array_unique(array_values($items));
-
-            // update records
-            BackendModel::getContainer()->get('database')->execute(
-                'UPDATE agenda_subscriptions
-                 SET status = ?
-                 WHERE id IN (' . implode(', ', $idPlaceHolders) . ')',
-                array_merge(array((string) $status), $ids)
-            );
-
-            // recalculate the comment count
-            self::reCalculateSubscriptionCount($itemIds);
-
-            // invalidate the cache for blog
-            foreach($languages as $language) BackendModel::invalidateFrontendCache('agenda', $language);
-        }
-    }
-
-    /**
-     * Recalculate the subscription count
-     *
-     * @param array $ids The id(s) of the item wherefore the subscription count should be recalculated.
-     * @return bool
-     */
-    public static function reCalculateSubscriptionCount(array $ids)
-    {
-        // validate
-        if(empty($ids)) return false;
-
-        // make unique ids
-        $ids = array_unique($ids);
-
-        // get db
-        $db = BackendModel::getContainer()->get('database');
-
-        // get counts
-        $subscriptionCounts = (array) $db->getPairs(
-            'SELECT i.agenda_id, COUNT(i.id) AS subscription_count
-             FROM agenda_subscriptions AS i
-             INNER JOIN agenda AS p ON i.agenda_id = p.id AND i.language = p.language
-             WHERE i.status = ? AND i.agenda_id IN (' . implode(',', $ids) . ') AND i.language = ?
-			 GROUP BY i.agenda_id',
-            array('subscribed', BL::getWorkingLanguage())
-        );
-
-        foreach($ids as $id)
-        {
-
-            // get count
-            $count = (isset($subscriptionCounts[$id])) ? (int) $subscriptionCounts[$id] : 0;
-
-            // update
-            $db->update('agenda', array('num_subscriptions' => $count), 'id = ? AND language = ?', array($id, BL::getWorkingLanguage()));
-        }
-
-        return true;
-    }
+	/**
+	 * Recalculate the subscription count
+	 *
+	 * @param array $ids The id(s) of the item wherefore the subscription count should be recalculated.
+	 * @return bool
+	 */
+	public static function reCalculateSubscriptionCount(array $ids)
+	{
+	    // validate
+	    if(empty($ids)) return false;
+    
+	    // make unique ids
+	    $ids = array_unique($ids);
+    
+	    // get db
+	    $db = BackendModel::getContainer()->get('database');
+    
+	    // get counts
+	    $subscriptionCounts = (array) $db->getPairs(
+		'SELECT i.agenda_id, COUNT(i.id) AS subscription_count
+		 FROM agenda_subscriptions AS i
+		 INNER JOIN agenda AS p ON i.agenda_id = p.id AND i.language = p.language
+		 WHERE i.status = ? AND i.agenda_id IN (' . implode(',', $ids) . ') AND i.language = ?
+			     GROUP BY i.agenda_id',
+		array('subscribed', BL::getWorkingLanguage())
+	    );
+    
+	    foreach($ids as $id)
+	    {
+    
+		// get count
+		$count = (isset($subscriptionCounts[$id])) ? (int) $subscriptionCounts[$id] : 0;
+    
+		// update
+		$db->update('agenda', array('num_subscriptions' => $count), 'id = ? AND language = ?', array($id, BL::getWorkingLanguage()));
+	    }
+    
+	    return true;
+	}
 
 	/**
 	 * Save or update a file
@@ -979,5 +979,4 @@ class BackendAgendaModel
 		BackendModel::invalidateFrontendCache('agendaCache');
 		return (int) $item['id'];
 	}
-	
 }

@@ -150,7 +150,7 @@ class Edit extends BackendBaseActionEdit
 		$this->frm->addText('number', $this->record['number']);
 		$this->frm->addText('zip', $this->record['zip']);
 		$this->frm->addText('city', $this->record['city']);
-		$this->frm->addDropdown('country', SpoonLocale::getCountries(BL::getInterfaceLanguage()), $this->record['country']);
+		$this->frm->addDropdown('country', \SpoonLocale::getCountries(BL::getInterfaceLanguage()), $this->record['country']);
 		$this->frm->addCheckbox('google_maps', ($this->record['google_maps'] === 'Y' ? true : false));
 		
 		// standard options
@@ -183,7 +183,7 @@ class Edit extends BackendBaseActionEdit
 		parent::parse();
 
 		// add css
-		$this->header->addCSS('/backend/modules/agenda/layout/css/agenda.css', null, true);
+		$this->header->addCSS('/Backend/Modules/Agenda/Layout/Css/agenda.css', null, true);
 		
 		// get url
 		$url = BackendModel::getURLForBlock($this->URL->getModule(), 'detail');
@@ -259,8 +259,8 @@ class Edit extends BackendBaseActionEdit
 				$item['meta_id'] = $this->meta->save();
 
 				// geocode address
-				$url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($item['street'] . ' ' . $item['number'] . ', ' . $item['zip'] . ' ' . $item['city'] . ', ' . SpoonLocale::getCountry($item['country'], BL::getWorkingLanguage())) . '&sensor=false';
-				$geocode = json_decode(SpoonHTTP::getContent($url));
+				$url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($item['street'] . ' ' . $item['number'] . ', ' . $item['zip'] . ' ' . $item['city'] . ', ' . \SpoonLocale::getCountry($item['country'], BL::getWorkingLanguage())) . '&sensor=false';
+				$geocode = json_decode(\SpoonHTTP::getContent($url));
 				$item['lat'] = isset($geocode->results[0]->geometry->location->lat) ? $geocode->results[0]->geometry->location->lat : null;
 				$item['lng'] = isset($geocode->results[0]->geometry->location->lng) ? $geocode->results[0]->geometry->location->lng : null;				
 				
