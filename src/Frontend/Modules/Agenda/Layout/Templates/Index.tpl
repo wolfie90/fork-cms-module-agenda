@@ -71,4 +71,4 @@
     </div>
 </article>
 
-{include:core/layout/templates/pagination.tpl}
+{include:Core/Layout/Templates/Pagination.tpl}

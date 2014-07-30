@@ -105,7 +105,7 @@ class EditSubscription extends BackendBaseActionEdit
                 BackendModel::triggerEvent($this->getModule(), 'after_edit_subscription', array('item' => $item));
 
                 // everything is saved, so redirect to the overview
-                $this->redirect(BackendModel::createURLForAction('subscriptions') . '&report=edited-subscription&id=' . $item['id'] . '&highlight=row-' . $item['id'] . '#tab' . SpoonFilter::toCamelCase($item['status']));
+                $this->redirect(BackendModel::createURLForAction('subscriptions') . '&report=edited-subscription&id=' . $item['id'] . '&highlight=row-' . $item['id'] . '#tab' . \SpoonFilter::toCamelCase($item['status']));
             }
         }
     }

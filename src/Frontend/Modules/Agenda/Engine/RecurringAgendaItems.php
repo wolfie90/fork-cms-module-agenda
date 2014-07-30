@@ -1,5 +1,7 @@
 <?php
 
+namespace Frontend\Modules\Agenda\Engine;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,19 @@
  * file that was distributed with this source code.
  */
 
+use Frontend\Core\Engine\Language as FL;
+use Frontend\Core\Engine\Model as FrontendModel;
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Core\Engine\Url as FrontendURL;
+use Frontend\Modules\Agenda\Engine\RecurringAgendaItems as FrontendAgendaRecurringAgendaItems;
+use Frontend\Modules\Tags\Engine\Model as FrontendTagsModel;
+ 
 /**
  * In this file we generate the recurring agenda
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaRecurringAgendaItems
+class RecurringAgendaItems
 {
     /**
      * Get a list of recurring agenda

@@ -13,6 +13,7 @@ use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Form as BackendForm;
+use Backend\Core\Engine\Language as BL;
 
 /**
  * This is the settings action, it will display a form to set general item settings.
@@ -72,18 +73,18 @@ class Settings extends BackendBaseActionEdit
 		$this->frm->addCheckbox('allow_enlargment3', BackendModel::getModuleSetting($this->URL->getModule(), 'allow_enlargment3', false));
 		$this->frm->addCheckbox('force_aspect_ratio3', BackendModel::getModuleSetting($this->URL->getModule(), 'force_aspect_ratio3', false));
 
-        $this->frm->addCheckbox('allow_subscriptions', BackendModel::getModuleSetting($this->URL->getModule(), 'allow_subscriptions', false));
-        $this->frm->addCheckbox('moderation', BackendModel::getModuleSetting($this->URL->getModule(), 'moderation', false));
-
-        $this->frm->addCheckbox('notify_by_email_on_new_subscription_to_moderate', BackendModel::getModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription_to_moderate', false));
-        $this->frm->addCheckbox('notify_by_email_on_new_subscription', BackendModel::getModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription', false));
-
-        $this->frm->addText('cache_timeout', BackendModel::getModuleSetting($this->URL->getModule(), 'cache_timeout', false));
-
-        $this->frm->addDropdown('zoom_level', array_combine(array_merge(array('auto'), range(3, 18)), array_merge(array(BL::lbl('Auto', $this->getModule())), range(3, 18))), BackendModel::getModuleSetting($this->URL->getModule(), 'zoom_level_widget', 13));
-        $this->frm->addText('width', BackendModel::getModuleSetting($this->URL->getModule(), 'width'));
-        $this->frm->addText('height', BackendModel::getModuleSetting($this->URL->getModule(), 'height'));
-        $this->frm->addDropdown('map_type', array('ROADMAP' => BL::lbl('Roadmap', $this->getModule()), 'SATELLITE' => BL::lbl('Satellite', $this->getModule()), 'HYBRID' => BL::lbl('Hybrid', $this->getModule()), 'TERRAIN' => BL::lbl('Terrain', $this->getModule())), BackendModel::getModuleSetting($this->URL->getModule(), 'map_type_widget', 'roadmap'));
+		$this->frm->addCheckbox('allow_subscriptions', BackendModel::getModuleSetting($this->URL->getModule(), 'allow_subscriptions', false));
+		$this->frm->addCheckbox('moderation', BackendModel::getModuleSetting($this->URL->getModule(), 'moderation', false));
+	
+		$this->frm->addCheckbox('notify_by_email_on_new_subscription_to_moderate', BackendModel::getModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription_to_moderate', false));
+		$this->frm->addCheckbox('notify_by_email_on_new_subscription', BackendModel::getModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription', false));
+	
+		$this->frm->addText('cache_timeout', BackendModel::getModuleSetting($this->URL->getModule(), 'cache_timeout', false));
+	
+		$this->frm->addDropdown('zoom_level', array_combine(array_merge(array('auto'), range(3, 18)), array_merge(array(BL::lbl('Auto', $this->getModule())), range(3, 18))), BackendModel::getModuleSetting($this->URL->getModule(), 'zoom_level_widget', 13));
+		$this->frm->addText('width', BackendModel::getModuleSetting($this->URL->getModule(), 'width'));
+		$this->frm->addText('height', BackendModel::getModuleSetting($this->URL->getModule(), 'height'));
+		$this->frm->addDropdown('map_type', array('ROADMAP' => BL::lbl('Roadmap', $this->getModule()), 'SATELLITE' => BL::lbl('Satellite', $this->getModule()), 'HYBRID' => BL::lbl('Hybrid', $this->getModule()), 'TERRAIN' => BL::lbl('Terrain', $this->getModule())), BackendModel::getModuleSetting($this->URL->getModule(), 'map_type_widget', 'roadmap'));
     }
 
 	/**

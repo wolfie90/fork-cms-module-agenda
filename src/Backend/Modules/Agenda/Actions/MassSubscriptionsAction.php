@@ -28,10 +28,10 @@ class MassSubscriptionsAction extends BackendBaseAction
         parent::execute();
 
         // current status
-        $from = SpoonFilter::getGetValue('from', array('subscribed', 'moderation'), 'subscribed');
+        $from = \SpoonFilter::getGetValue('from', array('subscribed', 'moderation'), 'subscribed');
 
         // action to execute
-        $action = SpoonFilter::getGetValue('action', array('subscribed', 'moderation', 'delete'), 'moderation');
+        $action = \SpoonFilter::getGetValue('action', array('subscribed', 'moderation', 'delete'), 'moderation');
 
         // no id's provided
         if(!isset($_GET['id'])) $this->redirect(BackendModel::createURLForAction('subscriptions') . '&error=no-subscriptions-selected');
@@ -58,6 +58,6 @@ class MassSubscriptionsAction extends BackendBaseAction
         if($action == 'delete') $report .= 'deleted';
 
         // redirect
-        $this->redirect(BackendModel::createURLForAction('subscriptions') . '&report=' . $report . '#tab' . SpoonFilter::ucfirst($from));
+        $this->redirect(BackendModel::createURLForAction('subscriptions') . '&report=' . $report . '#tab' . \SpoonFilter::ucfirst($from));
     }
 }

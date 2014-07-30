@@ -1,4 +1,7 @@
 <?php
+
+namespace Frontend\Modules\Agenda\Engine;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -9,12 +12,21 @@
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
 
+use Frontend\Core\Engine\Language as FL;
+use Frontend\Core\Engine\Model as FrontendModel;
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Core\Engine\Url as FrontendURL;
+use Frontend\Modules\Agenda\Engine\RecurringAgendaItems as FrontendAgendaRecurringAgendaItems;
+use Frontend\Modules\Tags\Engine\Model as FrontendTagsModel;
+use Frontend\Modules\Tags\Engine\TagsInterface as FrontendTagsInterface;
+
+
 /**
  * In this file we store all generic functions that we will be using in the agenda module
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaModel
+class Model
 {
     /**
      * This will build the url to google maps for a large map
@@ -90,14 +102,12 @@ class FrontendAgendaModel
 		if(empty($item)) return array();
 
 		// create full url
-		$item['full_url'] = FrontendNavigation::getURLForBlock('agenda', 'detail') . '/' . $item['url'];
-		$item['category_full_url'] = FrontendNavigation::getURLForBlock('agenda', 'category') . '/' . $item['category_url'];
+		$item['full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Detail') . '/' . $item['url'];
+		$item['category_full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $item['category_url'];
 		
 		// get image
 		$img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-		if($img) $item['image'] = FRONTEND_FILES_URL . '/agenda/' . $item['id'] . '/400x300/' . $img['filename'];
-		//else $item['image'] = '/' . APPLICATION . '/modules/agenda/layout/images/dummy.png';
-
+		if($img) $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
 
 		return $item;
 	}
@@ -126,10 +136,10 @@ class FrontendAgendaModel
 		if(empty($items)) return array();
 
 		// get detail action url
-		$detailUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
+		$detailUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
 		// get category link
-		$categoryLink = FrontendNavigation::getURLForBlock('agenda', 'category');
+		$categoryLink = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
 		// prepare items for search
 		foreach($items as &$item)
@@ -138,7 +148,7 @@ class FrontendAgendaModel
 						// get image
 			// get image
 			$img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-			if($img) $item['image'] = FRONTEND_FILES_URL . '/agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+			if($img) $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
 		}
 
 		// return
@@ -169,11 +179,11 @@ class FrontendAgendaModel
 		
 		foreach($items as $key => $item) {
 			// get detail url
-			$link = FrontendNavigation::getURLForBlock('agenda', 'detail');
+			$link = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
 			// add url
 			$items[$key]['full_url'] = $link . '/' . $item['url'];
-			$items[$key]['category_full_url'] = FrontendNavigation::getURLForBlock('agenda', 'category') . '/' . $item['category_url'];
+			$items[$key]['category_full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $item['category_url'];
 		}
 
 		// return items
@@ -221,7 +231,7 @@ class FrontendAgendaModel
 		if(empty($items)) return array();
 
 		// get detail action url
-		$detailUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
+		$detailUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
 		// add url to items
 		foreach($items as &$item) {
@@ -229,7 +239,7 @@ class FrontendAgendaModel
 
 			// get image
 			$img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-			if($img) $item['image'] = FRONTEND_FILES_URL . '/agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+			if($img) $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
 		}
 
 		// return
@@ -256,8 +266,8 @@ class FrontendAgendaModel
 	* @param int $categoryId
 	* @param int[optional] $limit
 	* @param int[optional] $offset
-    * @param int $startTimestamp
-    * @param int $endTimestamp
+	* @param int $startTimestamp
+	* @param int $endTimestamp
 	* @return array
 	*/
 	public static function getAllByCategory($categoryId, $limit = 10, $offset = 0, $startTimestamp, $endTimestamp)
@@ -270,24 +280,24 @@ class FrontendAgendaModel
 				c.title AS category_title, m2.url AS category_url,
 				t.agenda_id, t.frequency, t.interval, t.type, t.days, t.ends_on,
 				t.end_date AS ends_on_date
-		FROM agenda AS i
-		INNER JOIN agenda_categories AS c ON i.category_id = c.id
-		INNER JOIN meta AS m ON i.meta_id = m.id
-		INNER JOIN meta AS m2 ON c.meta_id = m2.id
-		LEFT OUTER JOIN agenda_recurring_options AS t ON i.id = t.agenda_id
-		WHERE i.category_id = ? AND i.language = ? AND DATE(i.begin_date) BETWEEN ? AND ?
-		OR i.recurring = ?
-		ORDER BY i.id DESC LIMIT ?, ?',
-		array($categoryId, FRONTEND_LANGUAGE, $startTimestamp, $endTimestamp, 'Y', (int) $offset, (int) $limit));
-
+			FROM agenda AS i
+			INNER JOIN agenda_categories AS c ON i.category_id = c.id
+			INNER JOIN meta AS m ON i.meta_id = m.id
+			INNER JOIN meta AS m2 ON c.meta_id = m2.id
+			LEFT OUTER JOIN agenda_recurring_options AS t ON i.id = t.agenda_id
+			WHERE i.category_id = ? AND i.language = ? AND DATE(i.begin_date) BETWEEN ? AND ?
+			OR i.recurring = ?
+			ORDER BY i.id DESC LIMIT ?, ?',
+			array($categoryId, FRONTEND_LANGUAGE, $startTimestamp, $endTimestamp, 'Y', (int) $offset, (int) $limit));
+			
 		// no results?
 		if(empty($items)) return array();
 
 		// get detail action url
-        $agendaUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
+		$agendaUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
 		// get category url
-		$categoryUrl = FrontendNavigation::getURLForBlock('agenda', 'category');
+		$categoryUrl = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
 		// prepare items for search
 		foreach($items as $key => $item)
@@ -297,7 +307,7 @@ class FrontendAgendaModel
 			
 			// get image
 			$img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-			if($img) $items[$key]['image'] = FRONTEND_FILES_URL . '/agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+			if($img) $items[$key]['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
 			
 			// get recurring items
 			if($item['recurring'] == 'Y')
@@ -327,11 +337,11 @@ class FrontendAgendaModel
 	public static function getAllByDate($startTimestamp, $endTimestamp)
 	{
 		// build cache info
-		$cacheDirectory = FRONTEND_CACHE_PATH . '/agenda/';
+		$cacheDirectory = FRONTEND_CACHE_PATH . '/Agenda/';
 		$cacheKey = $startTimestamp . '-' . $endTimestamp . '-' . FRONTEND_LANGUAGE;
-		$cacheFile = FRONTEND_CACHE_PATH . '/agenda/' . $cacheKey . '.cache';
+		$cacheFile = FRONTEND_CACHE_PATH . '/Agenda/' . $cacheKey . '.cache';
 		$currentTime = time();
-		$cacheTimeout =  FrontendModel::getModuleSetting('agenda', 'cache_timeout');
+		$cacheTimeout =  FrontendModel::getModuleSetting('Agenda', 'cache_timeout');
 		
 		// cache file exists
 		if(file_exists($cacheFile))
@@ -374,10 +384,10 @@ class FrontendAgendaModel
 		if(empty($items)) return array();
 		
 		// get item action url
-		$agendaUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
+		$agendaUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 		
 		// get category action url
-		$categoryUrl = FrontendNavigation::getURLForBlock('agenda', 'category');
+		$categoryUrl = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 		
 		// get all recurring items
 		foreach($items as $key => $item)
@@ -387,7 +397,7 @@ class FrontendAgendaModel
 			
 			// get image
 			$img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-			if($img) $items[$key]['image'] = FRONTEND_FILES_URL . '/agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+			if($img) $items[$key]['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
 			
 			// get recurring items
 			if($item['recurring'] == 'Y')
@@ -401,7 +411,7 @@ class FrontendAgendaModel
 				}
 			}
 
-            // set dates
+			// set dates
 			$items[$key]['begin_date'] = date('Y-m-d H:i', $items[$key]['begin_date']);
 			$items[$key]['end_date'] = date('Y-m-d H:i', $items[$key]['end_date']);
 		}
@@ -414,32 +424,32 @@ class FrontendAgendaModel
 			$begints = strtotime($startTimestamp);
 			$endts = strtotime($endTimestamp);
 
-            // check if begin date of element fits the given timespan
+			// check if begin date of element fits the given timespan
 			if($beginDate < $begints || $beginDate > $endts)
 			{
 				unset($items[$key]);
 			} else {
 				// set timestamps for navigation detail pages
-                $items[$key]['ts_begin_date'] = strtotime($value['begin_date']);
-				$items[$key]['ts_end_date'] = strtotime($value['end_date']);
-
-                // set boolean for whole day agenda
-                if($value['whole_day'] == 'Y') $items[$key]['whole_day'] = true;
-                if($value['whole_day'] == 'N') $items[$key]['whole_day'] = false;
-
-                $beginAsDay = strftime('%Y%m%d', strtotime($value['begin_date']));
-                $endAsDay = strftime('%Y%m%d', strtotime($value['end_date']));
-
-                // set dif if begin and end date is different
-                if($beginAsDay != $endAsDay) $items[$key]['different_end_date'] = true;
-            }
-		}
+			    $items[$key]['ts_begin_date'] = strtotime($value['begin_date']);
+					    $items[$key]['ts_end_date'] = strtotime($value['end_date']);
+	    
+			    // set boolean for whole day agenda
+			    if($value['whole_day'] == 'Y') $items[$key]['whole_day'] = true;
+			    if($value['whole_day'] == 'N') $items[$key]['whole_day'] = false;
+	    
+			    $beginAsDay = strftime('%Y%m%d', strtotime($value['begin_date']));
+			    $endAsDay = strftime('%Y%m%d', strtotime($value['end_date']));
+	    
+			// set dif if begin and end date is different
+			if($beginAsDay != $endAsDay) $items[$key]['different_end_date'] = true;
+			}
+			    }
 
 		// write the cache file
 		$fs = new Filesystem();
 		if(!empty($items))
 		{
-			$fs->dumpFile(FRONTEND_CACHE_PATH . '/agenda/' . $cacheKey . '.cache', serialize($items));
+			$fs->dumpFile(FRONTEND_CACHE_PATH . '/Agenda/' . $cacheKey . '.cache', serialize($items));
 		}
 		
 		return $items;
@@ -486,15 +496,15 @@ class FrontendAgendaModel
 			 m.title AS meta_title, m.title_overwrite AS meta_title_overwrite, m.url
 			 FROM agenda_categories AS i
 			 INNER JOIN meta AS m ON i.meta_id = m.id
-			 WHERE m.url = ?',
-			array((string) $URL)
+			 WHERE m.url = ? AND i.language = ?',
+			array((string) $URL, FRONTEND_LANGUAGE)
 		);
 
 		// no results?
 		if(empty($item)) return array();
 
 		// create full url
-		$item['full_url'] = FrontendNavigation::getURLForBlock('agenda', 'category') . '/' . $item['url'];
+		$item['full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $item['url'];
 
 		return $item;
 	}
@@ -535,14 +545,14 @@ class FrontendAgendaModel
 		);
 
 		// init var
-		$link = FrontendNavigation::getURLForBlock('agenda', 'category');
+		$link = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
 		// build the item url
 		foreach($items as &$item){
-			$item['image_thumb'] = FRONTEND_FILES_URL . '/agenda/' . $item['agenda_id'] . '/64x64/' . $item['filename'];
-            $item['image_first'] = FRONTEND_FILES_URL . '/agenda/' . $item['agenda_id'] . '/' . $settings["width1"] . 'x' . $settings["height1"] .  '/' . $item['filename'];
-            $item['image_second'] = FRONTEND_FILES_URL . '/agenda/' . $item['agenda_id'] . '/' . $settings["width2"] . 'x' . $settings["height2"] .  '/' . $item['filename'];
-			$item['image_third'] = FRONTEND_FILES_URL . '/agenda/' . $item['agenda_id'] . '/' . $settings["width3"] . 'x' . $settings["height3"] .  '/' . $item['filename'];
+		    $item['image_thumb'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/64x64/' . $item['filename'];
+		    $item['image_first'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/' . $settings["width1"] . 'x' . $settings["height1"] .  '/' . $item['filename'];
+		    $item['image_second'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/' . $settings["width2"] . 'x' . $settings["height2"] .  '/' . $item['filename'];
+		    $item['image_third'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/' . $settings["width3"] . 'x' . $settings["height3"] .  '/' . $item['filename'];
 		}
 		
 		return $items;
@@ -612,7 +622,7 @@ class FrontendAgendaModel
 
 		// build the item url
 		foreach($items as &$item){
-			$item['url'] = FRONTEND_FILES_URL . '/agenda/' . $item['agenda_id'] . '/source/' . $item['filename'];
+			$item['url'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/source/' . $item['filename'];
 		}
 		
 		return $items;
@@ -720,8 +730,8 @@ class FrontendAgendaModel
         FrontendModel::pushToAppleApp($alert, null, 'default', $data);
 
         // get settings
-        $notifyByMailOnSubscription = FrontendModel::getModuleSetting('agenda', 'notify_by_email_on_new_subscription', false);
-        $notifyByMailOnSubscriptionToModerate = FrontendModel::getModuleSetting('agenda', 'notify_by_email_on_new_subscription_to_moderate', false);
+        $notifyByMailOnSubscription = FrontendModel::getModuleSetting('Agenda', 'notify_by_email_on_new_subscription', false);
+        $notifyByMailOnSubscriptionToModerate = FrontendModel::getModuleSetting('Agenda', 'notify_by_email_on_new_subscription_to_moderate', false);
 
         // create URLs
         $backendURL = SITE_URL . FrontendNavigation::getBackendURLForBlock('subscriptions', 'agenda') . '#tabModeration';
@@ -745,7 +755,23 @@ class FrontendAgendaModel
             }
 
             // send the mail
-            FrontendMailer::addEmail(FL::msg('NotificationSubject'), FRONTEND_CORE_PATH . '/layout/templates/mails/notification.tpl', $variables);
+            FrontendModel::get('mailer')->addEmail(
+		FL::msg('NotificationSubject'),
+		FRONTEND_CORE_PATH . '/Layout/Templates/Mails/Notification.tpl',
+		$variables,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                true
+		);
         }
 
         // only notify on new comments to moderate and if the comment is one to moderate
@@ -755,7 +781,23 @@ class FrontendAgendaModel
             $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscriptionToModerate'), array($subscription['name'], $subscription['agenda_title'], $backendURL));
 
             // send the mail
-            FrontendMailer::addEmail(FL::msg('NotificationSubject'), FRONTEND_CORE_PATH . '/layout/templates/mails/notification.tpl', $variables);
+            FrontendModel::get('mailer')->addEmail(
+		FL::msg('NotificationSubject'),
+		FRONTEND_CORE_PATH . '/Layout/Templates/Mails/Notification.tpl',
+		$variables,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                true
+		);
         }
     }
 
@@ -781,7 +823,7 @@ class FrontendAgendaModel
 		);
 
 		// get detail action url
-		$detailUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
+		$detailUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
 		// prepare items for search
 		foreach($items as &$item)

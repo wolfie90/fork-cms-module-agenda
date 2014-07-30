@@ -1,10 +1,26 @@
 <?php
+
+namespace Frontend\Modules\Agenda\Actions;
+
+/*
+ * This file is part of Fork CMS.
+ *
+ * For the full copyright and license information, please view the license
+ * file that was distributed with this source code.
+ */
+
+use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Core\Engine\Model as FrontendModel;
+use Frontend\Core\Engine\Language as FL;
+use Frontend\Modules\Agenda\Engine\Model as FrontendAgendaModel;
+
 /**
  * This is the index-action (default), it will display the overview of agenda posts in a calendar overview
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaIndex extends FrontendBaseBlock
+class Index extends FrontendBaseBlock
 {
 	/**
 	 * Form
@@ -59,8 +75,7 @@ class FrontendAgendaIndex extends FrontendBaseBlock
 	public function execute()
 	{
 		parent::execute();
-
-		$this->header->addCSS('/frontend/modules/' . $this->getModule() . '/layout/css/agenda.css');
+		$this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/agenda.css');
 
 		$this->loadTemplate();
 		$this->getData();
@@ -78,7 +93,7 @@ class FrontendAgendaIndex extends FrontendBaseBlock
 		// assign timestamp
 		$this->tpl->assign('timestamp', $this->timestamp);
 		
-		$viewLabel = FrontendLanguage::getLabel($this->view);
+		$viewLabel = FL::getLabel($this->view);
 				
 		// assign views
 		$this->tpl->assign('view', $this->view);
@@ -158,7 +173,7 @@ class FrontendAgendaIndex extends FrontendBaseBlock
 				$beginTimestamp = strtotime(gmdate('Y-M', $timestamp) . '-01 00:00:00');
 				$endTimestamp = strtotime('+1 months', $beginTimestamp);
 				
-				$monthLabel = FrontendLanguage::getLabel(gmdate('F', $timestamp));
+				$monthLabel = FL::getLabel(gmdate('F', $timestamp));
 				
 				$this->viewTitle = $monthLabel . ' ' . gmdate('Y', $timestamp);
 				break;
@@ -166,10 +181,10 @@ class FrontendAgendaIndex extends FrontendBaseBlock
 				$beginTimestamp = strtotime('last Monday 00:59', $timestamp); // sets beginning of the week
 				$endTimestamp = strtotime('next Monday 00:59', $beginTimestamp);
 				
-				$startDayLabel = FrontendLanguage::getLabel(gmdate('l', $beginTimestamp));
-				$startMonthLabel = FrontendLanguage::getLabel(gmdate('F', $beginTimestamp));
-				$endDayLabel = FrontendLanguage::getLabel(gmdate('l', $endTimestamp));
-				$endMonthLabel = FrontendLanguage::getLabel(gmdate('F', $endTimestamp));
+				$startDayLabel = FL::getLabel(gmdate('l', $beginTimestamp));
+				$startMonthLabel = FL::getLabel(gmdate('F', $beginTimestamp));
+				$endDayLabel = FL::getLabel(gmdate('l', $endTimestamp));
+				$endMonthLabel = FL::getLabel(gmdate('F', $endTimestamp));
 				
 				$this->viewTitle = $startDayLabel . ' ' . gmdate('d', $beginTimestamp) . ' ' . $startMonthLabel . ' ' . gmdate('Y', $beginTimestamp) . ' - ' . $endDayLabel . ' ' . gmdate('d', $endTimestamp) . ' ' . $endMonthLabel . ' ' . gmdate('Y', $endTimestamp);
 				break;
@@ -178,8 +193,8 @@ class FrontendAgendaIndex extends FrontendBaseBlock
 				$endTimestamp = strtotime('+1 days', $beginTimestamp);
 				
 				// set labels
-				$dayLabel = FrontendLanguage::getLabel(gmdate('l', $timestamp));
-				$monthLabel = FrontendLanguage::getLabel(gmdate('F', $timestamp));
+				$dayLabel = FL::getLabel(gmdate('l', $timestamp));
+				$monthLabel = FL::getLabel(gmdate('F', $timestamp));
 				$this->viewTitle = $dayLabel . ' ' . gmdate('d', $timestamp) . ' ' . $monthLabel . ' ' . gmdate('Y', $timestamp);
 				break;
 		}

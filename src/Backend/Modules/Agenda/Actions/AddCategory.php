@@ -46,7 +46,7 @@ class AddCategory extends BackendBaseActionAdd
 		$this->frm->addText('title');
 
 		$this->meta = new BackendMeta($this->frm, null, 'title', true);
-		$this->meta->setURLCallback('BackendAgendaModel', 'getURLForCategory');
+		$this->meta->setURLCallback('Backend\Modules\Agenda\Engine\Model', 'getURLForCategory');
 	}
 
 	/**

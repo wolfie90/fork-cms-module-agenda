@@ -1,10 +1,26 @@
 <?php
+
+namespace Frontend\Modules\Agenda\Actions;
+
+/*
+ * This file is part of Fork CMS.
+ *
+ * For the full copyright and license information, please view the license
+ * file that was distributed with this source code.
+ */
+
+use Frontend\Core\Engine\Base\Block as FrontendBaseBlock;
+use Frontend\Core\Engine\Language as FL;
+use Frontend\Core\Engine\Model as FrontendModel;
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Modules\Agenda\Engine\Model as FrontendAgendaModel;
+
 /**
  * This is the category-action, it will display the overview of agenda categories
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaCategory extends FrontendBaseBlock
+class Category extends FrontendBaseBlock
 {
 	/**
 	 * The items and category
@@ -54,9 +70,9 @@ class FrontendAgendaCategory extends FrontendBaseBlock
 		$requestedPage = $this->URL->getParameter('page', 'int', 1);
 
 		// set URL and limit
-		$this->pagination['url'] = FrontendNavigation::getURLForBlock('agenda', 'category') . '/' . $this->category['url'];
+		$this->pagination['url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $this->category['url'];
 
-		$this->pagination['limit'] = FrontendModel::getModuleSetting('agenda', 'overview_num_items', 10);
+		$this->pagination['limit'] = FrontendModel::getModuleSetting('Agenda', 'overview_num_items', 10);
 
 		// populate count fields in pagination
 		$this->pagination['num_items'] = FrontendAgendaModel::getCategoryCount($this->category['id']);
@@ -79,17 +95,14 @@ class FrontendAgendaCategory extends FrontendBaseBlock
 		// @todo SET CORRECT TIMES
 		$startTimestamp = strtotime('last Monday 00:59', time()); // first day of the week
 		$endTimestamp = strtotime("next Monday 0:59", time()); // last day of the week
-		
+
 		// get items
 		$this->items = FrontendAgendaModel::getAllByCategory(
 			$this->category['id'], $this->pagination['limit'], $this->pagination['offset'], $startTimestamp, $endTimestamp
 		);
 		
-		//die(print_r($this->items));
-		
 		// sort dates
 		usort($this->items, "self::cmpValues");
-
 	}
 
 	/**

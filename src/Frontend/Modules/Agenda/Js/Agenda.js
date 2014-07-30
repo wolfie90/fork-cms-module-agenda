@@ -39,9 +39,9 @@ jsFrontend.agenda =
         // build the options
         var options =
         {
-            zoom: (jsFrontend.data.get('agenda.settings' + suffix + '.zoom_level') == 'auto') ? 0 : parseInt(jsFrontend.data.get('agenda.settings' + suffix + '.zoom_level')),
-            center: new google.maps.LatLng(jsFrontend.data.get('agenda.settings' + suffix + '.center.lat'), jsFrontend.data.get('agenda.settings' + suffix + '.center.lng')),
-            mapTypeId: google.maps.MapTypeId[jsFrontend.data.get('agenda.settings' + suffix + '.map_type')]
+            zoom: (jsFrontend.data.get('Agenda.settings' + suffix + '.zoom_level') == 'auto') ? 0 : parseInt(jsFrontend.data.get('Agenda.settings' + suffix + '.zoom_level')),
+            center: new google.maps.LatLng(jsFrontend.data.get('Agenda.settings' + suffix + '.center.lat'), jsFrontend.data.get('Agenda.settings' + suffix + '.center.lng')),
+            mapTypeId: google.maps.MapTypeId[jsFrontend.data.get('Agenda.settings' + suffix + '.map_type')]
         };
 
         console.log(options);
@@ -50,7 +50,7 @@ jsFrontend.agenda =
         jsFrontend.agenda.map[mapId] = new google.maps.Map(document.getElementById('map' + id), options);
 
         // get the items
-        var items = jsFrontend.data.get('agenda.items' + suffix);
+        var items = jsFrontend.data.get('Agenda.items' + suffix);
 
         // any items
         if(items.length > 0)
@@ -64,7 +64,7 @@ jsFrontend.agenda =
         }
 
         // are directions enabled?
-        if(jsFrontend.data.get('agenda.settings' + suffix + '.directions'))
+        if(jsFrontend.data.get('Agenda.settings' + suffix + '.directions'))
         {
             // create direction variables if needed
             if(jsFrontend.agenda.directionsService == null) jsFrontend.agenda.directionsService = new google.maps.DirectionsService();

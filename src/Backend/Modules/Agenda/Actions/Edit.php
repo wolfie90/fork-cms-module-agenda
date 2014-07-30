@@ -172,7 +172,7 @@ class Edit extends BackendBaseActionEdit
 
 		// meta
 		$this->meta = new BackendMeta($this->frm, $this->record['meta_id'], 'title', true);
-		$this->meta->setUrlCallBack('BackendAgendaModel', 'getUrl', array($this->record['id']));
+		$this->meta->setUrlCallBack('Backend\Modules\Agenda\Engine\Model', 'getUrl', array($this->record['id']));
 	}
 
 	/**
