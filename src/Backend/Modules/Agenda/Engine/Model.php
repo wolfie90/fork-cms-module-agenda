@@ -80,8 +80,7 @@ class Model
 		$db = BackendModel::getContainer()->get('database');
 		$item = self::getCategory($id);
 
-		if(!empty($item))
-		{
+		if(!empty($item)) {
 			$db->delete('meta', 'id = ?', array($item['meta_id']));
 			$db->delete('agenda_categories', 'id = ?', array((int) $id));
 			$db->update('agenda', array('category_id' => null), 'category_id = ?', array((int) $id));
@@ -157,8 +156,7 @@ class Model
 	{
 		if(empty($ids)) return;
 
-		foreach($ids as $id)
-		{
+		foreach($ids as $id) {
 			$item = self::getImage($id);
 
 			// delete image reference from db
@@ -182,8 +180,7 @@ class Model
 	{
 		if(empty($ids)) return;
 
-		foreach($ids as $id)
-		{
+		foreach($ids as $id) {
 			$item = self::getFile($id);
 
 			// delete file reference from db
@@ -202,8 +199,7 @@ class Model
 	{
 		if(empty($ids)) return;
 
-		foreach($ids as $id)
-		{			
+		foreach($ids as $id) {			
 			// delete video reference from db
 			BackendModel::getContainer()->get('database')->delete('agenda_videos', 'id = ?', array($id));
 		}
@@ -344,8 +340,7 @@ class Model
 	{
 		$db = BackendModel::getContainer()->get('database');
 
-		if($includeCount)
-		{
+		if($includeCount) {
 			return (array) $db->getPairs(
 				'SELECT i.id, CONCAT(i.title, " (",  COUNT(p.category_id) ,")") AS title
 				 FROM agenda_categories AS i
@@ -576,8 +571,7 @@ class Model
 		$db = BackendModel::getContainer()->get('database');
 
 		// new item
-		if($id === null)
-		{
+		if($id === null) {
 			// already exists
 			if((bool) $db->getVar(
 				'SELECT 1
@@ -590,10 +584,8 @@ class Model
 				$url = BackendModel::addNumber($url);
 				return self::getURL($url);
 			}
-		}
-		// current item should be excluded
-		else
-		{
+		} else {
+			// current item should be excluded
 			// already exists
 			if((bool) $db->getVar(
 				'SELECT 1
@@ -624,8 +616,7 @@ class Model
 		$db = BackendModel::getContainer()->get('database');
 
 		// new category
-		if($id === null)
-		{
+		if($id === null) {
 			if((bool) $db->getVar(
 				'SELECT 1
 				 FROM agenda_categories AS i
@@ -637,10 +628,8 @@ class Model
 				$url = BackendModel::addNumber($url);
 				return self::getURLForCategory($url);
 			}
-		}
-		// current category should be excluded
-		else
-		{
+		} else {
+			// current category should be excluded
 			if((bool) $db->getVar(
 				'SELECT 1
 				 FROM agenda_categories AS i
@@ -900,9 +889,7 @@ class Model
 		array('subscribed', BL::getWorkingLanguage())
 	    );
     
-	    foreach($ids as $id)
-	    {
-    
+	    foreach($ids as $id) {
 		// get count
 		$count = (isset($subscriptionCounts[$id])) ? (int) $subscriptionCounts[$id] : 0;
     
@@ -922,14 +909,10 @@ class Model
 	public static function saveFile(array $item)
 	{
 		// update file
-		if(isset($item['id']) && self::existsFile($item['id']))
-		{
+		if(isset($item['id']) && self::existsFile($item['id'])) {
 			self::updateFile($item);
-		}
-		
-		// insert file
-		else
-		{
+		} else {
+			// insert file
 			$item['id'] = self::insertFile($item);
 		}
 
@@ -946,14 +929,10 @@ class Model
 	public static function saveVideo(array $item)
 	{
 		// update video
-		if(isset($item['id']) && self::existsVideo($item['id']))
-		{
+		if(isset($item['id']) && self::existsVideo($item['id'])) {
 			self::updateVideo($item);
-		}
-		
-		// insert video
-		else
-		{
+		} else {
+			// insert video
 			$item['id'] = self::insertVideo($item);
 		}
 
@@ -967,12 +946,9 @@ class Model
 	 */
 	public static function saveImage(array $item)
 	{
-		if(isset($item['id']) && self::existsImage($item['id']))
-		{
+		if(isset($item['id']) && self::existsImage($item['id'])) {
 			self::updateImage($item);
-		}
-		else
-		{
+		} else {
 			$item['id'] = self::insertImage($item);
 		}
 

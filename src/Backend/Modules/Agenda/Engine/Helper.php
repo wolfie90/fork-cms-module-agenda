@@ -38,16 +38,13 @@ class Helper
 		// source path
 		$pathSource = $path . '/source';
 
-		try
-		{
+		try {
 			// move image
 			$success[] = $filefield->moveFile($pathSource . '/' . $filename);
 
 			// (re)size the image
 			self::generateImages($path, $filename, $formats);
-		}
-		catch(Exception $e)
-		{
+		} catch(Exception $e) {
 			throw new \SpoonException($e->getMessage());
 		}
 
@@ -75,11 +72,9 @@ class Helper
 		$pathSource = $path . '/source';
 
 		// formats found
-		if(!empty($formats))
-		{
+		if(!empty($formats)) {
 			// loop the formats
-			foreach($formats as $format)
-			{
+			foreach($formats as $format) {
 				// create the path for this project
 				if(!\SpoonDirectory::exists($path . '/' . $format['size'])) \SpoonDirectory::create($path . '/' . $format['size']);
 
@@ -134,10 +129,8 @@ class Helper
 
 		preg_match_all('/public static function (.*)\((.*)\)/', $helperFileContents, $matches);
 
-		if(isset($matches[1]) && !empty($matches[1]))
-		{
-			foreach($matches[1] as $key => $method)
-			{
+		if(isset($matches[1]) && !empty($matches[1])) {
+			foreach($matches[1] as $key => $method) {
 				$results[$key]['class'] = 'Frontend' . \SpoonFilter::toCamelCase($module) . 'SlideshowsModel';
 				$results[$key]['methods'][] = $method;
 			}
@@ -158,14 +151,10 @@ class Helper
 
 		$results = array();
 
-		foreach($methods as $key => $item)
-		{
-			if(is_array($item))
-			{
-				if(isset($item['methods']))
-				{
-					foreach($item['methods'] as $key => $value)
-					{
+		foreach($methods as $key => $item) {
+			if(is_array($item)) {
+				if(isset($item['methods'])) {
+					foreach($item['methods'] as $key => $value) {
 						$results[$item['class']][$item['class'] . '::' . $value] = $value . '()';
 					}
 				}
@@ -186,16 +175,12 @@ class Helper
 		$methods = self::getSupportedMethodsByModule($module);
 		$results = '';
 
-		foreach($methods as $key => $item)
-		{
-			if(is_array($item))
-			{
-				if(isset($item['methods']))
-				{
+		foreach($methods as $key => $item) {
+			if(is_array($item)) {
+				if(isset($item['methods'])) {
 					$results .= '<optgroup label="' . $item['class'] . '">' . PHP_EOL;
 
-					foreach($item['methods'] as $key => $value)
-					{
+					foreach($item['methods'] as $key => $value) {
 						$results .= '<option value="' . $item['class'] . '::' . $value . '">' . $value . '()' . '</option>' . PHP_EOL;
 					}
 
@@ -217,8 +202,7 @@ class Helper
 		$results = array();
 		$modules = self::getModules();
 
-		if(!empty($modules))
-		{
+		if(!empty($modules)) {
 			// add the modules to the results
 			foreach($modules as $module) $results[$module] = $module;
 
@@ -239,8 +223,7 @@ class Helper
 		$camelcasedModule = \SpoonFilter::toCamelCase($module);
 		$helperFile = FRONTEND_MODULES_PATH . '/' . $module . '/engine/slideshows.php';
 
-		if(!\SpoonFile::exists($helperFile))
-		{
+		if(!\SpoonFile::exists($helperFile)) {
 			$content = '<?php
 						class Frontend' . $camelcasedModule . 'SlideshowsModel
 						{
