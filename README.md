@@ -1,7 +1,7 @@
 # Module: Agenda
 
 Agenda is a module for [Fork CMS](http://www.fork-cms.com).
-It let´s you manage events on your website.
+It lets you manage events on your website.
 Your visitors can view and subscribe to events.
 The module is based on the original events module of [Wouter Verstuyf](https://github.com/wouterverstuyf/forkcms-events-module).
 
