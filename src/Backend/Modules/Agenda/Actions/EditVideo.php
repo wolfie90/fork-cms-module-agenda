@@ -22,21 +22,21 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  */
 class EditVideo extends BackendBaseActionEdit
 {
-    /**
+	/**
 	 * The id of the file
 	 *
 	 * @var	array
 	 */
 	protected $id;
 
-    /**
+	/**
 	 * The id of the item
 	 *
 	 * @var	array
 	 */
 	private $itemId;
 
-    /**
+	/**
 	 * The file record
 	 *
 	 * @var	array

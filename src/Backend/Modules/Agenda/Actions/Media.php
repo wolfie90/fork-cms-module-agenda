@@ -38,11 +38,11 @@ class Media extends BackendBaseActionIndex
 	 */
 	private $id;
     
-	    /**
-	     * Datagrid with published items
-	     *
-	     * @var	SpoonDataGrid
-	     */
+	/**
+	 * Datagrid with published items
+	 *
+	 * @var	SpoonDataGrid
+	 */
 	private $dgImages, $dgFiles, $dgVideos;
 
 	/**
@@ -117,32 +117,32 @@ class Media extends BackendBaseActionIndex
 	 */
 	protected function loadDataGridFiles()
 	{
-      // create files datagrid
-      $this->dgFiles = new BackendDataGridDB(BackendAgendaModel::QRY_DATAGRID_BROWSE_FILES, $this->id);
+		// create files datagrid
+		$this->dgFiles = new BackendDataGridDB(BackendAgendaModel::QRY_DATAGRID_BROWSE_FILES, $this->id);
+		  
+		$this->dgFiles->setAttributes(array('class' => 'dataGrid sequenceByDragAndDrop'));
+		$this->dgFiles->setAttributes(array('id' => 'agenda_files_dg'));
+		$this->dgFiles->setAttributes(array('data-action' => 'sequence_files'));
+	      
+		$this->dgFiles->setColumnHidden('sequence');
+		$this->dgFiles->setColumnHidden('agenda_id');
+	    
+		$this->dgFiles->addColumn('dragAndDropHandle', null, '<span>' . BL::lbl('Move') . '</span>');
+		$this->dgFiles->setColumnsSequence('dragAndDropHandle');
+		$this->dgFiles->setColumnAttributes('dragAndDropHandle', array('class' => 'dragAndDropHandle'));
+	      
+		$this->dgFiles->setRowAttributes(array('data-id' => '[id]'));	
+	      
+		$this->dgFiles->setSortingColumns(array('title', 'sequence'), 'sequence');
+		$this->dgFiles->setSortParameter('asc');
 	
-      $this->dgFiles->setAttributes(array('class' => 'dataGrid sequenceByDragAndDrop'));
-      $this->dgFiles->setAttributes(array('id' => 'agenda_files_dg'));
-	  $this->dgFiles->setAttributes(array('data-action' => 'sequence_files'));
-      
-	  $this->dgFiles->setColumnHidden('sequence');
-	  $this->dgFiles->setColumnHidden('agenda_id');
-      
-	  $this->dgFiles->addColumn('dragAndDropHandle', null, '<span>' . BL::lbl('Move') . '</span>');
-      $this->dgFiles->setColumnsSequence('dragAndDropHandle');
-      $this->dgFiles->setColumnAttributes('dragAndDropHandle', array('class' => 'dragAndDropHandle'));
-      
-	  $this->dgFiles->setRowAttributes(array('data-id' => '[id]'));	
-      
-      $this->dgFiles->setSortingColumns(array('title', 'sequence'), 'sequence');
-      $this->dgFiles->setSortParameter('asc');
-
-      $this->dgFiles->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_file') . '&amp;id=[id]&amp;agenda_id=[agenda_id]', BL::lbl('Edit'));
-	  $this->dgFiles->addColumn('checkbox', '<span class="checkboxHolder block"><input type="checkbox" name="toggleChecks" value="toggleChecks" />', '<input type="checkbox" name="id[]" value="[id]" class="inputCheckbox" /></span>');
-      $this->dgFiles->setColumnsSequence('checkbox');
-      
-      $ddmMassAction = new \SpoonFormDropdown('action', array('deleteFiles' => BL::lbl('Delete')), 'deleteFiles');
-      $this->dgFiles->setMassAction($ddmMassAction);
-	  $this->dgFiles->setColumnAttributes('title', array('data-id' => '{id:[id]}'));
+		$this->dgFiles->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_file') . '&amp;id=[id]&amp;agenda_id=[agenda_id]', BL::lbl('Edit'));
+		$this->dgFiles->addColumn('checkbox', '<span class="checkboxHolder block"><input type="checkbox" name="toggleChecks" value="toggleChecks" />', '<input type="checkbox" name="id[]" value="[id]" class="inputCheckbox" /></span>');
+		$this->dgFiles->setColumnsSequence('checkbox');
+	      
+		$ddmMassAction = new \SpoonFormDropdown('action', array('deleteFiles' => BL::lbl('Delete')), 'deleteFiles');
+		$this->dgFiles->setMassAction($ddmMassAction);
+		$this->dgFiles->setColumnAttributes('title', array('data-id' => '{id:[id]}'));
 	}
 
 	/**
@@ -150,32 +150,32 @@ class Media extends BackendBaseActionIndex
 	 */
 	protected function loadDataGridVideos()
 	{
-      // create videos datagrid
-      $this->dgVideos = new BackendDataGridDB(BackendAgendaModel::QRY_DATAGRID_BROWSE_VIDEOS, $this->id);
-	
-      $this->dgVideos->setAttributes(array('class' => 'dataGrid sequenceByDragAndDrop'));
-      $this->dgVideos->setAttributes(array('id' => 'agenda_videos_dg'));
-	  $this->dgVideos->setAttributes(array('data-action' => 'sequence_videos'));
-      
-	  $this->dgVideos->setColumnHidden('sequence');
-	  $this->dgVideos->setColumnHidden('agenda_id');
-      
-	  $this->dgVideos->addColumn('dragAndDropHandle', null, '<span>' . BL::lbl('Move') . '</span>');
-      $this->dgVideos->setColumnsSequence('dragAndDropHandle');
-      $this->dgVideos->setColumnAttributes('dragAndDropHandle', array('class' => 'dragAndDropHandle'));
-      
-	  $this->dgVideos->setRowAttributes(array('data-id' => '[id]'));	
-      
-      $this->dgVideos->setSortingColumns(array('title', 'sequence'), 'sequence');
-      $this->dgVideos->setSortParameter('asc');
-
-      $this->dgVideos->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_video') . '&amp;id=[id]&amp;agenda_id=[agenda_id]', BL::lbl('Edit'));
-      $this->dgVideos->addColumn('checkbox', '<span class="checkboxHolder block"><input type="checkbox" name="toggleChecks" value="toggleChecks" />', '<input type="checkbox" name="id[]" value="[id]" class="inputCheckbox" /></span>');
-      $this->dgVideos->setColumnsSequence('checkbox');
-      
-      $ddmMassAction = new \SpoonFormDropdown('action', array('deleteVideos' => BL::lbl('Delete')), 'deleteVideos');
-      $this->dgVideos->setMassAction($ddmMassAction);
-	  $this->dgVideos->setColumnAttributes('title', array('data-id' => '{id:[id]}'));
+		// create videos datagrid
+		$this->dgVideos = new BackendDataGridDB(BackendAgendaModel::QRY_DATAGRID_BROWSE_VIDEOS, $this->id);
+		  
+		$this->dgVideos->setAttributes(array('class' => 'dataGrid sequenceByDragAndDrop'));
+		$this->dgVideos->setAttributes(array('id' => 'agenda_videos_dg'));
+		$this->dgVideos->setAttributes(array('data-action' => 'sequence_videos'));
+		
+		$this->dgVideos->setColumnHidden('sequence');
+		$this->dgVideos->setColumnHidden('agenda_id');
+		
+		$this->dgVideos->addColumn('dragAndDropHandle', null, '<span>' . BL::lbl('Move') . '</span>');
+		$this->dgVideos->setColumnsSequence('dragAndDropHandle');
+		$this->dgVideos->setColumnAttributes('dragAndDropHandle', array('class' => 'dragAndDropHandle'));
+		
+		$this->dgVideos->setRowAttributes(array('data-id' => '[id]'));	
+		
+		$this->dgVideos->setSortingColumns(array('title', 'sequence'), 'sequence');
+		$this->dgVideos->setSortParameter('asc');
+		
+		$this->dgVideos->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_video') . '&amp;id=[id]&amp;agenda_id=[agenda_id]', BL::lbl('Edit'));
+		$this->dgVideos->addColumn('checkbox', '<span class="checkboxHolder block"><input type="checkbox" name="toggleChecks" value="toggleChecks" />', '<input type="checkbox" name="id[]" value="[id]" class="inputCheckbox" /></span>');
+		$this->dgVideos->setColumnsSequence('checkbox');
+		
+		$ddmMassAction = new \SpoonFormDropdown('action', array('deleteVideos' => BL::lbl('Delete')), 'deleteVideos');
+		$this->dgVideos->setMassAction($ddmMassAction);
+		$this->dgVideos->setColumnAttributes('title', array('data-id' => '{id:[id]}'));
 	}
     
 	/**
@@ -186,7 +186,7 @@ class Media extends BackendBaseActionIndex
 		$this->tpl->assign('dataGridImages', ($this->dgImages->getNumResults() != 0) ? $this->dgImages->getContent() : false);
 		$this->tpl->assign('dataGridFiles', ($this->dgFiles->getNumResults() != 0) ? $this->dgFiles->getContent() : false);
 		$this->tpl->assign('dataGridVideos', ($this->dgVideos->getNumResults() != 0) ? $this->dgVideos->getContent() : false);
-        
+	
 		$this->tpl->assign('item', $this->item);
 	}
 }

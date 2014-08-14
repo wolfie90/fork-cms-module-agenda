@@ -114,25 +114,25 @@ class Settings extends BackendBaseActionEdit
 				
 				BackendModel::setModuleSetting($this->URL->getModule(), 'cache_timeout', (bool) $this->frm->getField('cache_timeout')->getValue());
 
-                BackendModel::setModuleSetting($this->URL->getModule(), 'allow_subscriptions', (bool) $this->frm->getField('allow_subscriptions')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'moderation', (bool) $this->frm->getField('moderation')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription_to_moderate', (bool) $this->frm->getField('notify_by_email_on_new_subscription_to_moderate')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription', (bool) $this->frm->getField('notify_by_email_on_new_subscription')->getValue());
-
-                // location
-                // set the base values
-                $width = (int) $this->frm->getField('width')->getValue();
-                $height = (int) $this->frm->getField('height')->getValue();
-
-                if($width > 800) $width = 800;
-                elseif($width < 300) $width = BackendModel::getModuleSetting('agenda', 'width');
-                if($height < 150) $height = BackendModel::getModuleSetting('agenda', 'height');
-
-                // set our settings (widgets)
-                BackendModel::setModuleSetting($this->URL->getModule(), 'zoom_level', (string) $this->frm->getField('zoom_level')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'width', $width);
-                BackendModel::setModuleSetting($this->URL->getModule(), 'height', $height);
-                BackendModel::setModuleSetting($this->URL->getModule(), 'map_type', (string) $this->frm->getField('map_type')->getValue());
+				BackendModel::setModuleSetting($this->URL->getModule(), 'allow_subscriptions', (bool) $this->frm->getField('allow_subscriptions')->getValue());
+				BackendModel::setModuleSetting($this->URL->getModule(), 'moderation', (bool) $this->frm->getField('moderation')->getValue());
+				BackendModel::setModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription_to_moderate', (bool) $this->frm->getField('notify_by_email_on_new_subscription_to_moderate')->getValue());
+				BackendModel::setModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription', (bool) $this->frm->getField('notify_by_email_on_new_subscription')->getValue());
+		
+				// location
+				// set the base values
+				$width = (int) $this->frm->getField('width')->getValue();
+				$height = (int) $this->frm->getField('height')->getValue();
+		
+				if($width > 800) $width = 800;
+				elseif($width < 300) $width = BackendModel::getModuleSetting('agenda', 'width');
+				if($height < 150) $height = BackendModel::getModuleSetting('agenda', 'height');
+		
+				// set our settings (widgets)
+				BackendModel::setModuleSetting($this->URL->getModule(), 'zoom_level', (string) $this->frm->getField('zoom_level')->getValue());
+				BackendModel::setModuleSetting($this->URL->getModule(), 'width', $width);
+				BackendModel::setModuleSetting($this->URL->getModule(), 'height', $height);
+				BackendModel::setModuleSetting($this->URL->getModule(), 'map_type', (string) $this->frm->getField('map_type')->getValue());
 
 				// redirect to the settings page
 				$this->redirect(BackendModel::createURLForAction('settings') . '&report=saved');

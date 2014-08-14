@@ -80,14 +80,12 @@ class Subscriptions extends BackendBaseActionIndex
 		$this->dgModeration->setMassAction($ddmMassAction);
 
 		// check if this action is allowed
-		if(BackendAuthentication::isAllowedAction('edit_subscription'))
-		{
+		if(BackendAuthentication::isAllowedAction('edit_subscription')) {
 			$this->dgModeration->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_subscription') . '&amp;id=[id]', BL::lbl('Edit'));
 		}
 
 		// check if this action is allowed
-		if(BackendAuthentication::isAllowedAction('mass_subscriptions_action'))
-		{
+		if(BackendAuthentication::isAllowedAction('mass_subscriptions_action')) {
 			$this->dgModeration->addColumn('approve', null, BL::lbl('Approve'), BackendModel::createURLForAction('mass_subscriptions_action') . '&amp;id=[id]&amp;from=subscribed&amp;action=subscribed', BL::lbl('Approve'));
 		}
 
@@ -121,11 +119,10 @@ class Subscriptions extends BackendBaseActionIndex
 		$ddmMassAction->setOptionAttributes('delete', array('data-message-id' => 'confirmDeleteSubscribed'));
 		$this->dgSubscribed->setMassAction($ddmMassAction);
 
-        // check if this action is allowed
-        if(BackendAuthentication::isAllowedAction('edit_subscription'))
-        {
-            $this->dgSubscribed->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_subscription') . '&amp;id=[id]', BL::lbl('Edit'));
-        }
+		// check if this action is allowed
+		if(BackendAuthentication::isAllowedAction('edit_subscription')) {
+		    $this->dgSubscribed->addColumn('edit', null, BL::lbl('Edit'), BackendModel::createURLForAction('edit_subscription') . '&amp;id=[id]', BL::lbl('Edit'));
+		}
 	}
 
 	/**

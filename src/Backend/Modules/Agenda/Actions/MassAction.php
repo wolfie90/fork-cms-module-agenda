@@ -33,8 +33,7 @@ class MassAction extends BackendBaseAction
 		if(!isset($_GET['id'])) $this->redirect(BackendModel::createURLForAction('index') . '&error=no-selection');
 		
 		// at least one id
-		else
-		{
+		else {
 			// redefine id's
 			$aIds = (array) $_GET['id'];
 			$agendaID = (int) $_GET['agenda_id'];

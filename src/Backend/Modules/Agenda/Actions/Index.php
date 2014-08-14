@@ -53,15 +53,14 @@ class Index extends BackendBaseActionIndex
 			array('[begin_date]'), 'begin_date', true
 		);
 
-        // reform date
-        $this->dataGrid->setColumnFunction(
-            array(new BackendDataGridFunctions(), 'getLongDate'),
-            array('[end_date]'), 'end_date', true
-        );
-
+		// reform date
+		$this->dataGrid->setColumnFunction(
+			array(new BackendDataGridFunctions(), 'getLongDate'),
+			array('[end_date]'), 'end_date', true
+		);
+	
 		// check if this action is allowed
-		if(BackendAuthentication::isAllowedAction('edit'))
-		{
+		if(BackendAuthentication::isAllowedAction('edit')) {
 			$this->dataGrid->addColumn('media', null, BL::lbl('Media'), BackendModel::createURLForAction('media') . '&amp;id=[id]', BL::lbl('Media'));
 			$this->dataGrid->setColumnFunction(array(__CLASS__, 'setMediaLink'), array('[id]'), 'media');
 			$this->dataGrid->setColumnAttributes('media', array('style' => 'width: 1%;'));
@@ -79,8 +78,8 @@ class Index extends BackendBaseActionIndex
 	public static function setMediaLink($itemId)
 	{
 		return '<a class="button icon iconEdit linkButton" href="' . BackendModel::createURLForAction('media') . '&agenda_id=' . $itemId . '">
-					<span>' . BL::lbl('ManageMedia') . '</span>
-				</a>';
+				<span>' . BL::lbl('ManageMedia') . '</span>
+			</a>';
 	}
 	
 	/**
