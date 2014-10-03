@@ -35,10 +35,10 @@
           </table>
       </div>
    {/option:items}
+
    {option:!items}
        <p class="date">{$msgNoAgenda|ucfirst}.</p>
    {/option:!items}
     </div>
-  </div>
 
 

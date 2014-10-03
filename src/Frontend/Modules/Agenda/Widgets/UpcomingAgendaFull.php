@@ -14,27 +14,27 @@
  */
 class FrontendAgendaWidgetUpcomingAgendaFull extends FrontendBaseWidget
 {
-	/**
-	 * Execute the extra
-	 */
-	public function execute()
-	{
-		parent::execute();
-		$this->loadTemplate();
-		$this->parse();
-	}
+    /**
+     * Execute the extra
+     */
+    public function execute()
+    {
+        parent::execute();
+        $this->loadTemplate();
+        $this->parse();
+    }
 
-	/**
-	 * Parse
-	 */
-	private function parse()
-	{
-		
-		// get agenda (null means unlimited items)
-		$agenda = FrontendAgendaModel::getAllUpcomingAgendaItems(null);
-			
-		// assign agenda
-		$this->tpl->assign('widgetUpcomingAgendaFull', $agenda);
+    /**
+     * Parse
+     */
+    private function parse()
+    {
 
-	}
+        // get agenda (null means unlimited items)
+        $agenda = FrontendAgendaModel::getAllUpcomingAgendaItems(null);
+
+        // assign agenda
+        $this->tpl->assign('widgetUpcomingAgendaFull', $agenda);
+
+    }
 }

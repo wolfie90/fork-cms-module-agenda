@@ -15,7 +15,7 @@ use Frontend\Core\Engine\Navigation as FrontendNavigation;
 use Frontend\Core\Engine\Url as FrontendURL;
 use Frontend\Modules\Agenda\Engine\RecurringAgendaItems as FrontendAgendaRecurringAgendaItems;
 use Frontend\Modules\Tags\Engine\Model as FrontendTagsModel;
- 
+
 /**
  * In this file we generate the recurring agenda
  *
@@ -105,7 +105,7 @@ class RecurringAgendaItems
             if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
             {
                 $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                if( $event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
                 $event['full_url'] = $eventUrl . '/' . $event['url'];
                 $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -187,7 +187,7 @@ class RecurringAgendaItems
                     if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
                     {
                         $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                        if( $event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                        if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
                         $event['full_url'] = $eventUrl . '/' . $event['url'];
                         $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -273,7 +273,7 @@ class RecurringAgendaItems
             if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
             {
                 $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                if( $event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
                 $event['full_url'] = $eventUrl . '/' . $event['url'];
                 $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -304,7 +304,7 @@ class RecurringAgendaItems
                     break;
             }
 
-           $i++;
+            $i++;
         }
 
         return $events;
@@ -346,7 +346,7 @@ class RecurringAgendaItems
             if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
             {
                 $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                if( $event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
                 $event['full_url'] = $eventUrl . '/' . $event['url'];
                 $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 

@@ -2,30 +2,21 @@
   variables that are available:
   - {$items}: contains all agenda
   - {$wholeday}: whole day agenda bool (yes/no)
+  - {$timestamp}: current day timestamp
 *}
-
-{*{$items|dump}*}
 
 <article class="full blogDetail">
     <div class="blogDetailTitle">
         <h3>{$lblUpcomingAgendaItems|ucfirst}</h3>
     </div>
     <div class="centered">
-
         <p><a href="?timestamp={$timestamp}&amp;view=day">{$lblToday|ucfirst}</a></p>
-
         <p><a href="?timestamp={$timestamp}&amp;view=month">{$lblMonth|ucfirst}</a></p>
-
         <p><a href="?timestamp={$timestamp}&amp;view=week">{$lblWeek|ucfirst}</a></p>
-
         <p><a href="?timestamp={$timestamp}&amp;view=day">{$lblDay|ucfirst}</a></p>
-
         <p><a href="{$prevUrl}">{$lblPrevious|ucfirst} {$viewLabel|lowercase}</a></p>
-
         <p><a href="{$nextUrl}">{$lblNext|ucfirst} {$viewLabel|lowercase}</a></p>
-
         <p>{$viewLabel|ucfirst}: {$viewTitle|ucfirst}</p>
-
         <div id="data-agenda">
             {option:items}
                 <div class="agendaItems">

@@ -42,7 +42,7 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
     }
 
     /**
-     * Calculate timespan of view
+     * Calculate time span of view
      *
      * @param string $view
      * @param int $timestamp
@@ -53,7 +53,7 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
         $timespan = array();
 
         // calculate start and end timestamps
-        switch($view)
+        switch ($view)
         {
             case "month":
                 $beginTimestamp = strtotime(gmdate('Y-M', $timestamp) . '-01 00:00:00');

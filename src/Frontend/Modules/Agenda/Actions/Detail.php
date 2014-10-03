@@ -27,35 +27,35 @@ class Detail extends FrontendBaseBlock
     /**
      * The record
      *
-     * @var	array
+     * @var    array
      */
     private $record;
 
     /**
      * The location
      *
-     * @var	array
+     * @var    array
      */
     private $location;
 
     /**
-     * Begindate
+     * Begin date
      *
-     * @var	array
+     * @var    array
      */
     private $beginDate;
 
     /**
-     * Enddate
+     * End date
      *
-     * @var	array
+     * @var    array
      */
     private $endDate;
-    
+
     /**
      * Media
      *
-     * @var	array
+     * @var    array
      */
     private $images, $videos, $files;
 
@@ -67,179 +67,177 @@ class Detail extends FrontendBaseBlock
     private $frm;
 
     /**
-    * The settings
-    *
-    * @var	array
-    */
+     * The settings
+     *
+     * @var    array
+     */
     private $settings, $locationSettings;
 
-	/**
-	 * Execute the action
-	 */
-	public function execute()
-	{
-            $this->addJS('http://maps.google.com/maps/api/js?sensor=true', true, false);
-        
-            parent::execute();
-        
-            $this->tpl->assign('hideContentTitle', true);
-            $this->loadTemplate();
-            $this->getData();
-            $this->loadForm();
-            $this->validateForm();
-            $this->parse();
-	}
+    /**
+     * Execute the action
+     */
+    public function execute()
+    {
+        $this->addJS('http://maps.google.com/maps/api/js?sensor=true', true, false);
 
-	/**
-	 * Get the data
-	 */
-	private function getData()
-	{
-            // validate incoming parameters
-            if($this->URL->getParameter(1) === null) $this->redirect(FrontendNavigation::getURL(404));
-                            
-            // get record
-            $this->record = FrontendAgendaModel::get($this->URL->getParameter(1));
+        parent::execute();
 
-            // check if record is not empty
-            if(empty($this->record)) $this->redirect(FrontendNavigation::getURL(404));
+        $this->tpl->assign('hideContentTitle', true);
+        $this->loadTemplate();
+        $this->getData();
+        $this->loadForm();
+        $this->validateForm();
+        $this->parse();
+    }
 
-            // if parameters given - select parameters, else set original date
-            $this->beginDate = date('Y-m-d H:i', $this->URL->getParameter('begindate'));
-            $this->endDate = date('Y-m-d H:i', $this->URL->getParameter('enddate'));
+    /**
+     * Get the data
+     */
+    private function getData()
+    {
+        // validate incoming parameters
+        if ($this->URL->getParameter(1) === null) $this->redirect(FrontendNavigation::getURL(404));
 
-            // settings
-            $this->settings = FrontendModel::getModuleSettings('Agenda');
+        // get record
+        $this->record = FrontendAgendaModel::get($this->URL->getParameter(1));
 
-            // media
-            $this->images = FrontendAgendaModel::getImages($this->record['id'], $this->settings);
-            $this->files = FrontendAgendaModel::getFiles($this->record['id']);
-            $this->videos = FrontendAgendaModel::getVideos($this->record['id']);
+        // check if record is not empty
+        if (empty($this->record)) $this->redirect(FrontendNavigation::getURL(404));
 
-            $this->record['allow_subscriptions'] = ($this->record['allow_subscriptions'] == 'Y');
-    
-            // location
-            $this->settings['center']['lat'] = $this->record['lat'];
-            $this->settings['center']['lng'] = $this->record['lng'];
-            $this->settings['maps_url'] = FrontendAgendaModel::buildUrl($this->settings, array($this->record));
-	}
+        // if parameters given - select parameters, else set original date
+        $this->beginDate = date('Y-m-d H:i', $this->URL->getParameter('begindate'));
+        $this->endDate = date('Y-m-d H:i', $this->URL->getParameter('enddate'));
 
-        /**
-         * Load the form
-         */
-        private function loadForm()
+        // settings
+        $this->settings = FrontendModel::getModuleSettings('Agenda');
+
+        // media
+        $this->images = FrontendAgendaModel::getImages($this->record['id'], $this->settings);
+        $this->files = FrontendAgendaModel::getFiles($this->record['id']);
+        $this->videos = FrontendAgendaModel::getVideos($this->record['id']);
+
+        $this->record['allow_subscriptions'] = ($this->record['allow_subscriptions'] == 'Y');
+
+        // location
+        $this->settings['center']['lat'] = $this->record['lat'];
+        $this->settings['center']['lng'] = $this->record['lng'];
+        $this->settings['maps_url'] = FrontendAgendaModel::buildUrl($this->settings, array($this->record));
+    }
+
+    /**
+     * Load the form
+     */
+    private function loadForm()
+    {
+        // create form
+        $this->frm = new FrontendForm('subscriptionsForm');
+        $this->frm->setAction($this->frm->getAction() . '#' . FL::act('Subscribe'));
+
+        // init vars
+        $name = (Cookie::exists('subscription_author')) ? Cookie::get('subscription_author') : null;
+        $email = (Cookie::exists('subscription_email') && \SpoonFilter::isEmail(Cookie::get('subscription_email'))) ? Cookie::get('subscription_email') : null;
+
+        // create elements
+        $this->frm->addText('name', $name)->setAttributes(array('required' => null));
+        $this->frm->addText('email', $email)->setAttributes(array('required' => null, 'type' => 'email'));
+    }
+
+    /**
+     * Parse the page
+     */
+    protected function parse()
+    {
+        // build Facebook  OpenGraph data
+        $this->header->addOpenGraphData('title', $this->record['meta_title'], true);
+        $this->header->addOpenGraphData('type', 'article', true);
+        $this->header->addOpenGraphData(
+            'url',
+            SITE_URL . FrontendNavigation::getURLForBlock('agenda', 'detail') . '/' . $this->record['url'],
+            true
+        );
+        $this->header->addOpenGraphData(
+            'site_name',
+            FrontendModel::getModuleSetting('core', 'site_title_' . FRONTEND_LANGUAGE, SITE_DEFAULT_TITLE),
+            true
+        );
+        $this->header->addOpenGraphData('description', $this->record['meta_title'], true);
+
+        // add into breadcrumb
+        $this->breadcrumb->addElement($this->record['meta_title']);
+
+        // hide action title
+        $this->tpl->assign('hideContentTitle', true);
+
+        // show title linked with the meta title
+        $this->tpl->assign('title', $this->record['title']);
+
+        // set meta
+        $this->header->setPageTitle($this->record['meta_title'], ($this->record['meta_description_overwrite'] == 'Y'));
+        $this->header->addMetaDescription($this->record['meta_description'], ($this->record['meta_description_overwrite'] == 'Y'));
+        $this->header->addMetaKeywords($this->record['meta_keywords'], ($this->record['meta_keywords_overwrite'] == 'Y'));
+
+        // advanced SEO-attributes
+        if (isset($this->record['meta_data']['seo_index']))
         {
-            // create form
-            $this->frm = new FrontendForm('subscriptionsForm');
-            $this->frm->setAction($this->frm->getAction() . '#' . FL::act('Subscribe'));
-    
-            // init vars
-            $name = (Cookie::exists('subscription_author')) ? Cookie::get('subscription_author') : null;
-            $email = (Cookie::exists('subscription_email') && \SpoonFilter::isEmail(Cookie::get('subscription_email'))) ? Cookie::get('subscription_email') : null;
-    
-            // create elements
-            $this->frm->addText('name', $name)->setAttributes(array('required' => null));
-            $this->frm->addText('email', $email)->setAttributes(array('required' => null, 'type' => 'email'));
+            $this->header->addMetaData(
+                array('name' => 'robots', 'content' => $this->record['meta_data']['seo_index'])
+            );
+        }
+        if (isset($this->record['meta_data']['seo_follow']))
+        {
+            $this->header->addMetaData(
+                array('name' => 'robots', 'content' => $this->record['meta_data']['seo_follow'])
+            );
         }
 
-	/**
-	 * Parse the page
-	 */
-	protected function parse()
-	{
-            // build Facebook  OpenGraph data
-            $this->header->addOpenGraphData('title', $this->record['meta_title'], true);
-            $this->header->addOpenGraphData('type', 'article', true);
-            $this->header->addOpenGraphData(
-                    'url',
-                    SITE_URL . FrontendNavigation::getURLForBlock('agenda', 'detail') . '/' . $this->record['url'],
-                    true
-            );
-            $this->header->addOpenGraphData(
-                    'site_name',
-                    FrontendModel::getModuleSetting('core', 'site_title_' . FRONTEND_LANGUAGE, SITE_DEFAULT_TITLE),
-                    true
-            );
-            $this->header->addOpenGraphData('description', $this->record['meta_title'], true);
+        // add css
+        $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/agenda.css');
 
-            // add into breadcrumb
-            $this->breadcrumb->addElement($this->record['meta_title']);
+        $this->tpl->assign("dateFormat", "d M");
 
-            // hide action title
-            $this->tpl->assign('hideContentTitle', true);
+        // assign item
+        $this->tpl->assign('item', $this->record);
 
-            // show title linked with the meta title
-            $this->tpl->assign('title', $this->record['title']);
+        // dates
+        $this->tpl->assign('beginDate', $this->beginDate);
+        $this->tpl->assign('endDate', $this->endDate);
 
-            // set meta
-            $this->header->setPageTitle($this->record['meta_title'], ($this->record['meta_description_overwrite'] == 'Y'));
-            $this->header->addMetaDescription($this->record['meta_description'], ($this->record['meta_description_overwrite'] == 'Y'));
-            $this->header->addMetaKeywords($this->record['meta_keywords'], ($this->record['meta_keywords_overwrite'] == 'Y'));
+        // media
+        $this->tpl->assign('images', $this->images);
+        $this->tpl->assign('files', $this->files);
+        $this->tpl->assign('videos', $this->videos);
 
-            // advanced SEO-attributes
-            if(isset($this->record['meta_data']['seo_index']))
-            {
-                    $this->header->addMetaData(
-                            array('name' => 'robots', 'content' => $this->record['meta_data']['seo_index'])
-                    );
-            }
-            if(isset($this->record['meta_data']['seo_follow']))
-            {
-                    $this->header->addMetaData(
-                            array('name' => 'robots', 'content' => $this->record['meta_data']['seo_follow'])
-                    );
-            }
-            
-            // add css
-	    $this->header->addCSS('/src/Frontend/Modules/' . $this->getModule() . '/Layout/Css/agenda.css');
-            
-            $this->tpl->assign("dateFormat", "d M");
+        // parse the form
+        $this->frm->parse($this->tpl);
 
-            // assign item
-            $this->tpl->assign('item', $this->record);
-            
-            // dates
-            $this->tpl->assign('beginDate', $this->beginDate);
-            $this->tpl->assign('endDate', $this->endDate);
-            
-            // media
-            $this->tpl->assign('images', $this->images);
-            $this->tpl->assign('files', $this->files);
-            $this->tpl->assign('videos', $this->videos);
+        // some options
+        if ($this->URL->getParameter('subscription', 'string') == 'moderation') $this->tpl->assign('subscriptionIsInModeration', true);
+        if ($this->URL->getParameter('subscription', 'string') == 'true') $this->tpl->assign('subscriptionIsAdded', true);
 
-            // parse the form
-            $this->frm->parse($this->tpl);
-    
-            // some options
-            if($this->URL->getParameter('subscription', 'string') == 'moderation') $this->tpl->assign('subscriptionIsInModeration', true);
-            if($this->URL->getParameter('subscription', 'string') == 'true') $this->tpl->assign('subscriptionIsAdded', true);
-    
-            // location
-            $location = array();
-    
-            if(!empty($this->record['name']))  $location['name'] = $this->record['name'];
-            if(!empty($this->record['street']))  $location['street'] = $this->record['street'];
-            if(!empty($this->record['number']))  $location['number'] = $this->record['number'];
-            if(!empty($this->record['zip']))  $location['zip'] = $this->record['zip'];
-            if(!empty($this->record['city']))  $location['city'] = $this->record['city'];
-    
-            // show google maps
-            if($this->record['google_maps'] == 'Y')
-            {
-                $this->addJSData('settings_' . $this->record['id'], $this->settings);
-                $this->addJSData('items_' . $this->record['id'], array($this->record));
-    
-                $this->tpl->assign('location', $this->record);
-                $this->tpl->assign('googlemaps', $this->record['google_maps']);
-                $this->tpl->assign('locationSettings', $this->settings);
-            }
-    
-            // show location info when available
-            else if(!empty($location))
-            {
-                $this->tpl->assign('location', $location);
-            }
-	}
+        // location
+        $location = array();
+
+        if (!empty($this->record['name'])) $location['name'] = $this->record['name'];
+        if (!empty($this->record['street'])) $location['street'] = $this->record['street'];
+        if (!empty($this->record['number'])) $location['number'] = $this->record['number'];
+        if (!empty($this->record['zip'])) $location['zip'] = $this->record['zip'];
+        if (!empty($this->record['city'])) $location['city'] = $this->record['city'];
+
+        // show google maps
+        if ($this->record['google_maps'] == 'Y')
+        {
+            $this->addJSData('settings_' . $this->record['id'], $this->settings);
+            $this->addJSData('items_' . $this->record['id'], array($this->record));
+
+            $this->tpl->assign('location', $this->record);
+            $this->tpl->assign('googlemaps', $this->record['google_maps']);
+            $this->tpl->assign('locationSettings', $this->settings);
+        } // show location info when available
+        else if (!empty($location))
+        {
+            $this->tpl->assign('location', $location);
+        }
+    }
 
     /**
      * Validate the form
@@ -250,22 +248,22 @@ class Detail extends FrontendBaseBlock
         $subscriptionsAllowed = (isset($this->settings['allow_subscriptions']) && $this->settings['allow_subscriptions']);
 
         // subscriptions aren't allowed so we don't have to validate
-        if(!$subscriptionsAllowed) return false;
+        if (!$subscriptionsAllowed) return false;
 
         // is the form submitted
-        if($this->frm->isSubmitted())
+        if ($this->frm->isSubmitted())
         {
             // cleanup the submitted fields, ignore fields that were added by hackers
             $this->frm->cleanupFields();
 
             // does the key exists?
-            if(\SpoonSession::exists('agenda_subscription_' . $this->record['id']))
+            if (\SpoonSession::exists('agenda_subscription_' . $this->record['id']))
             {
                 // calculate difference
-                $diff = time() - (int) \SpoonSession::get('agenda_subscription_' . $this->record['id']);
+                $diff = time() - (int)\SpoonSession::get('agenda_subscription_' . $this->record['id']);
 
                 // calculate difference, it it isn't 10 seconds the we tell the user to slow down
-                if($diff < 10 && $diff != 0) $this->frm->getField('message')->addError(FL::err('CommentTimeout'));
+                if ($diff < 10 && $diff != 0) $this->frm->getField('message')->addError(FL::err('CommentTimeout'));
             }
 
             // validate required fields
@@ -273,7 +271,7 @@ class Detail extends FrontendBaseBlock
             $this->frm->getField('email')->isEmail(FL::err('EmailIsRequired'));
 
             // no errors?
-            if($this->frm->isCorrect())
+            if ($this->frm->isCorrect())
             {
                 // get module setting
                 $moderationEnabled = (isset($this->settings['moderation']) && $this->settings['moderation']);
@@ -295,10 +293,10 @@ class Detail extends FrontendBaseBlock
                 $redirectLink = $permaLink;
 
                 // is moderation enabled
-                if($moderationEnabled)
+                if ($moderationEnabled)
                 {
                     // if the commenter isn't moderated before alter the subscription status so it will appear in the moderation queue
-                    if(!FrontendAgendaModel::isModerated($name, $email)) $subscription['status'] = 'moderation';
+                    if (!FrontendAgendaModel::isModerated($name, $email)) $subscription['status'] = 'moderation';
                 }
 
                 // insert comment
@@ -308,15 +306,14 @@ class Detail extends FrontendBaseBlock
                 FrontendModel::triggerEvent('agenda', 'after_add_subscription', array('subscription' => $subscription));
 
                 // append a parameter to the URL so we can show moderation
-                if(strpos($redirectLink, '?') === false)
+                if (strpos($redirectLink, '?') === false)
                 {
-                    if($subscription['status'] == 'moderation') $redirectLink .= '?subscription=moderation#' . FL::act('Subscribe');
-                    if($subscription['status'] == 'subscribed') $redirectLink .= '?subscription=true#subscription-' . $subscription['id'];
-                }
-                else
+                    if ($subscription['status'] == 'moderation') $redirectLink .= '?subscription=moderation#' . FL::act('Subscribe');
+                    if ($subscription['status'] == 'subscribed') $redirectLink .= '?subscription=true#subscription-' . $subscription['id'];
+                } else
                 {
-                    if($subscription['status'] == 'moderation') $redirectLink .= '&subscription=moderation#' . FL::act('Subscribe');
-                    if($subscription['status'] == 'subscribed') $redirectLink .= '&subscription=true#comment-' . $subscription['id'];
+                    if ($subscription['status'] == 'moderation') $redirectLink .= '&subscription=moderation#' . FL::act('Subscribe');
+                    if ($subscription['status'] == 'subscribed') $redirectLink .= '&subscription=true#comment-' . $subscription['id'];
                 }
 
                 // set title
@@ -334,8 +331,7 @@ class Detail extends FrontendBaseBlock
                 {
                     Cookie::set('subscription_author', $name);
                     Cookie::set('subscription_email', $email);
-                }
-                catch(Exception $e)
+                } catch (Exception $e)
                 {
                     // settings cookies isn't allowed, but because this isn't a real problem we ignore the exception
                 }
