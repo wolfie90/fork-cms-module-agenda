@@ -42,5 +42,5 @@ Visit the [Fork CMS Documentation](http://www.fork-cms.com/community/documentati
 
 Feel free to contribute any time. This can be done in the following ways:
 
-* Raise an [issue] (https://github.com/timvanwolfswinkel/agenda/issues)
-* Send a Pull Request with bug fixes and/or new features
+* Raise an [Issue] (https://github.com/timvanwolfswinkel/agenda/issues)
+* Send a [Pull Request] (https://github.com/timvanwolfswinkel/fork-cms-module-agenda/pulls) with bug fixes and/or new features
