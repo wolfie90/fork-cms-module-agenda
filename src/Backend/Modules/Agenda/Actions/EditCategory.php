@@ -24,7 +24,7 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
 /**
  * This is the edit category action, it will display a form to edit an existing category.
  * @author Tim van Wolfswinkel <tim@webleads.nl>
- * @author Bram De Smyter <braù@bubblefish.be>
+ * @author Bram De Smyter <bram@bubblefish.be>
  */
 class EditCategory extends BackendBaseActionEdit
 {
