@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Modules\Team\Actions;
+namespace Backend\Modules\Agenda\Actions;
 
 /*
  * This file is part of Fork CMS.
@@ -12,7 +12,7 @@ namespace Backend\Modules\Team\Actions;
 use Backend\Core\Engine\Base\ActionDelete as BackendBaseActionDelete;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Language as BL;
-use Backend\Modules\Team\Engine\Model as BackendTeamModel;
+use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  
 /**
  * This action will delete a category.
@@ -29,16 +29,16 @@ class DeleteCategory extends BackendBaseActionDelete
 		$this->id = $this->getParameter('id', 'int');
 
 		// does the item exist
-		if($this->id !== null && BackendTeamModel::existsCategory($this->id))
+		if($this->id !== null && BackendAgendaModel::existsCategory($this->id))
 		{
-			$this->record = (array) BackendTeamModel::getCategory($this->id);
+			$this->record = (array) BackendAgendaModel::getCategory($this->id);
 
-			if(BackendTeamModel::deleteCategoryAllowed($this->id))
+			if(BackendAgendaModel::deleteCategoryAllowed($this->id))
 			{
 				parent::execute();
 
 				// delete item
-				BackendTeamModel::deleteCategory($this->id);
+				BackendAgendaModel::deleteCategory($this->id);
 				BackendModel::triggerEvent($this->getModule(), 'after_delete_category', array('item' => $this->record));
 
 				// category was deleted, so redirect
