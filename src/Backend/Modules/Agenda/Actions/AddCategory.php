@@ -22,7 +22,7 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  
 /**
  * This is the add action, it will display a form to create a new category.
- *
+ * @author Tim van Wolfswinkel <tim@webleads.nl>
  * @author Bram De Smyter <bram@bubblefish.be>
  */
 class AddCategory extends BackendBaseActionAdd
