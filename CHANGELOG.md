@@ -1,3 +1,10 @@
+2.1.1 (xxxx-xx-xx)
+--
+
+Bugfixes:
+
+* Added missing namespaces and code which were throwing exceptions on detail action
+
 2.0.1 (2014-07-30)
 --
 
