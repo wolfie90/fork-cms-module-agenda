@@ -19,6 +19,7 @@ use Backend\Modules\Tags\Engine\Model as BackendTagsModel;
  * In this file we store all generic functions that we will be using in the agenda module
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
+ * @author Bram De Smyter <bram@bubblefish.be>
  */
 class Model
 {
@@ -415,13 +416,21 @@ class Model
 	 * @return	bool
 	 * @param	int $id		The category id to check.
 	 */
-	public static function isCategoryAllowedToBeDeleted($id)
-	{
-		return ! (bool) BackendModel::getContainer()->get('database')->getVar('SELECT COUNT(i.id)
-														FROM agenda AS i
-														WHERE i.category_id = ?',
-														array((int) $id));
-	}
+	 public static function deleteCategoryAllowed($id)
+	 {
+	        // get result
+	        $result = (BackendModel::getContainer()->get('database')->getVar(
+	                'SELECT 1
+	                 FROM agenda AS i
+	                 WHERE i.category_id = ?
+	                 LIMIT 1',
+	                array((int)$id)));
+	
+	        // exception
+	        if (!BackendModel::getModuleSetting('agenda', 'allow_multiple_categories', true) && self::getCategoryCount() == 1) {
+	            return false;
+	        } else return $result;
+	 }
 
 	/**
 	 * Fetch a category
