@@ -109,7 +109,7 @@ class Detail extends FrontendBaseBlock
         $this->endDate = date('Y-m-d H:i', $this->URL->getParameter('enddate'));
 
         // settings
-        $this->settings = FrontendModel::getModuleSettings('Agenda');
+        $this->settings = $this->get('fork.settings')->get('Agenda');
 
         // media
         $this->images = FrontendAgendaModel::getImages($this->record['id'], $this->settings);
