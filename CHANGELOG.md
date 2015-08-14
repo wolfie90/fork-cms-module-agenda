@@ -1,6 +1,10 @@
 2.1.1 (xxxx-xx-xx)
 --
 
+Improvements:
+
+* Code is now PSR2 compliant
+
 Bugfixes:
 
 * Added missing namespaces and code which were throwing exceptions on detail action
