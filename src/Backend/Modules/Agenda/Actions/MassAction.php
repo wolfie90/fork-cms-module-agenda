@@ -20,34 +20,38 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  */
 class MassAction extends BackendBaseAction
 {
-	/**
-	 * Execute the action
-	 */
-	public function execute()
-	{
-		parent::execute();
-		
-		// action to execute
-		$action = SpoonFilter::getGetValue('action', array('deleteImages', 'deleteFiles', 'deleteVideos'), 'delete');
-		
-		if(!isset($_GET['id'])) $this->redirect(BackendModel::createURLForAction('index') . '&error=no-selection');
-		
-		// at least one id
-		else {
-			// redefine id's
-			$aIds = (array) $_GET['id'];
-			$agendaID = (int) $_GET['agenda_id'];
+    /**
+     * Execute the action
+     */
+    public function execute()
+    {
+        parent::execute();
 
-			// delete media
-			if($action == 'deleteImages'){
-				BackendAgendaModel::deleteImage($aIds);
-			} else if($action == 'deleteFiles'){
-				BackendAgendaModel::deleteFile($aIds);
-			} else if($action == 'deleteVideos'){
-				BackendAgendaModel::deleteVideo($aIds);
-			}
-		}
+        // action to execute
+        $action = SpoonFilter::getGetValue('action', array('deleteImages', 'deleteFiles', 'deleteVideos'), 'delete');
 
-		$this->redirect(BackendModel::createURLForAction('media') . '&agenda_id=' . $agendaID . '&report=deleted');
-	}
+        if (!isset($_GET['id'])) {
+            $this->redirect(BackendModel::createURLForAction('index') . '&error=no-selection');
+        } // at least one id
+        else {
+            // redefine id's
+            $aIds = (array)$_GET['id'];
+            $agendaID = (int)$_GET['agenda_id'];
+
+            // delete media
+            if ($action == 'deleteImages') {
+                BackendAgendaModel::deleteImage($aIds);
+            } else {
+                if ($action == 'deleteFiles') {
+                    BackendAgendaModel::deleteFile($aIds);
+                } else {
+                    if ($action == 'deleteVideos') {
+                        BackendAgendaModel::deleteVideo($aIds);
+                    }
+                }
+            }
+        }
+
+        $this->redirect(BackendModel::createURLForAction('media') . '&agenda_id=' . $agendaID . '&report=deleted');
+    }
 }

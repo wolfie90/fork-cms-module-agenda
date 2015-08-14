@@ -96,13 +96,17 @@ class Detail extends FrontendBaseBlock
     private function getData()
     {
         // validate incoming parameters
-        if ($this->URL->getParameter(1) === null) $this->redirect(FrontendNavigation::getURL(404));
+        if ($this->URL->getParameter(1) === null) {
+            $this->redirect(FrontendNavigation::getURL(404));
+        }
 
         // get record
         $this->record = FrontendAgendaModel::get($this->URL->getParameter(1));
 
         // check if record is not empty
-        if (empty($this->record)) $this->redirect(FrontendNavigation::getURL(404));
+        if (empty($this->record)) {
+            $this->redirect(FrontendNavigation::getURL(404));
+        }
 
         // if parameters given - select parameters, else set original date
         $this->beginDate = date('Y-m-d H:i', $this->URL->getParameter('begindate'));
@@ -173,18 +177,18 @@ class Detail extends FrontendBaseBlock
 
         // set meta
         $this->header->setPageTitle($this->record['meta_title'], ($this->record['meta_description_overwrite'] == 'Y'));
-        $this->header->addMetaDescription($this->record['meta_description'], ($this->record['meta_description_overwrite'] == 'Y'));
-        $this->header->addMetaKeywords($this->record['meta_keywords'], ($this->record['meta_keywords_overwrite'] == 'Y'));
+        $this->header->addMetaDescription($this->record['meta_description'],
+            ($this->record['meta_description_overwrite'] == 'Y'));
+        $this->header->addMetaKeywords($this->record['meta_keywords'],
+            ($this->record['meta_keywords_overwrite'] == 'Y'));
 
         // advanced SEO-attributes
-        if (isset($this->record['meta_data']['seo_index']))
-        {
+        if (isset($this->record['meta_data']['seo_index'])) {
             $this->header->addMetaData(
                 array('name' => 'robots', 'content' => $this->record['meta_data']['seo_index'])
             );
         }
-        if (isset($this->record['meta_data']['seo_follow']))
-        {
+        if (isset($this->record['meta_data']['seo_follow'])) {
             $this->header->addMetaData(
                 array('name' => 'robots', 'content' => $this->record['meta_data']['seo_follow'])
             );
@@ -211,21 +215,34 @@ class Detail extends FrontendBaseBlock
         $this->frm->parse($this->tpl);
 
         // some options
-        if ($this->URL->getParameter('subscription', 'string') == 'moderation') $this->tpl->assign('subscriptionIsInModeration', true);
-        if ($this->URL->getParameter('subscription', 'string') == 'true') $this->tpl->assign('subscriptionIsAdded', true);
+        if ($this->URL->getParameter('subscription', 'string') == 'moderation') {
+            $this->tpl->assign('subscriptionIsInModeration', true);
+        }
+        if ($this->URL->getParameter('subscription', 'string') == 'true') {
+            $this->tpl->assign('subscriptionIsAdded', true);
+        }
 
         // location
         $location = array();
 
-        if (!empty($this->record['name'])) $location['name'] = $this->record['name'];
-        if (!empty($this->record['street'])) $location['street'] = $this->record['street'];
-        if (!empty($this->record['number'])) $location['number'] = $this->record['number'];
-        if (!empty($this->record['zip'])) $location['zip'] = $this->record['zip'];
-        if (!empty($this->record['city'])) $location['city'] = $this->record['city'];
+        if (!empty($this->record['name'])) {
+            $location['name'] = $this->record['name'];
+        }
+        if (!empty($this->record['street'])) {
+            $location['street'] = $this->record['street'];
+        }
+        if (!empty($this->record['number'])) {
+            $location['number'] = $this->record['number'];
+        }
+        if (!empty($this->record['zip'])) {
+            $location['zip'] = $this->record['zip'];
+        }
+        if (!empty($this->record['city'])) {
+            $location['city'] = $this->record['city'];
+        }
 
         // show google maps
-        if ($this->record['google_maps'] == 'Y')
-        {
+        if ($this->record['google_maps'] == 'Y') {
             $this->addJSData('settings_' . $this->record['id'], $this->settings);
             $this->addJSData('items_' . $this->record['id'], array($this->record));
 
@@ -233,9 +250,10 @@ class Detail extends FrontendBaseBlock
             $this->tpl->assign('googlemaps', $this->record['google_maps']);
             $this->tpl->assign('locationSettings', $this->settings);
         } // show location info when available
-        else if (!empty($location))
-        {
-            $this->tpl->assign('location', $location);
+        else {
+            if (!empty($location)) {
+                $this->tpl->assign('location', $location);
+            }
         }
     }
 
@@ -248,22 +266,24 @@ class Detail extends FrontendBaseBlock
         $subscriptionsAllowed = (isset($this->settings['allow_subscriptions']) && $this->settings['allow_subscriptions']);
 
         // subscriptions aren't allowed so we don't have to validate
-        if (!$subscriptionsAllowed) return false;
+        if (!$subscriptionsAllowed) {
+            return false;
+        }
 
         // is the form submitted
-        if ($this->frm->isSubmitted())
-        {
+        if ($this->frm->isSubmitted()) {
             // cleanup the submitted fields, ignore fields that were added by hackers
             $this->frm->cleanupFields();
 
             // does the key exists?
-            if (\SpoonSession::exists('agenda_subscription_' . $this->record['id']))
-            {
+            if (\SpoonSession::exists('agenda_subscription_' . $this->record['id'])) {
                 // calculate difference
                 $diff = time() - (int)\SpoonSession::get('agenda_subscription_' . $this->record['id']);
 
                 // calculate difference, it it isn't 10 seconds the we tell the user to slow down
-                if ($diff < 10 && $diff != 0) $this->frm->getField('message')->addError(FL::err('CommentTimeout'));
+                if ($diff < 10 && $diff != 0) {
+                    $this->frm->getField('message')->addError(FL::err('CommentTimeout'));
+                }
             }
 
             // validate required fields
@@ -271,8 +291,7 @@ class Detail extends FrontendBaseBlock
             $this->frm->getField('email')->isEmail(FL::err('EmailIsRequired'));
 
             // no errors?
-            if ($this->frm->isCorrect())
-            {
+            if ($this->frm->isCorrect()) {
                 // get module setting
                 $moderationEnabled = (isset($this->settings['moderation']) && $this->settings['moderation']);
 
@@ -293,10 +312,11 @@ class Detail extends FrontendBaseBlock
                 $redirectLink = $permaLink;
 
                 // is moderation enabled
-                if ($moderationEnabled)
-                {
+                if ($moderationEnabled) {
                     // if the commenter isn't moderated before alter the subscription status so it will appear in the moderation queue
-                    if (!FrontendAgendaModel::isModerated($name, $email)) $subscription['status'] = 'moderation';
+                    if (!FrontendAgendaModel::isModerated($name, $email)) {
+                        $subscription['status'] = 'moderation';
+                    }
                 }
 
                 // insert comment
@@ -306,14 +326,20 @@ class Detail extends FrontendBaseBlock
                 FrontendModel::triggerEvent('agenda', 'after_add_subscription', array('subscription' => $subscription));
 
                 // append a parameter to the URL so we can show moderation
-                if (strpos($redirectLink, '?') === false)
-                {
-                    if ($subscription['status'] == 'moderation') $redirectLink .= '?subscription=moderation#' . FL::act('Subscribe');
-                    if ($subscription['status'] == 'subscribed') $redirectLink .= '?subscription=true#subscription-' . $subscription['id'];
-                } else
-                {
-                    if ($subscription['status'] == 'moderation') $redirectLink .= '&subscription=moderation#' . FL::act('Subscribe');
-                    if ($subscription['status'] == 'subscribed') $redirectLink .= '&subscription=true#comment-' . $subscription['id'];
+                if (strpos($redirectLink, '?') === false) {
+                    if ($subscription['status'] == 'moderation') {
+                        $redirectLink .= '?subscription=moderation#' . FL::act('Subscribe');
+                    }
+                    if ($subscription['status'] == 'subscribed') {
+                        $redirectLink .= '?subscription=true#subscription-' . $subscription['id'];
+                    }
+                } else {
+                    if ($subscription['status'] == 'moderation') {
+                        $redirectLink .= '&subscription=moderation#' . FL::act('Subscribe');
+                    }
+                    if ($subscription['status'] == 'subscribed') {
+                        $redirectLink .= '&subscription=true#comment-' . $subscription['id'];
+                    }
                 }
 
                 // set title
@@ -327,12 +353,10 @@ class Detail extends FrontendBaseBlock
                 \SpoonSession::set('agenda_subscription_' . $this->record['id'], time());
 
                 // store author-data in cookies
-                try
-                {
+                try {
                     Cookie::set('subscription_author', $name);
                     Cookie::set('subscription_email', $email);
-                } catch (Exception $e)
-                {
+                } catch (Exception $e) {
                     // settings cookies isn't allowed, but because this isn't a real problem we ignore the exception
                 }
 

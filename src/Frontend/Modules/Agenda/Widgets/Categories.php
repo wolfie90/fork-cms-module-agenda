@@ -33,13 +33,14 @@ class FrontendAgendaWidgetCategories extends FrontendBaseWidget
         $categories = FrontendAgendaModel::getAllCategories();
 
         // any categories?
-        if (!empty($categories))
-        {
+        if (!empty($categories)) {
             // build link
             $link = FrontendNavigation::getURLForBlock('agenda', 'category');
 
             // loop and reset url
-            foreach ($categories as &$row) $row['url'] = $link . '/' . $row['url'];
+            foreach ($categories as &$row) {
+                $row['url'] = $link . '/' . $row['url'];
+            }
         }
 
         // assign comments

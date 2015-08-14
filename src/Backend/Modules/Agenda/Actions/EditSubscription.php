@@ -31,18 +31,17 @@ class EditSubscription extends BackendBaseActionEdit
         $this->id = $this->getParameter('id', 'int');
 
         // does the item exist
-        if($this->id !== null && BackendAgendaModel::existsSubscription($this->id))
-        {
+        if ($this->id !== null && BackendAgendaModel::existsSubscription($this->id)) {
             parent::execute();
             $this->getData();
             $this->loadForm();
             $this->validateForm();
             $this->parse();
             $this->display();
+        } // no item found, throw an exception, because somebody is fucking with our URL
+        else {
+            $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
         }
-
-        // no item found, throw an exception, because somebody is fucking with our URL
-        else $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
     }
 
     /**
@@ -52,10 +51,12 @@ class EditSubscription extends BackendBaseActionEdit
     private function getData()
     {
         // get the record
-        $this->record = (array) BackendAgendaModel::getSubscription($this->id);
+        $this->record = (array)BackendAgendaModel::getSubscription($this->id);
 
         // no item found, throw an exceptions, because somebody is fucking with our URL
-        if(empty($this->record)) $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
+        if (empty($this->record)) {
+            $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
+        }
     }
 
     /**
@@ -71,7 +72,8 @@ class EditSubscription extends BackendBaseActionEdit
         $this->frm->addText('email', $this->record['email']);
 
         // assign URL
-        $this->tpl->assign('itemURL', BackendModel::getURLForBlock($this->getModule(), 'detail') . '/' . $this->record['agenda_url'] . '#subscription-' . $this->record['agenda_id']);
+        $this->tpl->assign('itemURL', BackendModel::getURLForBlock($this->getModule(),
+                'detail') . '/' . $this->record['agenda_url'] . '#subscription-' . $this->record['agenda_id']);
         $this->tpl->assign('itemTitle', $this->record['agenda_title']);
     }
 
@@ -80,8 +82,7 @@ class EditSubscription extends BackendBaseActionEdit
      */
     private function validateForm()
     {
-        if($this->frm->isSubmitted())
-        {
+        if ($this->frm->isSubmitted()) {
             // cleanup the submitted fields, ignore fields that were added by hackers
             $this->frm->cleanupFields();
 
@@ -90,8 +91,7 @@ class EditSubscription extends BackendBaseActionEdit
             $this->frm->getField('email')->isEmail(BL::err('EmailIsInvalid'));
 
             // no errors?
-            if($this->frm->isCorrect())
-            {
+            if ($this->frm->isCorrect()) {
                 // build item
                 $item['id'] = $this->id;
                 $item['status'] = $this->record['status'];

@@ -30,136 +30,139 @@ use Backend\Modules\Agenda\Engine\Helper as BackendAgendaHelper;
  */
 class EditImage extends BackendBaseActionEdit
 {
-	/**
-	 * The id of the file
-	 *
-	 * @var	array
-	 */
-	protected $id;  
-    
-	/**
-	 * The id of the item
-	 *
-	 * @var	array
-	 */
-	private $itemId;
-    
-	/**
-	 * The file record
-	 *
-	 * @var	array
-	 */
-	private $image;
-    
-	/**
-	 * The item record
-	 *
-	 * @var	array
-	 */
-	private $item;
+    /**
+     * The id of the file
+     *
+     * @var    array
+     */
+    protected $id;
 
-	/**
-	 * Execute the action
-	 */
-	public function execute()
-	{
-		$this->id = $this->getParameter('id', 'int');
-		$this->itemId = $this->getParameter('agenda_id', 'int');
-        
-		if($this->id !== null && BackendAgendaModel::existsImage($this->id)) {
-			parent::execute();
+    /**
+     * The id of the item
+     *
+     * @var    array
+     */
+    private $itemId;
 
-			$this->getData();
-			$this->loadForm();
-			$this->validateForm();
-			$this->parse();
-			$this->display();
-		}
-		// the item does not exist
-		else $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
-	}
+    /**
+     * The file record
+     *
+     * @var    array
+     */
+    private $image;
 
-	/**
-	 * Get the data
-	 */
-	protected function getData()
-	{
-		$this->item = BackendAgendaModel::get($this->itemId);
-		$this->image = BackendAgendaModel::getImage($this->id);
-		$this->image['data'] = unserialize($this->record['data']);
-		$this->image['link'] = $this->record['data']['link'];
-	}
+    /**
+     * The item record
+     *
+     * @var    array
+     */
+    private $item;
 
-	/**
-	 * Load the form
-	 */
-	protected function loadForm()
-	{
-		$this->frm = new BackendForm('editImage');
-		$this->frm->addText('title', $this->image['title']);
-		$this->frm->addImage('image');
-	}
+    /**
+     * Execute the action
+     */
+    public function execute()
+    {
+        $this->id = $this->getParameter('id', 'int');
+        $this->itemId = $this->getParameter('agenda_id', 'int');
 
-	/**
-	 * Parse the form
-	 */
-	protected function parse()
-	{
-		parent::parse();
-				
-		$this->tpl->assign('item', $this->item);
-		$this->tpl->assign('id', $this->id);
-		$this->tpl->assign('image', $this->image);
-	}
+        if ($this->id !== null && BackendAgendaModel::existsImage($this->id)) {
+            parent::execute();
 
-	/**
-	 * Validate the form
-	 */
-	protected function validateForm()
-	{
-		// is the form submitted?
-		if($this->frm->isSubmitted()) {
-			// cleanup the submitted fields, ignore fields that were added by hackers
-			$this->frm->cleanupFields();
+            $this->getData();
+            $this->loadForm();
+            $this->validateForm();
+            $this->parse();
+            $this->display();
+        } // the item does not exist
+        else {
+            $this->redirect(BackendModel::createURLForAction('index') . '&error=non-existing');
+        }
+    }
 
-			// validate fields
-			$image = $this->frm->getField('image');
+    /**
+     * Get the data
+     */
+    protected function getData()
+    {
+        $this->item = BackendAgendaModel::get($this->itemId);
+        $this->image = BackendAgendaModel::getImage($this->id);
+        $this->image['data'] = unserialize($this->record['data']);
+        $this->image['link'] = $this->record['data']['link'];
+    }
 
-			$this->frm->getField('title')->isFilled(BL::err('NameIsRequired'));
-			if($this->image['filename'] === null) $image->isFilled(BL::err('FieldIsRequired'));
+    /**
+     * Load the form
+     */
+    protected function loadForm()
+    {
+        $this->frm = new BackendForm('editImage');
+        $this->frm->addText('title', $this->image['title']);
+        $this->frm->addImage('image');
+    }
 
-			// no errors?
-			if($this->frm->isCorrect()) {
-				// build image record to insert
-				$item['id'] = $this->id;
-				$item['title'] = $this->frm->getField('title')->getValue();
-				$item['filename'] = $this->image['filename'];
+    /**
+     * Parse the form
+     */
+    protected function parse()
+    {
+        parent::parse();
 
-				// set files path for this record
-				$path = FRONTEND_FILES_PATH . '/' . $this->module . '/' . $this->itemId;
-				$formats = array();
-				$formats[] = array('size' => '64x64', 'force_aspect_ratio' => false);
-				$formats[] = array('size' => '128x128', 'force_aspect_ratio' => false);
+        $this->tpl->assign('item', $this->item);
+        $this->tpl->assign('id', $this->id);
+        $this->tpl->assign('image', $this->image);
+    }
 
-				if($image->isFilled()) {
-					// overwrite the filename
-					if($item['filename'] === null) {
-						$item['filename'] = time() . '.' . $image->getExtension();
-					}
+    /**
+     * Validate the form
+     */
+    protected function validateForm()
+    {
+        // is the form submitted?
+        if ($this->frm->isSubmitted()) {
+            // cleanup the submitted fields, ignore fields that were added by hackers
+            $this->frm->cleanupFields();
 
-					// add images
-					BackendAgendaHelper::addImages($image, $path, $item['filename'], $formats);
-				}
-				
-				// save the item
-				$id = BackendAgendaModel::saveImage($item);
+            // validate fields
+            $image = $this->frm->getField('image');
 
-				// trigger event
-				BackendModel::triggerEvent($this->getModule(), 'after_edit_image', array('item' => $item));
+            $this->frm->getField('title')->isFilled(BL::err('NameIsRequired'));
+            if ($this->image['filename'] === null) {
+                $image->isFilled(BL::err('FieldIsRequired'));
+            }
 
-				// everything is saved, so redirect to the overview
-				$this->redirect(BackendModel::createURLForAction('media') . '&agenda_id=' . $this->itemId . '&report=edited&var=' . urlencode($item['title']) . '&highlight=row-' . $item['id']);
-			}
-		}
-	}
+            // no errors?
+            if ($this->frm->isCorrect()) {
+                // build image record to insert
+                $item['id'] = $this->id;
+                $item['title'] = $this->frm->getField('title')->getValue();
+                $item['filename'] = $this->image['filename'];
+
+                // set files path for this record
+                $path = FRONTEND_FILES_PATH . '/' . $this->module . '/' . $this->itemId;
+                $formats = array();
+                $formats[] = array('size' => '64x64', 'force_aspect_ratio' => false);
+                $formats[] = array('size' => '128x128', 'force_aspect_ratio' => false);
+
+                if ($image->isFilled()) {
+                    // overwrite the filename
+                    if ($item['filename'] === null) {
+                        $item['filename'] = time() . '.' . $image->getExtension();
+                    }
+
+                    // add images
+                    BackendAgendaHelper::addImages($image, $path, $item['filename'], $formats);
+                }
+
+                // save the item
+                $id = BackendAgendaModel::saveImage($item);
+
+                // trigger event
+                BackendModel::triggerEvent($this->getModule(), 'after_edit_image', array('item' => $item));
+
+                // everything is saved, so redirect to the overview
+                $this->redirect(BackendModel::createURLForAction('media') . '&agenda_id=' . $this->itemId . '&report=edited&var=' . urlencode($item['title']) . '&highlight=row-' . $item['id']);
+            }
+        }
+    }
 }

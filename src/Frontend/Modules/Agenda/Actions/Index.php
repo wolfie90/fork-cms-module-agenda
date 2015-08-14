@@ -111,8 +111,7 @@ class Index extends FrontendBaseBlock
         // requested timestamp
         $this->timestamp = $this->URL->getParameter('timestamp', 'string', time());
 
-        if ($this->URL->getParameter('timestamp', 'string'))
-        {
+        if ($this->URL->getParameter('timestamp', 'string')) {
             // add no-index, so the additional pages (next/previous day,month,week,year) won't get accidentally indexed
             $this->header->addMetaData(array('name' => 'robots', 'content' => 'noindex, nofollow'), true);
         }
@@ -144,8 +143,9 @@ class Index extends FrontendBaseBlock
      */
     private function cmpValues($a, $b)
     {
-        if (isset($a['begin_date']) && isset($b['begin_date']))
+        if (isset($a['begin_date']) && isset($b['begin_date'])) {
             return strcmp($a['begin_date'], $b['begin_date']);
+        }
     }
 
     /**
@@ -162,8 +162,7 @@ class Index extends FrontendBaseBlock
         $endTimestamp = 0;
 
         // calculate start and end timestamps
-        switch ($view)
-        {
+        switch ($view) {
             case "month":
                 $beginTimestamp = strtotime(gmdate('Y-M', $timestamp) . '-01 00:00:00');
                 $endTimestamp = strtotime('+1 months', $beginTimestamp);
@@ -181,7 +180,10 @@ class Index extends FrontendBaseBlock
                 $endDayLabel = FL::getLabel(gmdate('l', $endTimestamp));
                 $endMonthLabel = FL::getLabel(gmdate('F', $endTimestamp));
 
-                $this->viewTitle = $startDayLabel . ' ' . gmdate('d', $beginTimestamp) . ' ' . $startMonthLabel . ' ' . gmdate('Y', $beginTimestamp) . ' - ' . $endDayLabel . ' ' . gmdate('d', $endTimestamp) . ' ' . $endMonthLabel . ' ' . gmdate('Y', $endTimestamp);
+                $this->viewTitle = $startDayLabel . ' ' . gmdate('d',
+                        $beginTimestamp) . ' ' . $startMonthLabel . ' ' . gmdate('Y',
+                        $beginTimestamp) . ' - ' . $endDayLabel . ' ' . gmdate('d',
+                        $endTimestamp) . ' ' . $endMonthLabel . ' ' . gmdate('Y', $endTimestamp);
                 break;
             case "day":
                 $beginTimestamp = strtotime(gmdate('Y-M-d', $timestamp) . '00:00:00');
@@ -190,7 +192,8 @@ class Index extends FrontendBaseBlock
                 // set labels
                 $dayLabel = FL::getLabel(gmdate('l', $timestamp));
                 $monthLabel = FL::getLabel(gmdate('F', $timestamp));
-                $this->viewTitle = $dayLabel . ' ' . gmdate('d', $timestamp) . ' ' . $monthLabel . ' ' . gmdate('Y', $timestamp);
+                $this->viewTitle = $dayLabel . ' ' . gmdate('d', $timestamp) . ' ' . $monthLabel . ' ' . gmdate('Y',
+                        $timestamp);
                 break;
         }
 

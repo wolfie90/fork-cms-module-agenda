@@ -39,11 +39,9 @@ class RecurringAgendaItems
         $endTimestamp = strtotime($endTimestamp);
 
         // check if recurring event
-        if ($event['recurring'] == 'Y')
-        {
+        if ($event['recurring'] == 'Y') {
             // check type
-            switch ($event['type'])
-            {
+            switch ($event['type']) {
                 // daily
                 case 0:
                     $recurringEvents = self::dailyEvent($event, $startTimestamp, $endTimestamp);
@@ -95,17 +93,19 @@ class RecurringAgendaItems
         // get category action url
         $categoryUrl = FrontendNavigation::getURLForBlock('events', 'category');
 
-        if (!$interval) $interval = 1;
+        if (!$interval) {
+            $interval = 1;
+        }
         $done = false;
         $i = 0;
 
-        while ($done == false)
-        {
+        while ($done == false) {
             // assign recurring event to array
-            if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
-            {
+            if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0) {
                 $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                if ($event['whole_day'] == 'N') {
+                    $event['end_date'] = date('Y-m-d H:i', $endDate);
+                }
                 $event['full_url'] = $eventUrl . '/' . $event['url'];
                 $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -117,22 +117,27 @@ class RecurringAgendaItems
             $endDate = strtotime("+" . $interval . " day", $endDate);
 
             // check ends on type
-            switch ($endsOnType)
-            {
+            switch ($endsOnType) {
                 // ends never
                 case 0:
-                    if ($beginDate > $endTimestamp) $done = true;
+                    if ($beginDate > $endTimestamp) {
+                        $done = true;
+                    }
                     break;
 
                 // ends after x times
                 case 1:
                     $frequencyCounter++;
-                    if ($frequencyCounter > $frequency) $done = true;
+                    if ($frequencyCounter > $frequency) {
+                        $done = true;
+                    }
                     break;
 
                 // ends on x date
                 case 2:
-                    if ($beginDate > $endsOnDate) $done = true;
+                    if ($beginDate > $endsOnDate) {
+                        $done = true;
+                    }
                     break;
             }
 
@@ -166,7 +171,9 @@ class RecurringAgendaItems
         // check if event['days'] is filled, else days will be null
         $days = ($event['days'] != null) ? explode(',', $event['days'], 7) : null;
 
-        if (!$interval) $interval = 1;
+        if (!$interval) {
+            $interval = 1;
+        }
 
         // get event action url
         $eventUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
@@ -177,17 +184,15 @@ class RecurringAgendaItems
         $done = false;
         $i = 0;
 
-        while ($done == false)
-        {
+        while ($done == false) {
             // create events for specified days
-            if (!empty($days))
-            {
-                foreach ($days as $day)
-                {
-                    if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
-                    {
+            if (!empty($days)) {
+                foreach ($days as $day) {
+                    if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0) {
                         $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                        if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                        if ($event['whole_day'] == 'N') {
+                            $event['end_date'] = date('Y-m-d H:i', $endDate);
+                        }
                         $event['full_url'] = $eventUrl . '/' . $event['url'];
                         $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -211,22 +216,27 @@ class RecurringAgendaItems
             }
 
             // check ends on type
-            switch ($endsOnType)
-            {
+            switch ($endsOnType) {
                 // ends never
                 case 0:
-                    if ($beginDate > $endTimestamp) $done = true;
+                    if ($beginDate > $endTimestamp) {
+                        $done = true;
+                    }
                     break;
 
                 // ends after x times
                 case 1:
                     $frequencyCounter++;
-                    if ($frequencyCounter > $frequency) $done = true;
+                    if ($frequencyCounter > $frequency) {
+                        $done = true;
+                    }
                     break;
 
                 // ends on x date
                 case 2:
-                    if ($beginDate > $endsOnDate) $done = true;
+                    if ($beginDate > $endsOnDate) {
+                        $done = true;
+                    }
                     break;
             }
 
@@ -256,7 +266,9 @@ class RecurringAgendaItems
         $endsOnType = $event['ends_on'];
         $frequencyCounter = 0;
 
-        if (!$interval) $interval = 1;
+        if (!$interval) {
+            $interval = 1;
+        }
 
         // get event action url
         $eventUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
@@ -267,13 +279,13 @@ class RecurringAgendaItems
         $done = false;
         $i = 0;
 
-        while ($done == false)
-        {
+        while ($done == false) {
             // assign recurring event to array
-            if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
-            {
+            if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0) {
                 $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                if ($event['whole_day'] == 'N') {
+                    $event['end_date'] = date('Y-m-d H:i', $endDate);
+                }
                 $event['full_url'] = $eventUrl . '/' . $event['url'];
                 $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -285,22 +297,27 @@ class RecurringAgendaItems
             $endDate = strtotime("+" . $interval . " month", $endDate);
 
             // check ends on type
-            switch ($endsOnType)
-            {
+            switch ($endsOnType) {
                 // ends never
                 case 0:
-                    if ($beginDate > $endTimestamp) $done = true;
+                    if ($beginDate > $endTimestamp) {
+                        $done = true;
+                    }
                     break;
 
                 // ends after x times
                 case 1:
                     $frequencyCounter++;
-                    if ($frequencyCounter > $frequency) $done = true;
+                    if ($frequencyCounter > $frequency) {
+                        $done = true;
+                    }
                     break;
 
                 // ends on x date
                 case 2:
-                    if ($beginDate > $endsOnDate) $done = true;
+                    if ($beginDate > $endsOnDate) {
+                        $done = true;
+                    }
                     break;
             }
 
@@ -329,7 +346,9 @@ class RecurringAgendaItems
         $endsOnType = $event['ends_on'];
         $frequencyCounter = 0;
 
-        if (!$interval) $interval = 1;
+        if (!$interval) {
+            $interval = 1;
+        }
 
         // get event action url
         $eventUrl = FrontendNavigation::getURLForBlock('agenda', 'detail');
@@ -340,13 +359,13 @@ class RecurringAgendaItems
         $done = false;
         $i = 0;
 
-        while ($done == false)
-        {
+        while ($done == false) {
             // assign recurring event to array
-            if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0)
-            {
+            if ($beginDate >= $startTimestamp && $beginDate <= $endTimestamp && $i != 0) {
                 $event['begin_date'] = date('Y-m-d H:i', $beginDate);
-                if ($event['whole_day'] == 'N') $event['end_date'] = date('Y-m-d H:i', $endDate);
+                if ($event['whole_day'] == 'N') {
+                    $event['end_date'] = date('Y-m-d H:i', $endDate);
+                }
                 $event['full_url'] = $eventUrl . '/' . $event['url'];
                 $event['category_full_url'] = $categoryUrl . '/' . $event['category_url'];
 
@@ -358,22 +377,27 @@ class RecurringAgendaItems
             $endDate = strtotime("+" . $interval . " year", $endDate);
 
             // check ends on type
-            switch ($endsOnType)
-            {
+            switch ($endsOnType) {
                 // ends never
                 case 0:
-                    if ($beginDate > $endTimestamp) $done = true;
+                    if ($beginDate > $endTimestamp) {
+                        $done = true;
+                    }
                     break;
 
                 // ends after x times
                 case 1:
                     $frequencyCounter++;
-                    if ($frequencyCounter > $frequency) $done = true;
+                    if ($frequencyCounter > $frequency) {
+                        $done = true;
+                    }
                     break;
 
                 // ends on x date
                 case 2:
-                    if ($beginDate > $endsOnDate) $done = true;
+                    if ($beginDate > $endsOnDate) {
+                        $done = true;
+                    }
                     break;
             }
 

@@ -46,8 +46,7 @@ class Model
         $url .= '&z=' . $settings['zoom_level'];
 
         // set the map type
-        switch (strtolower($settings['map_type']))
-        {
+        switch (strtolower($settings['map_type'])) {
             case 'roadmap':
                 $url .= '&t=m';
                 break;
@@ -64,12 +63,13 @@ class Model
 
         $pointers = array();
         // add the markers to the url
-        foreach ($markers as $marker)
-        {
+        foreach ($markers as $marker) {
             $pointers[] = urlencode($marker['title']) . '@' . $marker['lat'] . ',' . $marker['lng'];
         }
 
-        if (!empty($pointers)) $url .= '&q=' . implode('|', $pointers);
+        if (!empty($pointers)) {
+            $url .= '&q=' . implode('|', $pointers);
+        }
 
         return $url;
     }
@@ -99,15 +99,21 @@ class Model
         );
 
         // no results?
-        if (empty($item)) return array();
+        if (empty($item)) {
+            return array();
+        }
 
         // create full url
         $item['full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Detail') . '/' . $item['url'];
-        $item['category_full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $item['category_url'];
+        $item['category_full_url'] = FrontendNavigation::getURLForBlock('Agenda',
+                'Category') . '/' . $item['category_url'];
 
         // get image
-        $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-        if ($img) $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+        $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence',
+            array((int)$item['id']));
+        if ($img) {
+            $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+        }
 
         return $item;
     }
@@ -133,7 +139,9 @@ class Model
             array(FRONTEND_LANGUAGE, (int)$offset, (int)$limit));
 
         // no results?
-        if (empty($items)) return array();
+        if (empty($items)) {
+            return array();
+        }
 
         // get detail action url
         $detailUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
@@ -142,13 +150,15 @@ class Model
         $categoryLink = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
         // prepare items for search
-        foreach ($items as &$item)
-        {
+        foreach ($items as &$item) {
             $item['full_url'] = $detailUrl . '/' . $item['url'];
             // get image
             // get image
-            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-            if ($img) $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence',
+                array((int)$item['id']));
+            if ($img) {
+                $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            }
         }
 
         // return
@@ -177,14 +187,14 @@ class Model
             $parameters
         );
 
-        foreach ($items as $key => $item)
-        {
+        foreach ($items as $key => $item) {
             // get detail url
             $link = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
             // add url
             $items[$key]['full_url'] = $link . '/' . $item['url'];
-            $items[$key]['category_full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $item['category_url'];
+            $items[$key]['category_full_url'] = FrontendNavigation::getURLForBlock('Agenda',
+                    'Category') . '/' . $item['category_url'];
         }
 
         // return items
@@ -201,8 +211,7 @@ class Model
     {
 
         // no limit number of items
-        if ($limit == null)
-        {
+        if ($limit == null) {
             $items = (array)FrontendModel::getContainer()->get('database')->getRecords(
                 'SELECT i.*, UNIX_TIMESTAMP(i.begin_date) AS begin_date, UNIX_TIMESTAMP(end_date) AS end_date, m.url
                     FROM agenda AS i
@@ -213,8 +222,7 @@ class Model
                 array(FRONTEND_LANGUAGE)
             );
         } // limit number of items
-        else
-        {
+        else {
             $items = (array)FrontendModel::getContainer()->get('database')->getRecords(
                 'SELECT i.*, UNIX_TIMESTAMP(i.begin_date) AS begin_date, UNIX_TIMESTAMP(end_date) AS end_date, m.url
                     FROM agenda AS i
@@ -227,19 +235,23 @@ class Model
         }
 
         // no results?
-        if (empty($items)) return array();
+        if (empty($items)) {
+            return array();
+        }
 
         // get detail action url
         $detailUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
         // add url to items
-        foreach ($items as &$item)
-        {
+        foreach ($items as &$item) {
             $item['full_url'] = $detailUrl . '/' . $item['url'];
 
             // get image
-            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-            if ($img) $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence',
+                array((int)$item['id']));
+            if ($img) {
+                $item['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            }
         }
 
         // return
@@ -291,7 +303,9 @@ class Model
             array($categoryId, FRONTEND_LANGUAGE, $startTimestamp, $endTimestamp, 'Y', (int)$offset, (int)$limit));
 
         // no results?
-        if (empty($items)) return array();
+        if (empty($items)) {
+            return array();
+        }
 
         // get detail action url
         $agendaUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
@@ -300,23 +314,24 @@ class Model
         $categoryUrl = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
         // prepare items for search
-        foreach ($items as $key => $item)
-        {
+        foreach ($items as $key => $item) {
             $items[$key]['full_url'] = $agendaUrl . '/' . $items[$key]['url'];
             $items[$key]['category_full_url'] = $categoryUrl . '/' . $items[$key]['category_url'];
 
             // get image
-            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-            if ($img) $items[$key]['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence',
+                array((int)$item['id']));
+            if ($img) {
+                $items[$key]['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            }
 
             // get recurring items
-            if ($item['recurring'] == 'Y')
-            {
-                $recurringItems = FrontendAgendaRecurringAgendaItems::getItemRecurrance($item, $startTimestamp, $endTimestamp);
+            if ($item['recurring'] == 'Y') {
+                $recurringItems = FrontendAgendaRecurringAgendaItems::getItemRecurrance($item, $startTimestamp,
+                    $endTimestamp);
 
                 // found recurring items
-                if (!empty($recurringItems))
-                {
+                if (!empty($recurringItems)) {
                     $items = array_merge($items, $recurringItems);
                 }
             }
@@ -344,19 +359,16 @@ class Model
         $cacheTimeout = FrontendModel::getModuleSetting('Agenda', 'cache_timeout');
 
         // cache file exists
-        if (file_exists($cacheFile))
-        {
+        if (file_exists($cacheFile)) {
             $cacheFileLastModifiedTime = filemtime($cacheFile);
             $differenceBetweenCurrentAndModifiedTime = $currentTime - $cacheFileLastModifiedTime;
 
             // use cache within cache timeout
-            if ($differenceBetweenCurrentAndModifiedTime < $cacheTimeout)
-            {
+            if ($differenceBetweenCurrentAndModifiedTime < $cacheTimeout) {
                 $cacheData = @unserialize(file_get_contents($cacheFile));
 
                 // return cache data if exists
-                if ($cacheData)
-                {
+                if ($cacheData) {
                     return $cacheData;
                 }
             }
@@ -381,7 +393,9 @@ class Model
             array(FRONTEND_LANGUAGE, $startTimestamp, $endTimestamp, 'Y', FRONTEND_LANGUAGE));
 
         // no results?
-        if (empty($items)) return array();
+        if (empty($items)) {
+            return array();
+        }
 
         // get item action url
         $agendaUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
@@ -390,23 +404,24 @@ class Model
         $categoryUrl = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
         // get all recurring items
-        foreach ($items as $key => $item)
-        {
+        foreach ($items as $key => $item) {
             $items[$key]['full_url'] = $agendaUrl . '/' . $items[$key]['url'];
             $items[$key]['category_full_url'] = $categoryUrl . '/' . $items[$key]['category_url'];
 
             // get image
-            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence', array((int)$item['id']));
-            if ($img) $items[$key]['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            $img = FrontendModel::getContainer()->get('database')->getRecord('SELECT * FROM agenda_images WHERE agenda_id = ? ORDER BY sequence',
+                array((int)$item['id']));
+            if ($img) {
+                $items[$key]['image'] = FRONTEND_FILES_URL . '/Agenda/' . $item['id'] . '/400x300/' . $img['filename'];
+            }
 
             // get recurring items
-            if ($item['recurring'] == 'Y')
-            {
-                $recurringItems = FrontendAgendaRecurringAgendaItems::getItemRecurrance($item, $startTimestamp, $endTimestamp);
+            if ($item['recurring'] == 'Y') {
+                $recurringItems = FrontendAgendaRecurringAgendaItems::getItemRecurrance($item, $startTimestamp,
+                    $endTimestamp);
 
                 // found recurring items
-                if (!empty($recurringItems))
-                {
+                if (!empty($recurringItems)) {
                     $items = array_merge($items, $recurringItems);
                 }
             }
@@ -418,38 +433,40 @@ class Model
 
 
         // unset items which are outside the view
-        foreach ($items as $key => $value)
-        {
+        foreach ($items as $key => $value) {
             $beginDate = strtotime($items[$key]['begin_date']);
             $begints = strtotime($startTimestamp);
             $endts = strtotime($endTimestamp);
 
             // check if begin date of element fits the given timespan
-            if ($beginDate < $begints || $beginDate > $endts)
-            {
+            if ($beginDate < $begints || $beginDate > $endts) {
                 unset($items[$key]);
-            } else
-            {
+            } else {
                 // set timestamps for navigation detail pages
                 $items[$key]['ts_begin_date'] = strtotime($value['begin_date']);
                 $items[$key]['ts_end_date'] = strtotime($value['end_date']);
 
                 // set boolean for whole day agenda
-                if ($value['whole_day'] == 'Y') $items[$key]['whole_day'] = true;
-                if ($value['whole_day'] == 'N') $items[$key]['whole_day'] = false;
+                if ($value['whole_day'] == 'Y') {
+                    $items[$key]['whole_day'] = true;
+                }
+                if ($value['whole_day'] == 'N') {
+                    $items[$key]['whole_day'] = false;
+                }
 
                 $beginAsDay = strftime('%Y%m%d', strtotime($value['begin_date']));
                 $endAsDay = strftime('%Y%m%d', strtotime($value['end_date']));
 
                 // set dif if begin and end date is different
-                if ($beginAsDay != $endAsDay) $items[$key]['different_end_date'] = true;
+                if ($beginAsDay != $endAsDay) {
+                    $items[$key]['different_end_date'] = true;
+                }
             }
         }
 
         // write the cache file
         $fs = new Filesystem();
-        if (!empty($items))
-        {
+        if (!empty($items)) {
             $fs->dumpFile(FRONTEND_CACHE_PATH . '/Agenda/' . $cacheKey . '.cache', serialize($items));
         }
 
@@ -474,9 +491,10 @@ class Model
         );
 
         // loop items and unserialize
-        foreach ($return as &$row)
-        {
-            if (isset($row['meta_data'])) $row['meta_data'] = @unserialize($row['meta_data']);
+        foreach ($return as &$row) {
+            if (isset($row['meta_data'])) {
+                $row['meta_data'] = @unserialize($row['meta_data']);
+            }
         }
 
         return $return;
@@ -502,7 +520,9 @@ class Model
         );
 
         // no results?
-        if (empty($item)) return array();
+        if (empty($item)) {
+            return array();
+        }
 
         // create full url
         $item['full_url'] = FrontendNavigation::getURLForBlock('Agenda', 'Category') . '/' . $item['url'];
@@ -548,8 +568,7 @@ class Model
         $link = FrontendNavigation::getURLForBlock('Agenda', 'Category');
 
         // build the item url
-        foreach ($items as &$item)
-        {
+        foreach ($items as &$item) {
             $item['image_thumb'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/64x64/' . $item['filename'];
             $item['image_first'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/' . $settings["width1"] . 'x' . $settings["height1"] . '/' . $item['filename'];
             $item['image_second'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/' . $settings["width2"] . 'x' . $settings["height2"] . '/' . $item['filename'];
@@ -576,35 +595,32 @@ class Model
         );
 
         // build the image thumbnail for youtube/vimeo
-        foreach ($items as &$item)
-        {
+        foreach ($items as &$item) {
             // YOUTUBE
-            if (strpos($item['filename'], 'youtube') !== false)
-            {
+            if (strpos($item['filename'], 'youtube') !== false) {
                 $ytQuery = parse_url($item['filename'], PHP_URL_QUERY);
                 parse_str($ytQuery, $ytData);
 
-                if (isset($ytData['v']))
-                {
+                if (isset($ytData['v'])) {
                     $item['video_id'] = $ytData['v'];
                     $item['url'] = "http://www.youtube.com/v/" . $ytData['v'] . "?fs=1&amp;autoplay=1";
                     $item['image'] = "http://i3.ytimg.com/vi/" . $ytData['v'] . "/default.jpg";
                 }
                 // VIMEO
-            } else if (strpos($item['filename'], 'vimeo') !== false)
-            {
-                $vmLink = str_replace('http://vimeo.com/', 'http://vimeo.com/api/v2/video/', $item['filename']) . '.php';
-                $vmData = unserialize(file_get_contents($vmLink));
+            } else {
+                if (strpos($item['filename'], 'vimeo') !== false) {
+                    $vmLink = str_replace('http://vimeo.com/', 'http://vimeo.com/api/v2/video/',
+                            $item['filename']) . '.php';
+                    $vmData = unserialize(file_get_contents($vmLink));
 
-                if (isset($vmData[0]['id']))
-                {
-                    $item['video_id'] = $vmData[0]['id'];;
-                    $item['url'] = "http://player.vimeo.com/video/" . $vmData[0]['id'] . "?autoplay=1";
-                    $item['image'] = $vmData[0]['thumbnail_small'];;
+                    if (isset($vmData[0]['id'])) {
+                        $item['video_id'] = $vmData[0]['id'];;
+                        $item['url'] = "http://player.vimeo.com/video/" . $vmData[0]['id'] . "?autoplay=1";
+                        $item['image'] = $vmData[0]['thumbnail_small'];;
+                    }
+                } else {
+                    // NO YOUTUBE OR VIMEO URL GIVEN..
                 }
-            } else
-            {
-                // NO YOUTUBE OR VIMEO URL GIVEN..
             }
         }
 
@@ -628,8 +644,7 @@ class Model
         );
 
         // build the item url
-        foreach ($items as &$item)
-        {
+        foreach ($items as &$item) {
             $item['url'] = FRONTEND_FILES_URL . '/Agenda/' . $item['agenda_id'] . '/source/' . $item['filename'];
         }
 
@@ -685,8 +700,7 @@ class Model
         $subscription['id'] = (int)$db->insert('agenda_subscriptions', $subscription);
 
         // recalculate if published
-        if ($subscription['status'] == 'subscribed')
-        {
+        if ($subscription['status'] == 'subscribed') {
             // num comments
             $numSubscriptions = (int)FrontendModel::getContainer()->get('database')->getVar(
                 'SELECT COUNT(i.id) AS num_subscriptions
@@ -698,7 +712,8 @@ class Model
             );
 
             // update num subscriptions
-            $db->update('agenda', array('num_subscriptions' => $numSubscriptions), 'id = ?', $subscription['agenda_id']);
+            $db->update('agenda', array('num_subscriptions' => $numSubscriptions), 'id = ?',
+                $subscription['agenda_id']);
         }
 
         return $subscription['id'];
@@ -712,14 +727,21 @@ class Model
     public static function notifyAdmin(array $subscription)
     {
         // don't notify admin in case of spam
-        if ($subscription['status'] == 'spam') return;
+        if ($subscription['status'] == 'spam') {
+            return;
+        }
 
         // build data for push notification
-        if ($subscription['status'] == 'moderation') $key = 'AGENDA_SUBSCRIPTION_MOD';
-        else $key = 'AGENDA_SUBSCRIPTION';
+        if ($subscription['status'] == 'moderation') {
+            $key = 'AGENDA_SUBSCRIPTION_MOD';
+        } else {
+            $key = 'AGENDA_SUBSCRIPTION';
+        }
 
         $name = $subscription['name'];
-        if (mb_strlen($name) > 20) $name = mb_substr($name, 0, 19) . '…';
+        if (mb_strlen($name) > 20) {
+            $name = mb_substr($name, 0, 19) . '…';
+        }
 
         $alert = array(
             'loc-key' => $key,
@@ -738,26 +760,28 @@ class Model
         FrontendModel::pushToAppleApp($alert, null, 'default', $data);
 
         // get settings
-        $notifyByMailOnSubscription = FrontendModel::getModuleSetting('Agenda', 'notify_by_email_on_new_subscription', false);
-        $notifyByMailOnSubscriptionToModerate = FrontendModel::getModuleSetting('Agenda', 'notify_by_email_on_new_subscription_to_moderate', false);
+        $notifyByMailOnSubscription = FrontendModel::getModuleSetting('Agenda', 'notify_by_email_on_new_subscription',
+            false);
+        $notifyByMailOnSubscriptionToModerate = FrontendModel::getModuleSetting('Agenda',
+            'notify_by_email_on_new_subscription_to_moderate', false);
 
         // create URLs
-        $backendURL = SITE_URL . FrontendNavigation::getBackendURLForBlock('subscriptions', 'agenda') . '#tabModeration';
+        $backendURL = SITE_URL . FrontendNavigation::getBackendURLForBlock('subscriptions',
+                'agenda') . '#tabModeration';
 
         // notify on all comments
-        if ($notifyByMailOnSubscription)
-        {
+        if ($notifyByMailOnSubscription) {
             // init var
             $variables = null;
 
             // comment to moderate
-            if ($subscription['status'] == 'moderation')
-            {
-                $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscriptionToModerate'), array($subscription['name'], $subscription['agenda_title'], $backendURL));
+            if ($subscription['status'] == 'moderation') {
+                $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscriptionToModerate'),
+                    array($subscription['name'], $subscription['agenda_title'], $backendURL));
             } // comment was published
-            elseif ($subscription['status'] == 'published')
-            {
-                $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscription'), array($subscription['name'], $subscription['agenda_title']));
+            elseif ($subscription['status'] == 'published') {
+                $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscription'),
+                    array($subscription['name'], $subscription['agenda_title']));
             }
 
             // send the mail
@@ -779,10 +803,10 @@ class Model
                 true
             );
         } // only notify on new comments to moderate and if the comment is one to moderate
-        elseif ($notifyByMailOnSubscriptionToModerate && $subscription['status'] == 'moderation')
-        {
+        elseif ($notifyByMailOnSubscriptionToModerate && $subscription['status'] == 'moderation') {
             // set variables
-            $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscriptionToModerate'), array($subscription['name'], $subscription['agenda_title'], $backendURL));
+            $variables['message'] = vsprintf(FL::msg('AgendaEmailNotificationsNewSubscriptionToModerate'),
+                array($subscription['name'], $subscription['agenda_title'], $backendURL));
 
             // send the mail
             FrontendModel::get('mailer')->addEmail(
@@ -830,8 +854,7 @@ class Model
         $detailUrl = FrontendNavigation::getURLForBlock('Agenda', 'Detail');
 
         // prepare items for search
-        foreach ($items as &$item)
-        {
+        foreach ($items as &$item) {
             $item['full_url'] = $detailUrl . '/' . $item['url'];
         }
 

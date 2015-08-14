@@ -28,90 +28,90 @@ use Backend\Modules\Agenda\Engine\Model as BackendAgendaModel;
  */
 class EditCategory extends BackendBaseActionEdit
 {
-	/**
-	 * Execute the action
-	 */
-	public function execute()
-	{
-		$this->id = $this->getParameter('id', 'int');
-		
-		// does the item exist?
-		if($this->id !== null && BackendAgendaModel::existsCategory($this->id))
-		{
-			parent::execute();
+    /**
+     * Execute the action
+     */
+    public function execute()
+    {
+        $this->id = $this->getParameter('id', 'int');
 
-			$this->getData();
-			$this->loadForm();
-			$this->validateForm();
+        // does the item exist?
+        if ($this->id !== null && BackendAgendaModel::existsCategory($this->id)) {
+            parent::execute();
 
-			$this->parse();
-			$this->display();
-		}
-		else $this->redirect(BackendModel::createURLForAction('categories') . '&error=non-existing');
-	}
+            $this->getData();
+            $this->loadForm();
+            $this->validateForm();
 
-	/**
-	 * Get the data
-	 */
-	private function getData()
-	{
-		$this->record = BackendAgendaModel::getCategory($this->id);
-	}
+            $this->parse();
+            $this->display();
+        } else {
+            $this->redirect(BackendModel::createURLForAction('categories') . '&error=non-existing');
+        }
+    }
 
-	/**
-	 * Load the form
-	 */
-	private function loadForm()
-	{
-		// create form
-		$this->frm = new BackendForm('editCategory');
-		$this->frm->addText('title', $this->record['title']);
-		
-		$this->meta = new BackendMeta($this->frm, $this->record['meta_id'], 'title', true);
-	}
+    /**
+     * Get the data
+     */
+    private function getData()
+    {
+        $this->record = BackendAgendaModel::getCategory($this->id);
+    }
 
-	/**
-	 * Parse the form
-	 */
-	protected function parse()
-	{
-		parent::parse();
+    /**
+     * Load the form
+     */
+    private function loadForm()
+    {
+        // create form
+        $this->frm = new BackendForm('editCategory');
+        $this->frm->addText('title', $this->record['title']);
 
-		// assign the data
-		$this->tpl->assign('item', $this->record);
-		$this->tpl->assign('showAgendaDeleteCategory', BackendAgendaModel::deleteCategoryAllowed($this->id) && BackendAuthentication::isAllowedAction('DeleteCategory'));
-	}
+        $this->meta = new BackendMeta($this->frm, $this->record['meta_id'], 'title', true);
+    }
 
-	/**
-	 * Validate the form
-	 */
-	private function validateForm()
-	{
-		if($this->frm->isSubmitted())
-		{
-			$this->meta->setUrlCallback('Backend\Modules\Agenda\Engine\Model', 'getURLForCategory', array($this->record['id']));
+    /**
+     * Parse the form
+     */
+    protected function parse()
+    {
+        parent::parse();
 
-			$this->frm->cleanupFields();
+        // assign the data
+        $this->tpl->assign('item', $this->record);
+        $this->tpl->assign('showAgendaDeleteCategory',
+            BackendAgendaModel::deleteCategoryAllowed($this->id) && BackendAuthentication::isAllowedAction('DeleteCategory'));
+    }
 
-			// validate fields
-			$this->frm->getField('title')->isFilled(BL::err('TitleIsRequired'));
-			$this->meta->validate();
+    /**
+     * Validate the form
+     */
+    private function validateForm()
+    {
+        if ($this->frm->isSubmitted()) {
+            $this->meta->setUrlCallback('Backend\Modules\Agenda\Engine\Model', 'getURLForCategory',
+                array($this->record['id']));
 
-			if($this->frm->isCorrect())
-			{
-				// build item
-				$item['id'] = $this->id;
-				$item['language'] = $this->record['language'];
-				$item['title'] = $this->frm->getField('title')->getValue();
-				$item['meta_id'] = $this->meta->save(true);
-					
-				// update the item
-				BackendAgendaModel::updateCategory($item);
-				BackendModel::triggerEvent($this->getModule(), 'after_edit_category', array('item' => $item));
+            $this->frm->cleanupFields();
 
-				// everything is saved, so redirect to the overview
-				$this->redirect(BackendModel::createURLForAction('categories') . '&report=edited-category&var=' . urlencode($item['title']) . '&highlight=row-' . $item['id']);
-			}
-		}
-	}
+            // validate fields
+            $this->frm->getField('title')->isFilled(BL::err('TitleIsRequired'));
+            $this->meta->validate();
+
+            if ($this->frm->isCorrect()) {
+                // build item
+                $item['id'] = $this->id;
+                $item['language'] = $this->record['language'];
+                $item['title'] = $this->frm->getField('title')->getValue();
+                $item['meta_id'] = $this->meta->save(true);
+
+                // update the item
+                BackendAgendaModel::updateCategory($item);
+                BackendModel::triggerEvent($this->getModule(), 'after_edit_category', array('item' => $item));
+
+                // everything is saved, so redirect to the overview
+                $this->redirect(BackendModel::createURLForAction('categories') . '&report=edited-category&var=' . urlencode($item['title']) . '&highlight=row-' . $item['id']);
+            }
+        }
+    }
 }

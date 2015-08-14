@@ -53,8 +53,7 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
         $timespan = array();
 
         // calculate start and end timestamps
-        switch ($view)
-        {
+        switch ($view) {
             case "month":
                 $beginTimestamp = strtotime(gmdate('Y-M', $timestamp) . '-01 00:00:00');
                 $endTimestamp = strtotime('+1 months', $beginTimestamp);
@@ -72,7 +71,10 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
                 $endDayLabel = FrontendLanguage::getLabel(gmdate('l', $endTimestamp));
                 $endMonthLabel = FrontendLanguage::getLabel(gmdate('F', $endTimestamp));
 
-                $this->viewTitle = $startDayLabel . ' ' . gmdate('d', $beginTimestamp) . ' ' . $startMonthLabel . ' ' . gmdate('Y', $beginTimestamp) . ' - ' . $endDayLabel . ' ' . gmdate('d', $endTimestamp) . ' ' . $endMonthLabel . ' ' . gmdate('Y', $endTimestamp);
+                $this->viewTitle = $startDayLabel . ' ' . gmdate('d',
+                        $beginTimestamp) . ' ' . $startMonthLabel . ' ' . gmdate('Y',
+                        $beginTimestamp) . ' - ' . $endDayLabel . ' ' . gmdate('d',
+                        $endTimestamp) . ' ' . $endMonthLabel . ' ' . gmdate('Y', $endTimestamp);
                 break;
             case "day":
                 $beginTimestamp = strtotime(gmdate('Y-M-d', $timestamp) . '00:00:00');
@@ -81,7 +83,8 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
                 // set labels
                 $dayLabel = FrontendLanguage::getLabel(gmdate('l', $timestamp));
                 $monthLabel = FrontendLanguage::getLabel(gmdate('F', $timestamp));
-                $this->viewTitle = $dayLabel . ' ' . gmdate('d', $timestamp) . ' ' . $monthLabel . ' ' . gmdate('Y', $timestamp);
+                $this->viewTitle = $dayLabel . ' ' . gmdate('d', $timestamp) . ' ' . $monthLabel . ' ' . gmdate('Y',
+                        $timestamp);
                 break;
         }
 
