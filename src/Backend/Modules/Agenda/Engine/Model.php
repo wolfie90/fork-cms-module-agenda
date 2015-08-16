@@ -168,6 +168,7 @@ class Model
 
         foreach ($ids as $id) {
             $item = self::getImage($id);
+            $settings = BackendModel::get('fork.settings')->getForModule('Agenda');
 
             // delete image reference from db
             BackendModel::getContainer()->get('database')->delete('agenda_images', 'id = ?', array($id));
@@ -177,12 +178,9 @@ class Model
             SpoonFile::delete($basePath . '/source/' . $item['filename']);
             SpoonFile::delete($basePath . '/64x64/' . $item['filename']);
             SpoonFile::delete($basePath . '/128x128/' . $item['filename']);
-            SpoonFile::delete($basePath . '/' . BackendModel::getModuleSetting('agenda',
-                    'width1') . 'x' . BackendModel::getModuleSetting('agenda', 'height1') . '/' . $item['filename']);
-            SpoonFile::delete($basePath . '/' . BackendModel::getModuleSetting('agenda',
-                    'width2') . 'x' . BackendModel::getModuleSetting('agenda', 'height2') . '/' . $item['filename']);
-            SpoonFile::delete($basePath . '/' . BackendModel::getModuleSetting('agenda',
-                    'width3') . 'x' . BackendModel::getModuleSetting('agenda', 'height3') . '/' . $item['filename']);
+            SpoonFile::delete($basePath . '/' . $settings['width1'] . 'x' . $settings['height1'] . '/' . $item['filename']);
+            SpoonFile::delete($basePath . '/' . $settings['width2'] . 'x' . $settings['height2'] . '/' . $item['filename']);
+            SpoonFile::delete($basePath . '/' . $settings['width3'] . 'x' . $settings['height3'] . '/' . $item['filename']);
         }
     }
 
