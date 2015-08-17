@@ -356,7 +356,7 @@ class Model
         $cacheKey = $startTimestamp . '-' . $endTimestamp . '-' . FRONTEND_LANGUAGE;
         $cacheFile = FRONTEND_CACHE_PATH . '/Agenda/' . $cacheKey . '.cache';
         $currentTime = time();
-        $cacheTimeout = FrontendModel::getModuleSetting('Agenda', 'cache_timeout');
+        $cacheTimeout = FrontendModel::get('fork.settings')->get('Agenda', 'cache_timeout');
 
         // cache file exists
         if (file_exists($cacheFile)) {
@@ -760,10 +760,8 @@ class Model
         FrontendModel::pushToAppleApp($alert, null, 'default', $data);
 
         // get settings
-        $notifyByMailOnSubscription = FrontendModel::getModuleSetting('Agenda', 'notify_by_email_on_new_subscription',
-            false);
-        $notifyByMailOnSubscriptionToModerate = FrontendModel::getModuleSetting('Agenda',
-            'notify_by_email_on_new_subscription_to_moderate', false);
+        $notifyByMailOnSubscription = FrontendModel::get('fork.settings')->get('Agenda', 'notify_by_email_on_new_subscription', false);
+        $notifyByMailOnSubscription = FrontendModel::get('fork.settings')->get('Agenda', 'notify_by_email_on_new_subscription_to_moderate', false);
 
         // create URLs
         $backendURL = SITE_URL . FrontendNavigation::getBackendURLForBlock('subscriptions',
