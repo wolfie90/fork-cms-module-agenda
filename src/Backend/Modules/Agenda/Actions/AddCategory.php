@@ -33,7 +33,7 @@ class AddCategory extends BackendBaseActionAdd
     public function execute()
     {
         // only one category allowed, so we redirect
-        if (!BackendModel::getModuleSetting('agenda', 'allow_multiple_categories', true)) {
+        if (!BackendModel::get('fork.settings')->getForModule('Agenda', 'allow_multiple_categories', true)) {
             $this->redirect(BackendModel::createURLForAction('categories') . '&error=only-one-category-allowed');
         }
 

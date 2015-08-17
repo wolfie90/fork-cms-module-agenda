@@ -53,47 +53,30 @@ class Settings extends BackendBaseActionEdit
         // init settings form
         $this->frm = new BackendForm('settings');
 
-        $this->frm->addText('width1', BackendModel::getModuleSetting($this->URL->getModule(), 'width1', false));
-        $this->frm->addText('height1', BackendModel::getModuleSetting($this->URL->getModule(), 'height1', false));
-        $this->frm->addCheckbox('allow_enlargment1',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'allow_enlargment1', false));
-        $this->frm->addCheckbox('force_aspect_ratio1',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'force_aspect_ratio1', false));
+        $settings = BackendModel::get('fork.settings')->getForModule('Agenda');
 
-        $this->frm->addText('width2', BackendModel::getModuleSetting($this->URL->getModule(), 'width2', false));
-        $this->frm->addText('height2', BackendModel::getModuleSetting($this->URL->getModule(), 'height2', false));
-        $this->frm->addCheckbox('allow_enlargment2',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'allow_enlargment2', false));
-        $this->frm->addCheckbox('force_aspect_ratio2',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'force_aspect_ratio2', false));
+        $this->frm->addText('width1', $settings['width1']);
+        $this->frm->addText('height1', $settings['height1']);
+        $this->frm->addCheckbox('allow_enlargment1', $settings['allow_enlargment1']);
+        $this->frm->addCheckbox('force_aspect_ratio1', $settings['force_aspect_ratio1']);
 
-        $this->frm->addText('width3', BackendModel::getModuleSetting($this->URL->getModule(), 'width3', false));
-        $this->frm->addText('height3', BackendModel::getModuleSetting($this->URL->getModule(), 'height3', false));
-        $this->frm->addCheckbox('allow_enlargment3',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'allow_enlargment3', false));
-        $this->frm->addCheckbox('force_aspect_ratio3',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'force_aspect_ratio3', false));
+        $this->frm->addText('width1', $settings['width2']);
+        $this->frm->addText('height1', $settings['height2']);
+        $this->frm->addCheckbox('allow_enlargment2', $settings['allow_enlargment2']);
+        $this->frm->addCheckbox('force_aspect_ratio2', $settings['force_aspect_ratio2']);
 
-        $this->frm->addText('width3', BackendModel::getModuleSetting($this->URL->getModule(), 'width3', false));
-        $this->frm->addText('height3', BackendModel::getModuleSetting($this->URL->getModule(), 'height3', false));
-        $this->frm->addCheckbox('allow_enlargment3',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'allow_enlargment3', false));
-        $this->frm->addCheckbox('force_aspect_ratio3',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'force_aspect_ratio3', false));
+        $this->frm->addText('width3', $settings['width3']);
+        $this->frm->addText('height3', $settings['height3']);
+        $this->frm->addCheckbox('allow_enlargment3', $settings['allow_enlargment3']);
+        $this->frm->addCheckbox('force_aspect_ratio3', $settings['force_aspect_ratio3']);
 
-        $this->frm->addCheckbox('allow_subscriptions',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'allow_subscriptions', false));
-        $this->frm->addCheckbox('moderation',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'moderation', false));
+        $this->frm->addCheckbox('allow_subscriptions', $settings['allow_subscriptions']);
+        $this->frm->addCheckbox('moderation', $settings['moderation']);
 
-        $this->frm->addCheckbox('notify_by_email_on_new_subscription_to_moderate',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription_to_moderate',
-                false));
-        $this->frm->addCheckbox('notify_by_email_on_new_subscription',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription', false));
+        $this->frm->addCheckbox('notify_by_email_on_new_subscription_to_moderate', $settings['notify_by_email_on_new_subscription_to_moderate']);
+        $this->frm->addCheckbox('notify_by_email_on_new_subscription', $settings['notify_by_email_on_new_subscription']);
 
-        $this->frm->addText('cache_timeout',
-            BackendModel::getModuleSetting($this->URL->getModule(), 'cache_timeout', false));
+        $this->frm->addText('cache_timeout', $settings['cache_timeout']);
 
         $this->frm->addDropdown('zoom_level', array_combine(array_merge(array('auto'), range(3, 18)),
             array_merge(array(BL::lbl('Auto', $this->getModule())), range(3, 18))),
