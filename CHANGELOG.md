@@ -4,6 +4,7 @@
 Improvements:
 
 * Code is now PSR2 compliant
+* Updated to newest Fork CMS version (3.9.4)
 
 Bugfixes:
 
