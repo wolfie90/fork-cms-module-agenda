@@ -1,5 +1,7 @@
 <?php
 
+namespace Frontend\Modules\Agenda\Widgets;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,16 @@
  * file that was distributed with this source code.
  */
 
+use Frontend\Core\Engine\Base\Widget as FrontendBaseWidget;
+use Frontend\Modules\Agenda\Engine\Model as FrontendAgendaModel;
+use Frontend\Core\Engine\Language as FL;
+
 /**
  * This is a widget with all agenda events
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
+class AgendaAll extends FrontendBaseWidget
 {
     /**
      * Execute the extra
@@ -58,7 +64,7 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
                 $beginTimestamp = strtotime(gmdate('Y-M', $timestamp) . '-01 00:00:00');
                 $endTimestamp = strtotime('+1 months', $beginTimestamp);
 
-                $monthLabel = FrontendLanguage::getLabel(gmdate('F', $timestamp));
+                $monthLabel = FL::getLabel(gmdate('F', $timestamp));
 
                 $this->viewTitle = $monthLabel . ' ' . gmdate('Y', $timestamp);
                 break;
@@ -66,10 +72,10 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
                 $beginTimestamp = strtotime('last Monday 00:59', $timestamp); // sets beginning of the week
                 $endTimestamp = strtotime('next Monday 00:59', $beginTimestamp);
 
-                $startDayLabel = FrontendLanguage::getLabel(gmdate('l', $beginTimestamp));
-                $startMonthLabel = FrontendLanguage::getLabel(gmdate('F', $beginTimestamp));
-                $endDayLabel = FrontendLanguage::getLabel(gmdate('l', $endTimestamp));
-                $endMonthLabel = FrontendLanguage::getLabel(gmdate('F', $endTimestamp));
+                $startDayLabel = FL::getLabel(gmdate('l', $beginTimestamp));
+                $startMonthLabel = FL::getLabel(gmdate('F', $beginTimestamp));
+                $endDayLabel = FL::getLabel(gmdate('l', $endTimestamp));
+                $endMonthLabel = FL::getLabel(gmdate('F', $endTimestamp));
 
                 $this->viewTitle = $startDayLabel . ' ' . gmdate('d',
                         $beginTimestamp) . ' ' . $startMonthLabel . ' ' . gmdate('Y',
@@ -81,8 +87,8 @@ class FrontendAgendaWidgetAgendaAll extends FrontendBaseWidget
                 $endTimestamp = strtotime('+1 days', $beginTimestamp);
 
                 // set labels
-                $dayLabel = FrontendLanguage::getLabel(gmdate('l', $timestamp));
-                $monthLabel = FrontendLanguage::getLabel(gmdate('F', $timestamp));
+                $dayLabel = FL::getLabel(gmdate('l', $timestamp));
+                $monthLabel = FL::getLabel(gmdate('F', $timestamp));
                 $this->viewTitle = $dayLabel . ' ' . gmdate('d', $timestamp) . ' ' . $monthLabel . ' ' . gmdate('Y',
                         $timestamp);
                 break;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Frontend\Modules\Agenda\Widgets;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
+use Frontend\Modules\Agenda\Engine\Model as FrontendAgendaModel;
+
 /**
  * This is a widget with the upcoming agenda (full)
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaWidgetUpcomingAgendaFull extends FrontendBaseWidget
+class UpcomingAgendaFull extends FrontendBaseWidget
 {
     /**
      * Execute the extra

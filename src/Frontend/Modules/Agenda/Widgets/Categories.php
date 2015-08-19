@@ -1,5 +1,7 @@
 <?php
 
+namespace Frontend\Modules\Agenda\Widgets;
+
 /*
  * This file is part of Fork CMS.
  *
@@ -7,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
+use Frontend\Core\Engine\Navigation as FrontendNavigation;
+use Frontend\Modules\Agenda\Engine\Model as FrontendAgendaModel;
+
 /**
  * This is a widget with the agenda categories
  *
  * @author Tim van Wolfswinkel <tim@webleads.nl>
  */
-class FrontendAgendaWidgetCategories extends FrontendBaseWidget
+class Categories extends FrontendBaseWidget
 {
     /**
      * Execute the extra
