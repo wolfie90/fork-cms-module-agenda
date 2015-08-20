@@ -138,7 +138,7 @@ class Add extends BackendBaseActionAdd
         parent::parse();
 
         // add css
-        $this->header->addCSS('/backend/modules/agenda/layout/css/agenda.css', null, true);
+        $this->header->addCSS('/src/Backend/Modules/' . $this->getModule() . '/Layout/Css/agenda.css', null, true);
 
         // get url
         $url = BackendModel::getURLForBlock($this->URL->getModule(), 'detail');

@@ -183,7 +183,7 @@ class Edit extends BackendBaseActionEdit
         parent::parse();
 
         // add css
-        $this->header->addCSS('/Backend/Modules/Agenda/Layout/Css/agenda.css', null, true);
+        $this->header->addCSS('/src/Backend/Modules/' . $this->getModule() . '/Layout/Css/agenda.css', null, true);
 
         // get url
         $url = BackendModel::getURLForBlock($this->URL->getModule(), 'detail');
