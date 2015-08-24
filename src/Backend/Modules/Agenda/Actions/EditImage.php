@@ -9,6 +9,9 @@ namespace Backend\Modules\Agenda\Actions;
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\HttpFoundation\File\File;
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Form as BackendForm;
@@ -145,6 +148,22 @@ class EditImage extends BackendBaseActionEdit
                 $formats[] = array('size' => '128x128', 'force_aspect_ratio' => false);
 
                 if ($image->isFilled()) {
+                    // only delete the picture when there is one allready
+                    if (!empty($item['filename'])) {
+                        $fs = new Filesystem();
+
+                        $fs->remove(
+                            FRONTEND_FILES_PATH .
+                            '/agenda/thumbnails/' .
+                            $item['filename']
+                        );
+                        $fs->remove(
+                            FRONTEND_FILES_PATH .
+                            '/agenda/' .
+                            $item['filename']
+                        );
+                    }
+
                     // overwrite the filename
                     if ($item['filename'] === null) {
                         $item['filename'] = time() . '.' . $image->getExtension();
