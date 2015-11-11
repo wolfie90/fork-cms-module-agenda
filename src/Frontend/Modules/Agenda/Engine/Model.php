@@ -229,7 +229,7 @@ class Model
                     INNER JOIN meta AS m ON i.meta_id = m.id
                     WHERE i.language = ?
                     AND i.begin_date > NOW()
-                    ORDER BY i.begin_date DESC LIMIT ?',
+                    ORDER BY i.begin_date ASC LIMIT ?',
                 array(FRONTEND_LANGUAGE, (int)$limit)
             );
         }
