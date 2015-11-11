@@ -38,7 +38,7 @@ class UpcomingAgendaLimited extends FrontendBaseWidget
         $agenda = FrontendAgendaModel::getAllUpcomingAgendaItems(3);
 
         // assign agenda
-        $this->tpl->assign('widgetUpcomingAgendaFull', $agenda);
+        $this->tpl->assign('widgetUpcomingAgendaLimited', $agenda);
 
     }
 }
