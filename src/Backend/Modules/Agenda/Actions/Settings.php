@@ -80,15 +80,15 @@ class Settings extends BackendBaseActionEdit
 
         $this->frm->addDropdown('zoom_level', array_combine(array_merge(array('auto'), range(3, 18)),
             array_merge(array(BL::lbl('Auto', $this->getModule())), range(3, 18))),
-            BackendModel::getModuleSetting($this->URL->getModule(), 'zoom_level_widget', 13));
-        $this->frm->addText('width', BackendModel::getModuleSetting($this->URL->getModule(), 'width'));
-        $this->frm->addText('height', BackendModel::getModuleSetting($this->URL->getModule(), 'height'));
+            $this->get('fork.settings')->get($this->URL->getModule(), 'zoom_level_widget', 13));
+        $this->frm->addText('width', $this->get('fork.settings')->get($this->URL->getModule(), 'width'));
+        $this->frm->addText('height', $this->get('fork.settings')->get($this->URL->getModule(), 'height'));
         $this->frm->addDropdown('map_type', array(
             'ROADMAP' => BL::lbl('Roadmap', $this->getModule()),
             'SATELLITE' => BL::lbl('Satellite', $this->getModule()),
             'HYBRID' => BL::lbl('Hybrid', $this->getModule()),
             'TERRAIN' => BL::lbl('Terrain', $this->getModule())
-        ), BackendModel::getModuleSetting($this->URL->getModule(), 'map_type_widget', 'roadmap'));
+        ), $this->get('fork.settings')->get($this->URL->getModule(), 'map_type_widget', 'roadmap'));
     }
 
     /**
@@ -99,44 +99,44 @@ class Settings extends BackendBaseActionEdit
         if ($this->frm->isSubmitted()) {
             if ($this->frm->isCorrect()) {
                 // set our settings
-                BackendModel::setModuleSetting($this->URL->getModule(), 'width1',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'width1',
                     (int)$this->frm->getField('width1')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'height1',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'height1',
                     (int)$this->frm->getField('height1')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'allow_enlargment1',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'allow_enlargment1',
                     (bool)$this->frm->getField('allow_enlargment1')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'force_aspect_ratio1',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'force_aspect_ratio1',
                     (bool)$this->frm->getField('force_aspect_ratio1')->getValue());
 
-                BackendModel::setModuleSetting($this->URL->getModule(), 'width2',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'width2',
                     (int)$this->frm->getField('width2')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'height2',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'height2',
                     (int)$this->frm->getField('height2')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'allow_enlargment2',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'allow_enlargment2',
                     (bool)$this->frm->getField('allow_enlargment2')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'force_aspect_ratio2',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'force_aspect_ratio2',
                     (bool)$this->frm->getField('force_aspect_ratio2')->getValue());
 
-                BackendModel::setModuleSetting($this->URL->getModule(), 'width3',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'width3',
                     (int)$this->frm->getField('width3')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'height3',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'height3',
                     (int)$this->frm->getField('height3')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'allow_enlargment3',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'allow_enlargment3',
                     (bool)$this->frm->getField('allow_enlargment3')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'force_aspect_ratio3',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'force_aspect_ratio3',
                     (bool)$this->frm->getField('force_aspect_ratio3')->getValue());
 
-                BackendModel::setModuleSetting($this->URL->getModule(), 'cache_timeout',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'cache_timeout',
                     (bool)$this->frm->getField('cache_timeout')->getValue());
 
-                BackendModel::setModuleSetting($this->URL->getModule(), 'allow_subscriptions',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'allow_subscriptions',
                     (bool)$this->frm->getField('allow_subscriptions')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'moderation',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'moderation',
                     (bool)$this->frm->getField('moderation')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(),
+                $this->get('fork.settings')->set($this->URL->getModule(),
                     'notify_by_email_on_new_subscription_to_moderate',
                     (bool)$this->frm->getField('notify_by_email_on_new_subscription_to_moderate')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'notify_by_email_on_new_subscription',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'notify_by_email_on_new_subscription',
                     (bool)$this->frm->getField('notify_by_email_on_new_subscription')->getValue());
 
                 // location
@@ -147,22 +147,22 @@ class Settings extends BackendBaseActionEdit
                 if ($width > 800) {
                     $width = 800;
                 } elseif ($width < 300) {
-                    $width = BackendModel::getModuleSetting('agenda', 'width');
+                    $width = $this->get('fork.settings')->get('Agenda', 'width');
                 }
                 if ($height < 150) {
-                    $height = BackendModel::getModuleSetting('agenda', 'height');
+                    $height = $this->get('fork.settings')->get('Agenda', 'height');
                 }
 
                 // set our settings (widgets)
-                BackendModel::setModuleSetting($this->URL->getModule(), 'zoom_level',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'zoom_level',
                     (string)$this->frm->getField('zoom_level')->getValue());
-                BackendModel::setModuleSetting($this->URL->getModule(), 'width', $width);
-                BackendModel::setModuleSetting($this->URL->getModule(), 'height', $height);
-                BackendModel::setModuleSetting($this->URL->getModule(), 'map_type',
+                $this->get('fork.settings')->set($this->URL->getModule(), 'width', $width);
+                $this->get('fork.settings')->set($this->URL->getModule(), 'height', $height);
+                $this->get('fork.settings')->set($this->URL->getModule(), 'map_type',
                     (string)$this->frm->getField('map_type')->getValue());
 
                 // redirect to the settings page
-                $this->redirect(BackendModel::createURLForAction('settings') . '&report=saved');
+                $this->redirect(BackendModel::createURLForAction('Settings') . '&report=saved');
             }
         }
     }
