@@ -28,7 +28,7 @@ class MassAction extends BackendBaseAction
         parent::execute();
 
         // action to execute
-        $action = SpoonFilter::getGetValue('action', array('deleteImages', 'deleteFiles', 'deleteVideos'), 'delete');
+        $action = \SpoonFilter::getGetValue('action', array('deleteImages', 'deleteFiles', 'deleteVideos'), 'delete');
 
         if (!isset($_GET['id'])) {
             $this->redirect(BackendModel::createURLForAction('index') . '&error=no-selection');
@@ -41,14 +41,12 @@ class MassAction extends BackendBaseAction
             // delete media
             if ($action == 'deleteImages') {
                 BackendAgendaModel::deleteImage($aIds);
-            } else {
-                if ($action == 'deleteFiles') {
-                    BackendAgendaModel::deleteFile($aIds);
-                } else {
-                    if ($action == 'deleteVideos') {
-                        BackendAgendaModel::deleteVideo($aIds);
-                    }
-                }
+            } 
+            if ($action == 'deleteFiles') {
+                BackendAgendaModel::deleteFile($aIds);
+            } 
+            if ($action == 'deleteVideos') {
+                BackendAgendaModel::deleteVideo($aIds);
             }
         }
 
